@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1030</width>
-    <height>454</height>
+    <width>1126</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,7 +58,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>317</height>
+           <height>425</height>
           </rect>
          </property>
          <attribute name="label">
@@ -71,7 +71,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>317</height>
+           <height>425</height>
           </rect>
          </property>
          <attribute name="label">
@@ -107,44 +107,189 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="unitsBox">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>191</width>
-           <height>221</height>
+           <x>10</x>
+           <y>60</y>
+           <width>181</width>
+           <height>91</height>
           </rect>
          </property>
          <property name="title">
           <string>Positioning</string>
          </property>
-         <widget class="QToolButton" name="toolButton">
+         <widget class="QRadioButton" name="percentButton">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>50</y>
-            <width>27</width>
-            <height>23</height>
+            <x>10</x>
+            <y>60</y>
+            <width>51</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
-           <string>...</string>
+           <string>%</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QRadioButton" name="pxButton">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>10</x>
+            <y>30</y>
+            <width>51</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Px</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="horizontalAlignmentBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>160</y>
+           <width>181</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Horizontal Alignment</string>
+         </property>
+         <widget class="QRadioButton" name="alignLeftButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>102</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Left</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="alignRightButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>102</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Right</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="alignCenterButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
             <y>90</y>
-            <width>114</width>
-            <height>32</height>
+            <width>102</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
-           <string>PushButton</string>
+           <string>Center</string>
           </property>
          </widget>
+        </widget>
+        <widget class="QGroupBox" name="verticalAlignmentBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>300</y>
+           <width>181</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Vertical Alignment</string>
+         </property>
+         <widget class="QRadioButton" name="alignCenterVerticalButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>102</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Center</string>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="alignBottomButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>102</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Bottom</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QRadioButton" name="alignTopButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>102</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Top</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QLineEdit" name="viewIdEdit">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>181</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>71</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Sprite Id</string>
+         </property>
         </widget>
        </widget>
       </item>
@@ -157,7 +302,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1030</width>
+     <width>1126</width>
      <height>22</height>
     </rect>
    </property>
