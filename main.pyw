@@ -16,9 +16,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.connectSlots()
         self.dirs = []
+        self.spriteTools = {}
 
     def connectSlots(self):
         self.connect(self.actionAdd_Dir, SIGNAL('triggered()'), self.addDir)
+        def slot(item):
+            self.tool = self.getTool(item.name, item.path)
+        self.spritesListWidget.itemClicked.connect(slot)
 
     def addDir(self):
         dirName=QFileDialog.getExistingDirectory(None, "Add Dir", ".")
@@ -31,13 +35,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()[-4:] in ('.png', '.jpg')))]
         
     def getTool(self, name, path):
-        if path in self.allTools:
-            return self.allTools[path]
+        if path in self.spriteTools:
+            return self.spriteTools[path]
         else:
             picture = Image.open(path)
             pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
-            tool = Tool(name, path, pixmap, **kwargs)
-            self.allTools[key] = tool
+            tool = Tool(name, path, pixmap)
+            self.spriteTools[path] = tool
             return tool
 
     def createPreviews(self, listWidget, iconPathList, iconSize, thumbnail=False):
@@ -54,7 +58,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 label = filename[:17] + "..."
             item = QListWidgetItem(label, listWidget)
             item.setIcon(icon)
-
+            item.name = label
+            item.path = path
 
 
 class Tool(object):
