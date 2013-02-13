@@ -19,7 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connectSlots()
         self.createEmptyLayout()
         self.tool = None
-        self.dirs = []
+        self.spritesDir = None
         self.spriteTools = {}
 
     def createEmptyLayout(self):
@@ -29,29 +29,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.layout
 
     def connectSlots(self):
-        self.connect(self.actionAdd_Dir, SIGNAL('triggered()'), self.addDir)
+        self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.setDir)
         def slot(item):
-            self.tool = self.getSpriteTool(item.name, item.path)
+            self.tool = self.getSpriteTool(item.name)
         self.spritesListWidget.itemClicked.connect(slot)
 
-    def addDir(self):
-        dirName=QFileDialog.getExistingDirectory(None, "Add Dir", ".")
+    def setDir(self):
+        dirName=QFileDialog.getExistingDirectory(None, "Set Dir", ".")
         if dirName:
-            self.dirs.append(dirName)
-            listDir = map(lambda x: os.path.join(unicode(dirName), x), self.filteredListDir(dirName))
+            self.spritesDir = unicode(dirName)
+            listDir = map(lambda x: os.path.join(self.spritesDir, x), self.filteredListDir(dirName))
             self.createPreviews(self.spritesListWidget, listDir, 120)
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
         return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()[-4:] in ('.png', '.jpg')))]
         
-    def getSpriteTool(self, name, path):
+    def getSpriteTool(self, uniqueName):
+        path = os.path.join(self.spritesDir, uniqueName)
         if path in self.spriteTools:
             return self.spriteTools[path]
         else:
-            tool = SpriteTool(name, path)
+            tool = SpriteTool(uniqueName, path)
             self.spriteTools[path] = tool
             return tool
+
+    def getTool(self, toolType, name):
+        if toolType == 'sprite':
+            return self.getSpriteTool(name)
+        else:
+            raise Exception, "Unsupported tool type %s" %toolType
 
     def getCurrentLayout(self):
         return self.layout
@@ -162,12 +169,12 @@ class Layout(object):
     def show(self):
         self.mainWindow.graphicsView.clear()
         for unit in self.d['units']:
-            unitname = unit['name']
-            unittype = unit['type']
+            name = unit['name']
+            type = unit['type']
             x = unit['x']
             y = unit['y']
             #TODO: refactor this
-            tool = self.mainWindow.getTool(unittype, unitname)
+            tool = self.mainWindow.getTool(type, name)
             item = QGraphicsPixmapItem(tool.pixmap)
             item.setOffset(x - tool.offsetX, y - tool.offsetY)
             item.unit = unit
@@ -195,9 +202,10 @@ class Tool(object):
     def __init__(self, toolType, name):
         self.name = name
         self.type = toolType
-        self.offsetX = 0
-        self.offsetY = 0
-    
+
+    def createGraphicsItem(self, x, y):
+        raise NotImplementedError, "Subclass 'Tool' class and override this method"
+
 
 class SpriteTool(Tool):
     def __init__(self, name, path, **params):
@@ -210,6 +218,11 @@ class SpriteTool(Tool):
         self.offsetY = self.pixmap.height()/2
         for key, value in params.items():
             setattr(self, key, value)
+
+    def createGraphicsItem(self, x, y):
+        item = QGraphicsPixmapItem(self.pixmap)
+        item.setOffset(x - self.offsetX, y - self.offsetY)
+        return item
 
 
 def main():

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 13 13:07:04 2013
+# Created: Wed Feb 13 16:00:46 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -156,21 +156,22 @@ class Ui_MainWindow(object):
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
-        self.actionOpen = QtGui.QAction(MainWindow)
-        self.actionOpen.setObjectName(_fromUtf8("actionOpen"))
+        self.actionNew = QtGui.QAction(MainWindow)
+        self.actionNew.setObjectName(_fromUtf8("actionNew"))
         self.actionExport_to_MOAI = QtGui.QAction(MainWindow)
         self.actionExport_to_MOAI.setObjectName(_fromUtf8("actionExport_to_MOAI"))
-        self.actionAdd_Dir = QtGui.QAction(MainWindow)
-        self.actionAdd_Dir.setObjectName(_fromUtf8("actionAdd_Dir"))
+        self.actionSet_Dir = QtGui.QAction(MainWindow)
+        self.actionSet_Dir.setShortcutContext(QtCore.Qt.WidgetShortcut)
+        self.actionSet_Dir.setObjectName(_fromUtf8("actionSet_Dir"))
+        self.actionOpen = QtGui.QAction(MainWindow)
+        self.actionOpen.setObjectName(_fromUtf8("actionOpen"))
         self.actionSave = QtGui.QAction(MainWindow)
         self.actionSave.setObjectName(_fromUtf8("actionSave"))
-        self.actionSave_2 = QtGui.QAction(MainWindow)
-        self.actionSave_2.setObjectName(_fromUtf8("actionSave_2"))
+        self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
-        self.menuFile.addAction(self.actionSave_2)
         self.menuExporter.addAction(self.actionExport_to_MOAI)
-        self.menuResources.addAction(self.actionAdd_Dir)
+        self.menuResources.addAction(self.actionSet_Dir)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuExporter.menuAction())
         self.menubar.addAction(self.menuResources.menuAction())
@@ -201,10 +202,11 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuExporter.setTitle(_translate("MainWindow", "Exporter", None))
         self.menuResources.setTitle(_translate("MainWindow", "Resources", None))
-        self.actionOpen.setText(_translate("MainWindow", "New", None))
+        self.actionNew.setText(_translate("MainWindow", "New", None))
         self.actionExport_to_MOAI.setText(_translate("MainWindow", "Export to MOAI", None))
-        self.actionAdd_Dir.setText(_translate("MainWindow", "Add Dir", None))
-        self.actionSave.setText(_translate("MainWindow", "Open", None))
-        self.actionSave_2.setText(_translate("MainWindow", "Save", None))
+        self.actionSet_Dir.setText(_translate("MainWindow", "Set Dir", None))
+        self.actionSet_Dir.setShortcut(_translate("MainWindow", "Ctrl+D", None))
+        self.actionOpen.setText(_translate("MainWindow", "Open", None))
+        self.actionSave.setText(_translate("MainWindow", "Save", None))
 
 from graphicsview import DesignerGraphicsView

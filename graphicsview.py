@@ -43,11 +43,7 @@ class DesignerGraphicsView(QGraphicsView):
 
     def addUnit(self, tool, x, y):
         unit = self.mainWindow.getCurrentLayout().addUnit(self.mainWindow.tool.type, self.mainWindow.tool.name, x, y)
-        if tool.type == 'sprite':
-            item = QGraphicsPixmapItem(tool.pixmap)
-            item.setOffset(x - tool.offsetX, y - tool.offsetY)
-        else:
-            raise Exception, 'Unknown tool type %s' %tool.type
+        item = tool.createGraphicsItem(x, y)
         self.selected = item
         item.unit = unit
         item.tool = tool
