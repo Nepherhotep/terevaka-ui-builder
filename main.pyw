@@ -173,10 +173,8 @@ class Layout(object):
             type = unit['type']
             x = unit['x']
             y = unit['y']
-            #TODO: refactor this
             tool = self.mainWindow.getTool(type, name)
-            item = QGraphicsPixmapItem(tool.pixmap)
-            item.setOffset(x - tool.offsetX, y - tool.offsetY)
+            item = tool.createGraphicsItem(x, y)
             item.unit = unit
             self.mainWindow.graphicsView.scene.addItem(item)
 
