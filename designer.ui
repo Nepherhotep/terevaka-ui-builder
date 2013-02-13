@@ -70,6 +70,9 @@
             <height>401</height>
            </rect>
           </property>
+          <property name="viewMode">
+           <enum>QListView::IconMode</enum>
+          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="objects">

@@ -24,11 +24,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dirName=QFileDialog.getExistingDirectory(None, "Add Dir", ".")
         self.dirs.append(dirName)
         listDir = map(lambda x: os.path.join(unicode(dirName), x), self.filteredListDir(dirName))
-        self.createPreviews(self.spritesListWidget, listDir, 96)
+        self.createPreviews(self.spritesListWidget, listDir, 120)
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
-        return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()) not in ("thumbs.db"))]
+        return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()[-4:] in ('.png', '.jpg')))]
         
     def getTool(self, name, path):
         if path in self.allTools:

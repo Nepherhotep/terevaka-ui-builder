@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 13 11:37:58 2013
+# Created: Wed Feb 13 11:58:54 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -54,6 +54,7 @@ class Ui_MainWindow(object):
         self.sprites.setObjectName(_fromUtf8("sprites"))
         self.spritesListWidget = QtGui.QListWidget(self.sprites)
         self.spritesListWidget.setGeometry(QtCore.QRect(10, 0, 181, 401))
+        self.spritesListWidget.setViewMode(QtGui.QListView.IconMode)
         self.spritesListWidget.setObjectName(_fromUtf8("spritesListWidget"))
         self.toolBox.addItem(self.sprites, _fromUtf8(""))
         self.objects = QtGui.QWidget()
