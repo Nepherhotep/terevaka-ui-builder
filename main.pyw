@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os, sys
+from copy import deepcopy
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -30,7 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def connectSlots(self):
         self.connect(self.actionAdd_Dir, SIGNAL('triggered()'), self.addDir)
         def slot(item):
-            self.tool = self.getTool(item.name, item.path)
+            self.tool = self.getSpriteTool(item.name, item.path)
         self.spritesListWidget.itemClicked.connect(slot)
 
     def addDir(self):
@@ -44,13 +45,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # remove Thumbs.db and hidden files from list
         return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()[-4:] in ('.png', '.jpg')))]
         
-    def getTool(self, name, path):
+    def getSpriteTool(self, name, path):
         if path in self.spriteTools:
             return self.spriteTools[path]
         else:
-            picture = Image.open(path)
-            pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
-            tool = Tool(name, path, pixmap)
+            tool = SpriteTool(name, path)
             self.spriteTools[path] = tool
             return tool
 
@@ -119,20 +118,14 @@ class Layout(object):
 
     @saveHistory
     def addUnit(self, unittype, unitname, x, y):
-        tool = self.mainWindow.getTool(unittype, unitname)
-        item = QGraphicsPixmapItem(tool.pixmap)
-        item.setOffset(x - tool.offsetX, y - tool.offsetY)
-        self.mainWindow.graphicsView.selected = item
-
-        self.mainWindow.graphicsView.scene.addItem(item)
         unit = {}
         unit['id'] = self.incUnitId()
         unit['type'] = unittype
         unit['name'] = unitname        
         unit['x'] = x
         unit['y'] = y
-        item.unit = unit
         self.d['units'].append(unit)
+        return unit
 
     @saveHistory
     def removeUnit(self, item):
@@ -142,10 +135,7 @@ class Layout(object):
 
     @saveHistory
     def moveUnit(self, item, x, y, **kwargs):
-        unittype = item.unit['type']
-        unitname = item.unit['name']
-        tool = self.mainWindow.getTool(unittype, unitname)
-        item.setOffset(x - tool.offsetX, y - tool.offsetY)
+        item.setOffset(x - item.tool.offsetX, y - item.tool.offsetY)
         item.unit['x'] = x
         item.unit['y'] = y
 
@@ -176,6 +166,7 @@ class Layout(object):
             unittype = unit['type']
             x = unit['x']
             y = unit['y']
+            #TODO: refactor this
             tool = self.mainWindow.getTool(unittype, unitname)
             item = QGraphicsPixmapItem(tool.pixmap)
             item.setOffset(x - tool.offsetX, y - tool.offsetY)
@@ -201,12 +192,22 @@ class Layout(object):
 
 
 class Tool(object):
-    def __init__(self, name, path, pixmap, **params):
+    def __init__(self, toolType, name):
         self.name = name
+        self.type = toolType
+        self.offsetX = 0
+        self.offsetY = 0
+    
+
+class SpriteTool(Tool):
+    def __init__(self, name, path, **params):
+        self.name = name
+        self.type = 'sprite'
         self.path = path
-        self.pixmap = pixmap
-        self.offsetX = pixmap.width()/2
-        self.offsetY = pixmap.height()/2
+        picture = Image.open(path)
+        self.pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
+        self.offsetX = self.pixmap.width()/2
+        self.offsetY = self.pixmap.height()/2
         for key, value in params.items():
             setattr(self, key, value)
 
