@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 13 16:00:46 2013
+# Created: Wed Feb 13 16:09:58 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -74,6 +74,8 @@ class Ui_MainWindow(object):
         self.toolBox.addItem(self.layout, _fromUtf8(""))
         self.horizontalLayout.addWidget(self.toolBox)
         self.graphicsView = DesignerGraphicsView(self.centralwidget)
+        self.graphicsView.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.graphicsView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
         self.horizontalLayout.addWidget(self.graphicsView)
         self.frame = QtGui.QFrame(self.centralwidget)
