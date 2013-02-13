@@ -15,12 +15,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.connectSlots()
+        self.dirs = []
 
     def connectSlots(self):
         self.connect(self.actionAdd_Dir, SIGNAL('triggered()'), self.addDir)
 
     def addDir(self):
         dirName=QFileDialog.getExistingDirectory(None, "Add Dir", ".")
+        self.dirs.append(dirName)
         listDir = map(lambda x: os.path.join(unicode(dirName), x), self.filteredListDir(dirName))
         self.createPreviews(self.spritesListWidget, listDir, 96)
 
@@ -49,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if len(filename) <= 20:
                 label = filename
             else:
-                label = filename[17:] + "..."
+                label = filename[:17] + "..."
             item = QListWidgetItem(label, listWidget)
             item.setIcon(icon)
 
