@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 13 10:36:26 2013
+# Created: Wed Feb 13 11:37:58 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -147,14 +147,32 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
+        self.menuExporter = QtGui.QMenu(self.menubar)
+        self.menuExporter.setObjectName(_fromUtf8("menuExporter"))
+        self.menuResources = QtGui.QMenu(self.menubar)
+        self.menuResources.setObjectName(_fromUtf8("menuResources"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         self.actionOpen = QtGui.QAction(MainWindow)
         self.actionOpen.setObjectName(_fromUtf8("actionOpen"))
+        self.actionExport_to_MOAI = QtGui.QAction(MainWindow)
+        self.actionExport_to_MOAI.setObjectName(_fromUtf8("actionExport_to_MOAI"))
+        self.actionAdd_Dir = QtGui.QAction(MainWindow)
+        self.actionAdd_Dir.setObjectName(_fromUtf8("actionAdd_Dir"))
+        self.actionSave = QtGui.QAction(MainWindow)
+        self.actionSave.setObjectName(_fromUtf8("actionSave"))
+        self.actionSave_2 = QtGui.QAction(MainWindow)
+        self.actionSave_2.setObjectName(_fromUtf8("actionSave_2"))
         self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addAction(self.actionSave)
+        self.menuFile.addAction(self.actionSave_2)
+        self.menuExporter.addAction(self.actionExport_to_MOAI)
+        self.menuResources.addAction(self.actionAdd_Dir)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuExporter.menuAction())
+        self.menubar.addAction(self.menuResources.menuAction())
 
         self.retranslateUi(MainWindow)
         self.toolBox.setCurrentIndex(0)
@@ -180,5 +198,11 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "X", None))
         self.label_3.setText(_translate("MainWindow", "Y", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
-        self.actionOpen.setText(_translate("MainWindow", "Open Dir", None))
+        self.menuExporter.setTitle(_translate("MainWindow", "Exporter", None))
+        self.menuResources.setTitle(_translate("MainWindow", "Resources", None))
+        self.actionOpen.setText(_translate("MainWindow", "New", None))
+        self.actionExport_to_MOAI.setText(_translate("MainWindow", "Export to MOAI", None))
+        self.actionAdd_Dir.setText(_translate("MainWindow", "Add Dir", None))
+        self.actionSave.setText(_translate("MainWindow", "Open", None))
+        self.actionSave_2.setText(_translate("MainWindow", "Save", None))
 
