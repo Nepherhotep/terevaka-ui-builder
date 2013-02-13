@@ -16,6 +16,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.graphicsView.mainWindow = self
+        self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
         self.connectSlots()
         self.createEmptyLayout()
         self.tool = None
