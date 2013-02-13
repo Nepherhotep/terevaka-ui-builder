@@ -26,9 +26,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def addDir(self):
         dirName=QFileDialog.getExistingDirectory(None, "Add Dir", ".")
-        self.dirs.append(dirName)
-        listDir = map(lambda x: os.path.join(unicode(dirName), x), self.filteredListDir(dirName))
-        self.createPreviews(self.spritesListWidget, listDir, 120)
+        if dirName:
+            self.dirs.append(dirName)
+            listDir = map(lambda x: os.path.join(unicode(dirName), x), self.filteredListDir(dirName))
+            self.createPreviews(self.spritesListWidget, listDir, 120)
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
@@ -50,16 +51,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             picture = Image.open(path)
             if thumbnail:
                 picture.thumbnail((thumbnail, thumbnail), Image.ANTIALIAS)
-            icon = QIcon(QPixmap.fromImage(ImageQt.ImageQt(picture)))
-            filename = os.path.basename(path)
-            if len(filename) <= 20:
-                label = filename
-            else:
-                label = filename[:17] + "..."
-            item = QListWidgetItem(label, listWidget)
-            item.setIcon(icon)
-            item.name = label
-            item.path = path
+            try:
+                icon = QIcon(QPixmap.fromImage(ImageQt.ImageQt(picture)))
+                filename = os.path.basename(path)
+                if len(filename) <= 20:
+                    label = filename
+                else:
+                    label = filename[:17] + "..."
+                item = QListWidgetItem(label, listWidget)
+                item.setIcon(icon)
+                item.name = label
+                item.path = path
+            except Exception, e:
+                print(e, path)
 
 
 class Tool(object):
