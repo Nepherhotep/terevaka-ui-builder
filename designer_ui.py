@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 13 11:58:54 2013
+# Created: Wed Feb 13 13:07:04 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.layoutTreeWidget.headerItem().setText(0, _fromUtf8("1"))
         self.toolBox.addItem(self.layout, _fromUtf8(""))
         self.horizontalLayout.addWidget(self.toolBox)
-        self.graphicsView = QtGui.QGraphicsView(self.centralwidget)
+        self.graphicsView = DesignerGraphicsView(self.centralwidget)
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
         self.horizontalLayout.addWidget(self.graphicsView)
         self.frame = QtGui.QFrame(self.centralwidget)
@@ -207,3 +207,4 @@ class Ui_MainWindow(object):
         self.actionSave.setText(_translate("MainWindow", "Open", None))
         self.actionSave_2.setText(_translate("MainWindow", "Save", None))
 
+from graphicsview import DesignerGraphicsView
