@@ -16,16 +16,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.graphicsView.mainWindow = self
         self.connectSlots()
-        self.createEmptyLayer()
+        self.createEmptyLayout()
         self.tool = None
         self.dirs = []
         self.spriteTools = {}
 
-    def createEmptyLayer(self):
-        self.layer = Layer(self)
+    def createEmptyLayout(self):
+        self.layout = Layout(self)
 
-    def getCurrentLayer(self):
-        return self.layer
+    def getCurrentLayout(self):
+        return self.layout
 
     def connectSlots(self):
         self.connect(self.actionAdd_Dir, SIGNAL('triggered()'), self.addDir)
@@ -54,8 +54,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.spriteTools[path] = tool
             return tool
 
-    def getCurrentLayer(self):
-        return self.layer
+    def getCurrentLayout(self):
+        return self.layout
 
     def createPreviews(self, listWidget, iconPathList, iconSize, thumbnail=False):
         listWidget.setIconSize(QSize(iconSize, iconSize))
@@ -78,7 +78,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print(e, path)
 
 
-class Layer(object):
+class Layout(object):
     HISTORY_LEN = 20
     def __init__(self, mainWindow, d=None):
         self.current = 0#current frame in history
