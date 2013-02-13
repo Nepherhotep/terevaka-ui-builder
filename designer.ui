@@ -47,7 +47,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="sprites">
          <property name="geometry">
@@ -61,7 +61,7 @@
          <attribute name="label">
           <string>Sprites</string>
          </attribute>
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QListWidget" name="spritesListWidget">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -84,7 +84,7 @@
          <attribute name="label">
           <string>Objects</string>
          </attribute>
-         <widget class="QListWidget" name="listWidget_2">
+         <widget class="QListWidget" name="objectsListWidget">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -107,7 +107,7 @@
          <attribute name="label">
           <string>Layout</string>
          </attribute>
-         <widget class="QTreeWidget" name="treeWidget">
+         <widget class="QTreeWidget" name="layoutTreeWidget">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -188,7 +188,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>160</y>
+           <y>220</y>
            <width>181</width>
            <height>121</height>
           </rect>
@@ -243,7 +243,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>300</y>
+           <y>360</y>
            <width>181</width>
            <height>121</height>
           </rect>
@@ -324,6 +324,58 @@
          </property>
          <property name="text">
           <string>Sprite Id</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>180</y>
+           <width>81</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>180</y>
+           <width>81</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>160</y>
+           <width>16</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_3">
+         <property name="geometry">
+          <rect>
+           <x>130</x>
+           <y>160</y>
+           <width>16</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Y</string>
          </property>
         </widget>
        </widget>
