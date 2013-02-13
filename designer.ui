@@ -398,13 +398,49 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_2"/>
+   </widget>
+   <widget class="QMenu" name="menuExporter">
+    <property name="title">
+     <string>Exporter</string>
+    </property>
+    <addaction name="actionExport_to_MOAI"/>
+   </widget>
+   <widget class="QMenu" name="menuResources">
+    <property name="title">
+     <string>Resources</string>
+    </property>
+    <addaction name="actionAdd_Dir"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuExporter"/>
+   <addaction name="menuResources"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
    <property name="text">
-    <string>Open Dir</string>
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionExport_to_MOAI">
+   <property name="text">
+    <string>Export to MOAI</string>
+   </property>
+  </action>
+  <action name="actionAdd_Dir">
+   <property name="text">
+    <string>Add Dir</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave_2">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>
