@@ -92,6 +92,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             except Exception, e:
                 print(e, path)
 
+    def removeSelectedItem(self):
+        if self.graphicsView.selected:
+            self.getCurrentLayout().removeUnit(self.graphicsView.selected)
+
+
 
 class Layout(object):
     HISTORY_LEN = 20
