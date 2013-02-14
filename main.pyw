@@ -22,6 +22,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tool = None
         self.spritesDir = None
         self.spriteTools = {}
+        self.updateWindowTitle()
+
+    def updateWindowTitle(self):
+        size = self.graphicsView.geometry().size()
+        self.setWindowTitle("Size %sx%s" %(size.width(), size.height()))
 
     def createEmptyLayout(self):
         self.layout = Layout(self)
