@@ -23,6 +23,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spritesDir = None
         self.spriteTools = {}
         self.updateWindowTitle()
+        self.setDirWithPath("./sprites")
 
     def updateWindowTitle(self):
         size = self.graphicsView.geometry().size()
@@ -49,11 +50,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.getCurrentLayout().redo()
 
     def setDir(self):
-        dirName=QFileDialog.getExistingDirectory(None, "Set Dir", ".")
-        if dirName:
-            self.spritesDir = unicode(dirName)
-            listDir = map(lambda x: os.path.join(self.spritesDir, x), self.filteredListDir(dirName))
-            self.createPreviews(self.spritesListWidget, listDir, 120)
+        dirPath=QFileDialog.getExistingDirectory(None, "Set Dir", ".")
+        if dirPath:
+            self.setDirWithPath(dirPath)
+
+    def setDirWithPath(self, dirPath):
+        self.spritesDir = unicode(dirPath)
+        listDir = map(lambda x: os.path.join(self.spritesDir, x), self.filteredListDir(dirPath))
+        self.createPreviews(self.spritesListWidget, listDir, 120)
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
@@ -238,10 +242,19 @@ class SpriteTool(Tool):
             setattr(self, key, value)
 
     def createGraphicsItem(self, x, y):
-        item = QGraphicsPixmapItem(self.pixmap)
-        item.setOffset(x - self.offsetX, y - self.offsetY)
+        item = DraggablePixmapItem(self.pixmap)
+        item.setPos(QPointF(x-self.offsetX, y-self.offsetY))
         return item
 
+
+class DraggablePixmapItem(QGraphicsPixmapItem):
+    def __init__(self, *args, **kwargs):
+        QGraphicsPixmapItem.__init__(self, *args, **kwargs)
+        self.setFlag(QGraphicsPixmapItem.ItemIsMovable)
+
+    def dragLeaveEvent(self, event):
+        print('event', event)
+        event.accept()
 
 def main():
     app = QApplication(sys.argv)
