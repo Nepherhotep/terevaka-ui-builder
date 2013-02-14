@@ -34,6 +34,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         def slot(item):
             self.tool = self.getSpriteTool(item.name)
         self.spritesListWidget.itemClicked.connect(slot)
+        self.connect(self.actionUndo, SIGNAL('triggered()'), self.undo)
+        self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
+
+    def undo(self):
+        self.getCurrentLayout().undo()
+
+    def redo(self):
+        self.getCurrentLayout().redo()
 
     def setDir(self):
         dirName=QFileDialog.getExistingDirectory(None, "Set Dir", ".")
@@ -177,6 +185,7 @@ class Layout(object):
             tool = self.mainWindow.getTool(type, name)
             item = tool.createGraphicsItem(x, y)
             item.unit = unit
+            item.tool = tool
             self.mainWindow.graphicsView.scene.addItem(item)
 
     @saveHistory

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 13 16:09:58 2013
+# Created: Thu Feb 14 12:29:54 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -150,8 +150,8 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
-        self.menuExporter = QtGui.QMenu(self.menubar)
-        self.menuExporter.setObjectName(_fromUtf8("menuExporter"))
+        self.menuEdit = QtGui.QMenu(self.menubar)
+        self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
         self.menuResources = QtGui.QMenu(self.menubar)
         self.menuResources.setObjectName(_fromUtf8("menuResources"))
         MainWindow.setMenuBar(self.menubar)
@@ -160,8 +160,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionNew = QtGui.QAction(MainWindow)
         self.actionNew.setObjectName(_fromUtf8("actionNew"))
-        self.actionExport_to_MOAI = QtGui.QAction(MainWindow)
-        self.actionExport_to_MOAI.setObjectName(_fromUtf8("actionExport_to_MOAI"))
+        self.actionUndo = QtGui.QAction(MainWindow)
+        self.actionUndo.setObjectName(_fromUtf8("actionUndo"))
         self.actionSet_Dir = QtGui.QAction(MainWindow)
         self.actionSet_Dir.setShortcutContext(QtCore.Qt.WidgetShortcut)
         self.actionSet_Dir.setObjectName(_fromUtf8("actionSet_Dir"))
@@ -169,13 +169,16 @@ class Ui_MainWindow(object):
         self.actionOpen.setObjectName(_fromUtf8("actionOpen"))
         self.actionSave = QtGui.QAction(MainWindow)
         self.actionSave.setObjectName(_fromUtf8("actionSave"))
+        self.actionRedo = QtGui.QAction(MainWindow)
+        self.actionRedo.setObjectName(_fromUtf8("actionRedo"))
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
-        self.menuExporter.addAction(self.actionExport_to_MOAI)
+        self.menuEdit.addAction(self.actionUndo)
+        self.menuEdit.addAction(self.actionRedo)
         self.menuResources.addAction(self.actionSet_Dir)
         self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuExporter.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuResources.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -202,13 +205,16 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "X", None))
         self.label_3.setText(_translate("MainWindow", "Y", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
-        self.menuExporter.setTitle(_translate("MainWindow", "Exporter", None))
+        self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.menuResources.setTitle(_translate("MainWindow", "Resources", None))
         self.actionNew.setText(_translate("MainWindow", "New", None))
-        self.actionExport_to_MOAI.setText(_translate("MainWindow", "Export to MOAI", None))
+        self.actionUndo.setText(_translate("MainWindow", "Undo", None))
+        self.actionUndo.setShortcut(_translate("MainWindow", "Ctrl+Z", None))
         self.actionSet_Dir.setText(_translate("MainWindow", "Set Dir", None))
         self.actionSet_Dir.setShortcut(_translate("MainWindow", "Ctrl+D", None))
         self.actionOpen.setText(_translate("MainWindow", "Open", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
+        self.actionRedo.setText(_translate("MainWindow", "Redo", None))
+        self.actionRedo.setShortcut(_translate("MainWindow", "Ctrl+Y", None))
 
 from graphicsview import DesignerGraphicsView

@@ -411,11 +411,12 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
    </widget>
-   <widget class="QMenu" name="menuExporter">
+   <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Exporter</string>
+     <string>Edit</string>
     </property>
-    <addaction name="actionExport_to_MOAI"/>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
    </widget>
    <widget class="QMenu" name="menuResources">
     <property name="title">
@@ -424,7 +425,7 @@
     <addaction name="actionSet_Dir"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuExporter"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuResources"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -433,9 +434,12 @@
     <string>New</string>
    </property>
   </action>
-  <action name="actionExport_to_MOAI">
+  <action name="actionUndo">
    <property name="text">
-    <string>Export to MOAI</string>
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
    </property>
   </action>
   <action name="actionSet_Dir">
@@ -457,6 +461,14 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
    </property>
   </action>
  </widget>
