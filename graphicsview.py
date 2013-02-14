@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-ITEM_MIME_TYPE = 'image/x-terevaka-ui'
+
 
 class DesignerGraphicsView(QGraphicsView):
     def __init__(self, *args, **kwargs):
