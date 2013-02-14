@@ -29,7 +29,6 @@ class DesignerGraphicsView(QGraphicsView):
                 if mouseEvent.button() == Qt.LeftButton:
                     self.selected = items[0]
                     self.grabbed = self.selected
-                    print('pos before', self.grabbed.pos())
                     #handle dragging
                     return super(DesignerGraphicsView, self).mousePressEvent(mouseEvent)
                 else:
@@ -43,8 +42,9 @@ class DesignerGraphicsView(QGraphicsView):
 
     def mouseReleaseEvent(self, mouseEvent):
         if self.grabbed:
-            x, y = self.grabbed.pos().x(), self.grabbed.pos().y()
-            #self.mainWindow.getCurrentLayout().moveUnit(self.grabbed, x, y, forceSave=True)
+            pos = self.grabbed.pos()
+            x, y = pos.x(), pos.y()
+            self.mainWindow.getCurrentLayout().moveUnit(self.grabbed, x, y, forceSave=True)
             self.grabbed = None
             return super(DesignerGraphicsView, self).mouseReleaseEvent(mouseEvent)
 

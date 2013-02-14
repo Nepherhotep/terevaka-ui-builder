@@ -165,7 +165,7 @@ class Layout(object):
 
     @saveHistory
     def moveUnit(self, item, x, y, **kwargs):
-        item.setOffset(x - item.tool.offsetX, y - item.tool.offsetY)
+        item.setPos(x, y)
         item.unit['x'] = x
         item.unit['y'] = y
 
@@ -243,7 +243,8 @@ class SpriteTool(Tool):
 
     def createGraphicsItem(self, x, y):
         item = DraggablePixmapItem(self.pixmap)
-        item.setPos(QPointF(x-self.offsetX, y-self.offsetY))
+        item.setOffset(-self.offsetX, -self.offsetY)
+        item.setPos(QPointF(x, y))
         return item
 
 
