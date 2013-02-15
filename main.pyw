@@ -109,12 +109,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def removeSelectedItem(self):
         if self.graphicsView.selected:
-            self.getCurrentLayout().removeUnit(self.graphicsView.selected)
+            self.getCurrentLayout().removeProp(self.graphicsView.selected)
 
     def onItemSelected(self, item):
         self.resourceLabel.setText(item.itemFactory.name)
-        self.posXSpinBox.setValue(item.unit['x'])
-        self.posYSpinBox.setValue(item.unit['y'])
+        self.posXSpinBox.setValue(item.prop['x'])
+        self.posYSpinBox.setValue(item.prop['y'])
 
 
 class Layout(object):
@@ -122,20 +122,20 @@ class Layout(object):
     def __init__(self, mainWindow, d=None):
         self.current = 0#current frame in history
         self.mainWindow = mainWindow
-        self.lastUnitId = 0
+        self.lastPropId = 0
         if d == None:
             self.d = {}
-            self.d['units'] = []
+            self.d['props'] = []
             self.history = []
         else:
             self.d = d
-            for unit in self.d.get('units', []):
-                self.incUnitId()
+            for prop in self.d.get('props', []):
+                self.incPropId()
             self.history = [deepcopy(d)]
 
-    def incUnitId(self):
-        self.lastUnitId += 1
-        return self.lastUnitId
+    def incPropId(self):
+        self.lastPropId += 1
+        return self.lastPropId
 
     def saveHistory(function):
         def newFunction(self, *args, **kwargs):
@@ -157,27 +157,27 @@ class Layout(object):
         return newFunction
 
     @saveHistory
-    def addUnit(self, unitType, name, x, y):
-        unit = {}
-        unit['id'] = self.incUnitId()
-        unit['type'] = unitType
-        unit['name'] = name
-        unit['x'] = x
-        unit['y'] = y
-        self.d['units'].append(unit)
-        return unit
+    def addProp(self, propType, name, x, y):
+        prop = {}
+        prop['id'] = self.incPropId()
+        prop['type'] = propType
+        prop['name'] = name
+        prop['x'] = x
+        prop['y'] = y
+        self.d['props'].append(prop)
+        return prop
 
     @saveHistory
-    def removeUnit(self, item):
-        self.d['units'].remove(item.unit)
+    def removeProp(self, item):
+        self.d['props'].remove(item.prop)
         self.mainWindow.graphicsView.scene.removeItem(item)
         self.mainWindow.graphicsView.selected = None
 
     @saveHistory
-    def moveUnit(self, item, x, y, **kwargs):
+    def moveProp(self, item, x, y, **kwargs):
         item.setPos(x, y)
-        item.unit['x'] = x
-        item.unit['y'] = y
+        item.prop['x'] = x
+        item.prop['y'] = y
 
     def undo(self):
         self.mainWindow.graphicsView.selected = None
@@ -201,14 +201,14 @@ class Layout(object):
 
     def show(self):
         self.mainWindow.graphicsView.clear()
-        for unit in self.d['units']:
-            name = unit['name']
-            type = unit['type']
-            x = unit['x']
-            y = unit['y']
+        for prop in self.d['props']:
+            name = prop['name']
+            type = prop['type']
+            x = prop['x']
+            y = prop['y']
             itemFactory = self.mainWindow.getItemFactory(type, name)
             item = itemFactory.createGraphicsItem(x, y)
-            item.unit = unit
+            item.prop = prop
             item.itemFactory = itemFactory
             self.mainWindow.graphicsView.scene.addItem(item)
 

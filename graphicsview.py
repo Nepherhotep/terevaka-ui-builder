@@ -66,7 +66,7 @@ class DesignerGraphicsView(QGraphicsView):
         drag.start(Qt.MoveAction)
 
     def addItem(self, itemFactory, x, y):
-        props = self.mainWindow.getCurrentLayout().addItem(self.mainWindow.itemFactory.type, self.mainWindow.itemFactory.name, x, y)
+        props = self.mainWindow.getCurrentLayout().addProp(self.mainWindow.itemFactory.type, self.mainWindow.itemFactory.name, x, y)
         item = itemFactory.createGraphicsItem(x, y, props)
         self.selected = item
         self.scene.addItem(item)
