@@ -242,20 +242,12 @@ class SpriteTool(Tool):
             setattr(self, key, value)
 
     def createGraphicsItem(self, x, y):
-        item = DraggablePixmapItem(self.pixmap)
+        item = QGraphicsPixmapItem(self.pixmap)
+        item.setFlag(QGraphicsItem.ItemIsMovable)
         item.setOffset(-self.offsetX, -self.offsetY)
         item.setPos(QPointF(x, y))
         return item
 
-
-class DraggablePixmapItem(QGraphicsPixmapItem):
-    def __init__(self, *args, **kwargs):
-        QGraphicsPixmapItem.__init__(self, *args, **kwargs)
-        self.setFlag(QGraphicsPixmapItem.ItemIsMovable)
-
-    def dragLeaveEvent(self, event):
-        print('event', event)
-        event.accept()
 
 def main():
     app = QApplication(sys.argv)
