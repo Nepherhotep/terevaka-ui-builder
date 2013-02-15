@@ -22,8 +22,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tool = None
         self.spritesDir = None
         self.spriteTools = {}
-        self.updateWindowTitle()
         self.setDirWithPath("./sprites")
+
+    def showEvent(self, event):
+        super(MainWindow, self).showEvent(event)
+        self.updateWindowTitle()
 
     def updateWindowTitle(self):
         size = self.graphicsView.geometry().size()
