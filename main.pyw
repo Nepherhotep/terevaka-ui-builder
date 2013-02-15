@@ -28,6 +28,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).showEvent(event)
         self.updateWindowTitle()
 
+    def resizeEvent(self, evt=None):
+        self.updateWindowTitle()
+
     def updateWindowTitle(self):
         size = self.graphicsView.geometry().size()
         self.setWindowTitle("Size %sx%s" %(size.width(), size.height()))
