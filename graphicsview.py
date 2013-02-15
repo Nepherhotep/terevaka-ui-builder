@@ -14,8 +14,23 @@ class DesignerGraphicsView(QGraphicsView):
         self.setCacheMode(QGraphicsView.CacheNone)
         self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QGraphicsView.AnchorViewCenter)
+        self.setAcceptDrops(True)
         self.selected = None
-        self.grabbed = None
+
+    def dragEnterEvent(self, event):
+        print('dragEnterEvent')
+        event.accept()
+
+    def dragLeaveEvent(self, event):
+        print('dragLeaveEvent')
+        event.accept()
+
+    def dragMoveEvent(self, event):
+        event.accept()
+
+    def dropEvent(self, event):
+        print('dropEvent')
+        event.accept()
 
     def clear(self):
         self.scene.clear()
