@@ -112,7 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.getCurrentLayout().removeProp(self.graphicsView.selected)
 
     def onItemSelected(self, item):
-        self.resourceLabel.setText(item.itemFactory.name)
+        self.resourceLabel.setText(item.name)
         self.posXSpinBox.setValue(item.prop['x'])
         self.posYSpinBox.setValue(item.prop['y'])
 
@@ -209,7 +209,6 @@ class Layout(object):
             itemFactory = self.mainWindow.getItemFactory(type, name)
             item = itemFactory.createGraphicsItem(x, y)
             item.prop = prop
-            item.itemFactory = itemFactory
             self.mainWindow.graphicsView.scene.addItem(item)
 
     def toDict(self):
@@ -227,14 +226,14 @@ class PixmapItemFactory(object):
             setattr(self, key, value)
 
     def createGraphicsItem(self, x, y, prop):
-        item = PixmapItem(self.pixmap, x, y, prop)
-        item.itemFactory = self
+        item = PixmapItem(self.name, self.pixmap, x, y, prop)
         return item
 
 
 class PixmapItem(QGraphicsPixmapItem):
-    def __init__(self, pixmap, x, y, prop):
+    def __init__(self, name, pixmap, x, y, prop):
         super(PixmapItem, self).__init__(pixmap)
+        self.name = name
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setPos(QPointF(x, y))
         self.offsetX = self.pixmap().width()/2
