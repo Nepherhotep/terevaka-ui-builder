@@ -157,15 +157,9 @@ class Layout(object):
         return newFunction
 
     @saveHistory
-    def addProp(self, propType, name, x, y):
-        prop = {}
+    def addProp(self, prop):
         prop['id'] = self.incPropId()
-        prop['type'] = propType
-        prop['name'] = name
-        prop['x'] = x
-        prop['y'] = y
         self.d['props'].append(prop)
-        return prop
 
     @saveHistory
     def removeProp(self, item):
@@ -207,8 +201,7 @@ class Layout(object):
             x = prop['x']
             y = prop['y']
             itemFactory = self.mainWindow.getItemFactory(type, name)
-            item = itemFactory.createGraphicsItem(x, y)
-            item.prop = prop
+            item = itemFactory.createGraphicsItem(x, y, prop)
             self.mainWindow.graphicsView.scene.addItem(item)
 
     def toDict(self):
@@ -225,17 +218,17 @@ class PixmapItemFactory(object):
         for key, value in params.items():
             setattr(self, key, value)
 
-    def createGraphicsItem(self, x, y, prop):
-        item = PixmapItem(self.name, self.pixmap, x, y, prop)
+    def createGraphicsItem(self, pos, prop):
+        item = PixmapItem(self.name, self.pixmap, pos, prop)
         return item
 
 
 class PixmapItem(QGraphicsPixmapItem):
-    def __init__(self, name, pixmap, x, y, prop):
+    def __init__(self, name, pixmap, pos, prop):
         super(PixmapItem, self).__init__(pixmap)
         self.name = name
         self.setFlag(QGraphicsItem.ItemIsMovable)
-        self.setPos(QPointF(x, y))
+        self.setPos(pos)
         self.offsetX = self.pixmap().width()/2
         self.offsetY = self.pixmap().height()/2
         self.setOffset(-self.offsetX, -self.offsetY)

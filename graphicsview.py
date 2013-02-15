@@ -34,7 +34,7 @@ class DesignerGraphicsView(QGraphicsView):
             self.grabbed = None
         else:
             pos = self.mapToScene(event.pos())
-            self.addItem(self.mainWindow.selectedItemFactory, pos.x(), pos.y())
+            self.addItem(self.mainWindow.selectedItemFactory, event.pos(), pos)
             self.mainWindow.onItemSelected(self.selected)
 
     def clear(self):
@@ -65,10 +65,17 @@ class DesignerGraphicsView(QGraphicsView):
         drag.setHotSpot(standardOffset + self.grabOffset)
         drag.start(Qt.MoveAction)
 
-    def addItem(self, itemFactory, x, y):
-        props = self.mainWindow.getCurrentLayout().addProp(self.mainWindow.selectedItemFactory.type,
-            self.mainWindow.selectedItemFactory.name, x, y)
-        item = itemFactory.createGraphicsItem(x, y, props)
+    def addItem(self, itemFactory, posMap, posScene):
+        prop = {}
+        prop['type'] = self.mainWindow.selectedItemFactory.type
+        prop['name'] = self.mainWindow.selectedItemFactory.name
+        height = self.geometry().size().height()
+        width = self.geometry().size().height()
+        prop['x'] = posMap.x()
+        prop['y'] = posMap.y()
+
+        self.mainWindow.getCurrentLayout().addProp(prop)
+        item = itemFactory.createGraphicsItem(posScene, prop)
         self.selected = item
         self.scene.addItem(item)
 
