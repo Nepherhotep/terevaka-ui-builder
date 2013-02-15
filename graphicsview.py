@@ -69,6 +69,8 @@ class DesignerGraphicsView(QGraphicsView):
         prop = {}
         prop['type'] = self.mainWindow.selectedItemFactory.type
         prop['name'] = self.mainWindow.selectedItemFactory.name
+        self.mainWindow.alignBottomRadio.setChecked(True)
+        self.mainWindow.alignLeftRadio.setChecked(True)
         self.mainWindow.updatePropPos(prop, posMap)
 
         self.mainWindow.getCurrentLayout().addProp(prop)
