@@ -23,7 +23,7 @@ class DesignerGraphicsView(QGraphicsView):
 
     def dragLeaveEvent(self, event):
         event.accept()
-        
+
     def dragMoveEvent(self, event):
         event.accept()
 
@@ -61,7 +61,7 @@ class DesignerGraphicsView(QGraphicsView):
         drag.setMimeData(mimeData)
         drag.setPixmap(item.tool.pixmap)
         drag.setHotSpot(QPoint(item.tool.offsetX, item.tool.offsetY))
-        dropAction = drag.start(Qt.MoveAction)
+        drag.start(Qt.MoveAction)
 
     def addUnit(self, tool, x, y):
         unit = self.mainWindow.getCurrentLayout().addUnit(self.mainWindow.tool.type, self.mainWindow.tool.name, x, y)
