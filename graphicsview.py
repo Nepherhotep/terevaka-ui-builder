@@ -60,7 +60,7 @@ class DesignerGraphicsView(QGraphicsView):
         drag = QDrag(self)
         drag.setMimeData(mimeData)
         drag.setPixmap(item.itemFactory.pixmap)
-        standardOffset = QPoint(item.itemFactory.offsetX, item.itemFactory.offsetY)
+        standardOffset = QPoint(item.offsetX, item.offsetY)
         self.grabOffset = mouseEvent.pos() - self.mapFromScene(item.pos())
         drag.setHotSpot(standardOffset + self.grabOffset)
         drag.start(Qt.MoveAction)
