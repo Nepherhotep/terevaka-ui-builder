@@ -155,9 +155,9 @@
         <widget class="QLineEdit" name="viewIdEdit">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>181</width>
+           <x>30</x>
+           <y>40</y>
+           <width>161</width>
            <height>22</height>
           </rect>
          </property>
@@ -175,20 +175,20 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>10</y>
-           <width>71</width>
+           <y>42</y>
+           <width>21</width>
            <height>16</height>
           </rect>
          </property>
          <property name="text">
-          <string>Sprite Id</string>
+          <string>ID</string>
          </property>
         </widget>
         <widget class="QFrame" name="frame_2">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>59</y>
+           <y>80</y>
            <width>181</width>
            <height>201</height>
           </rect>
@@ -412,7 +412,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>270</y>
+           <y>300</y>
            <width>181</width>
            <height>91</height>
           </rect>
@@ -528,6 +528,32 @@
            <string>Size</string>
           </property>
          </widget>
+        </widget>
+        <widget class="QLabel" name="label_9">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>31</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Res.</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_10">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>10</y>
+           <width>141</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
         </widget>
        </widget>
       </item>
