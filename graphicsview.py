@@ -29,19 +29,23 @@ class DesignerGraphicsView(QGraphicsView):
     def dropEvent(self, event):
         pos = self.mapToScene(event.pos())
         self.addUnit(self.mainWindow.tool, pos.x(), pos.y())
+        self.mainWindow.onItemSelected(self.selected)
 
     def clear(self):
         self.scene.clear()
         self.scene.invalidate()
 
     def mousePressEvent(self, mouseEvent):
+        pos = self.mapToScene(mouseEvent.pos())
+        items = self.scene.items(pos)
+        if items:
+            self.selected = items[0]
         if mouseEvent.button() == Qt.RightButton:
-            pos = self.mapToScene(mouseEvent.pos())
-            items = self.scene.items(pos)
             if items:
-                self.selected = items[0]
                 self.mainWindow.removeSelectedItem()
         else:
+            if items:
+                self.mainWindow.onItemSelected(self.selected)
             return super(DesignerGraphicsView, self).mousePressEvent(mouseEvent)
 
     def addUnit(self, tool, x, y):

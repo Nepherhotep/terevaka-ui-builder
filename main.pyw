@@ -111,7 +111,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.graphicsView.selected:
             self.getCurrentLayout().removeUnit(self.graphicsView.selected)
 
-
+    def onItemSelected(self, item):
+        self.resourceLabel.setText(item.tool.name)
 
 class Layout(object):
     HISTORY_LEN = 20
