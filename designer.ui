@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1233</width>
-    <height>562</height>
+    <width>1096</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -55,7 +55,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>391</height>
+           <height>355</height>
           </rect>
          </property>
          <attribute name="label">
@@ -81,7 +81,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>391</height>
+           <height>355</height>
           </rect>
          </property>
          <attribute name="label">
@@ -104,7 +104,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>391</height>
+           <height>355</height>
           </rect>
          </property>
          <attribute name="label">
@@ -152,7 +152,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLineEdit" name="viewIdEdit">
+        <widget class="QLineEdit" name="resourceIdEdit">
          <property name="geometry">
           <rect>
            <x>30</x>
@@ -199,7 +199,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <widget class="QDoubleSpinBox" name="posXSpinBox">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -209,10 +209,10 @@
            </rect>
           </property>
           <property name="decimals">
-           <number>1</number>
+           <number>2</number>
           </property>
          </widget>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="unitsXComboBox">
           <property name="geometry">
            <rect>
             <x>110</x>
@@ -245,7 +245,7 @@
            <string>X</string>
           </property>
          </widget>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <widget class="QDoubleSpinBox" name="posYSpinBox">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -255,7 +255,7 @@
            </rect>
           </property>
           <property name="decimals">
-           <number>1</number>
+           <number>2</number>
           </property>
          </widget>
          <widget class="QLabel" name="label_3">
@@ -271,7 +271,7 @@
            <string>Y</string>
           </property>
          </widget>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="unitsYComboBox">
           <property name="geometry">
            <rect>
             <x>110</x>
@@ -319,7 +319,7 @@
           <property name="title">
            <string>Horizontal</string>
           </property>
-          <widget class="QRadioButton" name="alignLeftButton">
+          <widget class="QRadioButton" name="alignLeftRadio">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -335,7 +335,7 @@
             <bool>true</bool>
            </property>
           </widget>
-          <widget class="QRadioButton" name="alignRightButton">
+          <widget class="QRadioButton" name="alignRightRadio">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -361,7 +361,7 @@
           <property name="title">
            <string>Vertical</string>
           </property>
-          <widget class="QRadioButton" name="alignBottomButton">
+          <widget class="QRadioButton" name="alignBottomRadio">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -377,7 +377,7 @@
             <bool>true</bool>
            </property>
           </widget>
-          <widget class="QRadioButton" name="alignTopButton">
+          <widget class="QRadioButton" name="alignTopRadio">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -423,7 +423,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+         <widget class="QDoubleSpinBox" name="sizeWidthSpinBox">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -433,10 +433,10 @@
            </rect>
           </property>
           <property name="decimals">
-           <number>1</number>
+           <number>2</number>
           </property>
          </widget>
-         <widget class="QComboBox" name="comboBox_3">
+         <widget class="QComboBox" name="unitsWidthComboBox">
           <property name="geometry">
            <rect>
             <x>110</x>
@@ -469,7 +469,7 @@
            <string>W</string>
           </property>
          </widget>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+         <widget class="QDoubleSpinBox" name="sizeHeightSpinBox">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -479,7 +479,7 @@
            </rect>
           </property>
           <property name="decimals">
-           <number>1</number>
+           <number>2</number>
           </property>
          </widget>
          <widget class="QLabel" name="label_7">
@@ -495,7 +495,7 @@
            <string>H</string>
           </property>
          </widget>
-         <widget class="QComboBox" name="comboBox_4">
+         <widget class="QComboBox" name="unitsHeightComboBox">
           <property name="geometry">
            <rect>
             <x>110</x>
@@ -542,7 +542,7 @@
           <string>Res.</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_10">
+        <widget class="QLabel" name="resourceLabel">
          <property name="geometry">
           <rect>
            <x>50</x>
@@ -566,7 +566,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1233</width>
+     <width>1096</width>
      <height>22</height>
     </rect>
    </property>
