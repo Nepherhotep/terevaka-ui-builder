@@ -212,20 +212,6 @@ class Layout(object):
             item.itemFactory = itemFactory
             self.mainWindow.graphicsView.scene.addItem(item)
 
-    @saveHistory
-    def setMsgOnStart(self, msg):
-        if msg:
-            self.d['start_msg'] = msg
-        else:
-            self.d.pop('start_msg', None)
-
-    @saveHistory
-    def setTimeLimit(self, limit):
-        if limit:
-            self.d['time_limit'] = limit
-        else:
-            self.d.pop('time_limit', None)
-
     def toDict(self):
         return self.d
 
