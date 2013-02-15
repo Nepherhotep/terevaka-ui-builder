@@ -19,9 +19,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
         self.connectSlots()
         self.createEmptyLayout()
-        self.tool = None
-        self.spritesDir = None
-        self.spriteTools = {}
+        self.itemFactory = None
+        self.pixmapsDir = None
+        self.pixmapItemFactories = {}
         self.setDirWithPath("./sprites")
 
     def showEvent(self, event):
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def connectSlots(self):
         self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.setDir)
         def slot(item):
-            self.tool = self.getSpriteTool(item.name)
+            self.itemFactory = self.getPixmapItemFactory(item.name)
         self.spritesListWidget.itemPressed.connect(slot)
         self.connect(self.actionUndo, SIGNAL('triggered()'), self.undo)
         self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
@@ -61,28 +61,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setDirWithPath(dirPath)
 
     def setDirWithPath(self, dirPath):
-        self.spritesDir = unicode(dirPath)
-        listDir = map(lambda x: os.path.join(self.spritesDir, x), self.filteredListDir(dirPath))
+        self.pixmapsDir = unicode(dirPath)
+        listDir = map(lambda x: os.path.join(self.pixmapsDir, x), self.filteredListDir(dirPath))
         self.createPreviews(self.spritesListWidget, listDir, 120)
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
         return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()[-4:] in ('.png', '.jpg')))]
         
-    def getSpriteTool(self, uniqueName):
-        path = os.path.join(self.spritesDir, uniqueName)
-        if path in self.spriteTools:
-            return self.spriteTools[path]
+    def getPixmapItemFactory(self, uniqueName):
+        path = os.path.join(self.pixmapsDir, uniqueName)
+        if path in self.pixmapItemFactories:
+            return self.pixmapItemFactories[path]
         else:
-            tool = SpriteTool(uniqueName, path)
-            self.spriteTools[path] = tool
-            return tool
+            itemFactory = PixmapItemFactory(uniqueName, path)
+            self.pixmapItemFactories[path] = itemFactory
+            return itemFactory
 
-    def getTool(self, toolType, name):
-        if toolType == 'sprite':
-            return self.getSpriteTool(name)
+    def getItemFactory(self, itemFactoryType, name):
+        if itemFactoryType == 'pixmap':
+            return self.getPixmapItemFactory(name)
         else:
-            raise Exception, "Unsupported tool type %s" %toolType
+            raise Exception, "Unsupported itemFactoryTime type %s" %itemFactoryType
 
     def getCurrentLayout(self):
         return self.layout
@@ -112,7 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.getCurrentLayout().removeUnit(self.graphicsView.selected)
 
     def onItemSelected(self, item):
-        self.resourceLabel.setText(item.tool.name)
+        self.resourceLabel.setText(item.itemFactory.name)
         self.posXSpinBox.setValue(item.unit['x'])
         self.posYSpinBox.setValue(item.unit['y'])
 
@@ -157,11 +157,11 @@ class Layout(object):
         return newFunction
 
     @saveHistory
-    def addUnit(self, unittype, unitname, x, y):
+    def addUnit(self, unitType, name, x, y):
         unit = {}
         unit['id'] = self.incUnitId()
-        unit['type'] = unittype
-        unit['name'] = unitname        
+        unit['type'] = unitType
+        unit['name'] = name
         unit['x'] = x
         unit['y'] = y
         self.d['units'].append(unit)
@@ -206,10 +206,10 @@ class Layout(object):
             type = unit['type']
             x = unit['x']
             y = unit['y']
-            tool = self.mainWindow.getTool(type, name)
-            item = tool.createGraphicsItem(x, y)
+            itemFactory = self.mainWindow.getItemFactory(type, name)
+            item = itemFactory.createGraphicsItem(x, y)
             item.unit = unit
-            item.tool = tool
+            item.itemFactory = itemFactory
             self.mainWindow.graphicsView.scene.addItem(item)
 
     @saveHistory
@@ -230,19 +230,10 @@ class Layout(object):
         return self.d
 
 
-class Tool(object):
-    def __init__(self, toolType, name):
-        self.name = name
-        self.type = toolType
-
-    def createGraphicsItem(self, x, y):
-        raise NotImplementedError, "Subclass 'Tool' class and override this method"
-
-
-class SpriteTool(Tool):
+class PixmapItemFactory(object):
     def __init__(self, name, path, **params):
         self.name = name
-        self.type = 'sprite'
+        self.type = 'pixmap'
         self.path = path
         picture = Image.open(path)
         self.pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
@@ -251,12 +242,20 @@ class SpriteTool(Tool):
         for key, value in params.items():
             setattr(self, key, value)
 
-    def createGraphicsItem(self, x, y):
+    def createGraphicsItem(self, x, y, props):
         item = QGraphicsPixmapItem(self.pixmap)
-        item.setFlag(QGraphicsItem.ItemIsMovable)
-        item.setOffset(-self.offsetX, -self.offsetY)
-        item.setPos(QPointF(x, y))
+        item.offsetX = self.offsetX
+        item.offsetY = self.offsetY
         return item
+
+
+class PixmapItem(QGraphicsPixmapItem):
+    def __init__(self, x, y, props):
+        super(PixmapItem, self).__init__()
+        self.setFlag(QGraphicsItem.ItemIsMovable)
+        self.setOffset(-self.offsetX, -self.offsetY)
+        self.setPos(QPointF(x, y))
+        self.props = props
 
 
 def main():

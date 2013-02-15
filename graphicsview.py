@@ -34,7 +34,7 @@ class DesignerGraphicsView(QGraphicsView):
             self.grabbed = None
         else:
             pos = self.mapToScene(event.pos())
-            self.addUnit(self.mainWindow.tool, pos.x(), pos.y())
+            self.addItem(self.mainWindow.itemFactory, pos.x(), pos.y())
             self.mainWindow.onItemSelected(self.selected)
 
     def clear(self):
@@ -59,18 +59,16 @@ class DesignerGraphicsView(QGraphicsView):
         mimeData = QMimeData()
         drag = QDrag(self)
         drag.setMimeData(mimeData)
-        drag.setPixmap(item.tool.pixmap)
-        standardOffset = QPoint(item.tool.offsetX, item.tool.offsetY)
+        drag.setPixmap(item.itemFactory.pixmap)
+        standardOffset = QPoint(item.itemFactory.offsetX, item.itemFactory.offsetY)
         self.grabOffset = mouseEvent.pos() - self.mapFromScene(item.pos())
         drag.setHotSpot(standardOffset + self.grabOffset)
         drag.start(Qt.MoveAction)
 
-    def addUnit(self, tool, x, y):
-        unit = self.mainWindow.getCurrentLayout().addUnit(self.mainWindow.tool.type, self.mainWindow.tool.name, x, y)
-        item = tool.createGraphicsItem(x, y)
+    def addItem(self, itemFactory, x, y):
+        props = self.mainWindow.getCurrentLayout().addItem(self.mainWindow.itemFactory.type, self.mainWindow.itemFactory.name, x, y)
+        item = itemFactory.createGraphicsItem(x, y, props)
         self.selected = item
-        item.unit = unit
-        item.tool = tool
         self.scene.addItem(item)
 
 
