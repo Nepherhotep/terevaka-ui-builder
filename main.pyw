@@ -237,25 +237,24 @@ class PixmapItemFactory(object):
         self.path = path
         picture = Image.open(path)
         self.pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
-        self.offsetX = self.pixmap.width()/2
-        self.offsetY = self.pixmap.height()/2
         for key, value in params.items():
             setattr(self, key, value)
 
-    def createGraphicsItem(self, x, y, props):
-        item = QGraphicsPixmapItem(self.pixmap)
-        item.offsetX = self.offsetX
-        item.offsetY = self.offsetY
+    def createGraphicsItem(self, x, y, prop):
+        item = PixmapItem(self.pixmap, x, y, prop)
+        item.itemFactory = self
         return item
 
 
 class PixmapItem(QGraphicsPixmapItem):
-    def __init__(self, x, y, props):
-        super(PixmapItem, self).__init__()
+    def __init__(self, pixmap, x, y, prop):
+        super(PixmapItem, self).__init__(pixmap)
         self.setFlag(QGraphicsItem.ItemIsMovable)
-        self.setOffset(-self.offsetX, -self.offsetY)
         self.setPos(QPointF(x, y))
-        self.props = props
+        self.offsetX = self.pixmap().width()/2
+        self.offsetY = self.pixmap().height()/2
+        self.setOffset(-self.offsetX, -self.offsetY)
+        self.prop = prop
 
 
 def main():
