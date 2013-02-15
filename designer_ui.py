@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Fri Feb 15 14:27:14 2013
+# Created: Fri Feb 15 22:47:54 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -100,6 +100,7 @@ class Ui_MainWindow(object):
         self.posXSpinBox = QtGui.QDoubleSpinBox(self.frame_2)
         self.posXSpinBox.setGeometry(QtCore.QRect(20, 20, 81, 25))
         self.posXSpinBox.setDecimals(2)
+        self.posXSpinBox.setMaximum(99999.0)
         self.posXSpinBox.setObjectName(_fromUtf8("posXSpinBox"))
         self.unitsXComboBox = QtGui.QComboBox(self.frame_2)
         self.unitsXComboBox.setGeometry(QtCore.QRect(110, 20, 61, 26))
@@ -112,6 +113,7 @@ class Ui_MainWindow(object):
         self.posYSpinBox = QtGui.QDoubleSpinBox(self.frame_2)
         self.posYSpinBox.setGeometry(QtCore.QRect(20, 50, 81, 25))
         self.posYSpinBox.setDecimals(2)
+        self.posYSpinBox.setMaximum(99999.99)
         self.posYSpinBox.setObjectName(_fromUtf8("posYSpinBox"))
         self.label_3 = QtGui.QLabel(self.frame_2)
         self.label_3.setGeometry(QtCore.QRect(7, 52, 16, 21))

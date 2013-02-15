@@ -211,6 +211,9 @@
           <property name="decimals">
            <number>2</number>
           </property>
+          <property name="maximum">
+           <double>99999.000000000000000</double>
+          </property>
          </widget>
          <widget class="QComboBox" name="unitsXComboBox">
           <property name="geometry">
@@ -256,6 +259,9 @@
           </property>
           <property name="decimals">
            <number>2</number>
+          </property>
+          <property name="maximum">
+           <double>99999.990000000005239</double>
           </property>
          </widget>
          <widget class="QLabel" name="label_3">
