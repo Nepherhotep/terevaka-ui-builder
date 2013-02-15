@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Fri Feb 15 11:13:54 2013
+# Created: Fri Feb 15 14:27:14 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1096, 526)
+        MainWindow.resize(1096, 525)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.toolBox.setFrameShape(QtGui.QFrame.NoFrame)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.sprites = QtGui.QWidget()
-        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 355))
+        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 354))
         self.sprites.setObjectName(_fromUtf8("sprites"))
         self.spritesListWidget = QtGui.QListWidget(self.sprites)
         self.spritesListWidget.setGeometry(QtCore.QRect(10, 0, 181, 401))
@@ -58,14 +58,14 @@ class Ui_MainWindow(object):
         self.spritesListWidget.setObjectName(_fromUtf8("spritesListWidget"))
         self.toolBox.addItem(self.sprites, _fromUtf8(""))
         self.objects = QtGui.QWidget()
-        self.objects.setGeometry(QtCore.QRect(0, 0, 200, 355))
+        self.objects.setGeometry(QtCore.QRect(0, 0, 200, 354))
         self.objects.setObjectName(_fromUtf8("objects"))
         self.objectsListWidget = QtGui.QListWidget(self.objects)
         self.objectsListWidget.setGeometry(QtCore.QRect(10, 0, 181, 401))
         self.objectsListWidget.setObjectName(_fromUtf8("objectsListWidget"))
         self.toolBox.addItem(self.objects, _fromUtf8(""))
         self.layout = QtGui.QWidget()
-        self.layout.setGeometry(QtCore.QRect(0, 0, 200, 355))
+        self.layout.setGeometry(QtCore.QRect(0, 0, 200, 354))
         self.layout.setObjectName(_fromUtf8("layout"))
         self.layoutTreeWidget = QtGui.QTreeWidget(self.layout)
         self.layoutTreeWidget.setGeometry(QtCore.QRect(10, 0, 181, 381))
