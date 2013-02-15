@@ -96,7 +96,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     label = filename[:17] + "..."
                 item = QListWidgetItem(label, listWidget)
                 item.setIcon(icon)
-                item.name = label
+                item.name = filename
                 item.path = path
             except Exception, e:
                 print(e, path)
