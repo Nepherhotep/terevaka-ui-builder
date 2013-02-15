@@ -116,6 +116,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.posXSpinBox.setValue(item.prop['x'])
         self.posYSpinBox.setValue(item.prop['y'])
 
+    def updatePropPos(self, prop, posMap):
+        height = self.geometry().size().height()
+        width = self.geometry().size().height()
+        if self.alignLeftRadio.isChecked():
+            prop['align_left'] = True
+            prop['x'] = posMap.x()
+        else:
+            prop['align_left'] = False
+            prop['x'] = width - posMap.x()
+        if self.alignBottomRadio.isChecked():
+            prop['align_bottom'] = True
+            prop['y'] = height - posMap.y()
+        else:
+            prop['align_bottom'] = False
+            prop['y'] = posMap.y()
+
 
 class Layout(object):
     HISTORY_LEN = 20

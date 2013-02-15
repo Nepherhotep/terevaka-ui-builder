@@ -69,10 +69,7 @@ class DesignerGraphicsView(QGraphicsView):
         prop = {}
         prop['type'] = self.mainWindow.selectedItemFactory.type
         prop['name'] = self.mainWindow.selectedItemFactory.name
-        height = self.geometry().size().height()
-        width = self.geometry().size().height()
-        prop['x'] = posMap.x()
-        prop['y'] = posMap.y()
+        self.mainWindow.updatePropPos(prop, posMap)
 
         self.mainWindow.getCurrentLayout().addProp(prop)
         item = itemFactory.createGraphicsItem(posScene, prop)
