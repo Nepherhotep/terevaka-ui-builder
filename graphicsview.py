@@ -18,18 +18,15 @@ class DesignerGraphicsView(QGraphicsView):
         self.selected = None
 
     def dragEnterEvent(self, event):
-        print('dragEnterEvent')
         event.accept()
 
     def dragLeaveEvent(self, event):
-        print('dragLeaveEvent')
         event.accept()
 
     def dragMoveEvent(self, event):
         event.accept()
 
     def dropEvent(self, event):
-        print('dropEvent')
         pos = self.mapToScene(event.pos())
         self.addUnit(self.mainWindow.tool, pos.x(), pos.y())
 
@@ -44,6 +41,8 @@ class DesignerGraphicsView(QGraphicsView):
             if items:
                 self.selected = items[0]
                 self.mainWindow.removeSelectedItem()
+        else:
+            return super(DesignerGraphicsView, self).mousePressEvent(mouseEvent)
 
     def addUnit(self, tool, x, y):
         unit = self.mainWindow.getCurrentLayout().addUnit(self.mainWindow.tool.type, self.mainWindow.tool.name, x, y)
