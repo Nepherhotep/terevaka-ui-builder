@@ -237,6 +237,16 @@ class PixmapItem(QGraphicsPixmapItem):
         self.setOffset(-self.offsetX, -self.offsetY)
         self.prop = prop
 
+    def updatePos(self, mapSize, posMap):
+        if self.prop['align_left']:
+            self.prop['x'] = posMap.x()
+        else:
+            self.prop['x'] = mapSize.width() - posMap.x()
+        if self.prop['align_bottom']:
+            self.prop['y'] = mapSize.height() - posMap.y()
+        else:
+            self.prop['align_bottom'] = False
+            self.prop['y'] = posMap.y()
 
 def main():
     app = QApplication(sys.argv)

@@ -32,7 +32,7 @@ class DesignerGraphicsView(QGraphicsView):
         if self.grabbed:
             posMap = event.pos()-self.grabOffset
             self.grabbed.setPos(self.mapToScene(posMap))
-            self.updatePropPos(self.grabbed.prop, posMap)
+            self.grabbed.updatePos(self.geometry(), posMap)
             self.mainWindow.updateInfoBar(self.grabbed)
             self.grabbed = None
         else:
@@ -72,31 +72,19 @@ class DesignerGraphicsView(QGraphicsView):
         prop = {}
         prop['type'] = self.mainWindow.selectedItemFactory.type
         prop['name'] = self.mainWindow.selectedItemFactory.name
+
         #reset controls to default
         self.mainWindow.alignBottomRadio.setChecked(True)
         self.mainWindow.alignLeftRadio.setChecked(True)
+        prop['align_left'] = True
+        prop['align_bottom'] = True
 
         #update pos according to selected controls
-        self.updatePropPos(prop, posMap)
         self.mainWindow.getCurrentLayout().addProp(prop)
         item = itemFactory.createGraphicsItem(posScene, prop)
+        item.updatePos(self.geometry(), posMap)
         self.selected = item
         self.scene.addItem(item)
 
-    def updatePropPos(self, prop, posMap):
-        height = self.geometry().size().height()
-        width = self.geometry().size().width()
-        if self.mainWindow.alignLeftRadio.isChecked():
-            prop['align_left'] = True
-            prop['x'] = posMap.x()
-        else:
-            prop['align_left'] = False
-            prop['x'] = width - posMap.x()
-        if self.mainWindow.alignBottomRadio.isChecked():
-            prop['align_bottom'] = True
-            prop['y'] = height - posMap.y()
-        else:
-            prop['align_bottom'] = False
-            prop['y'] = posMap.y()
 
 
