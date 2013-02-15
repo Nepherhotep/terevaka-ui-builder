@@ -39,7 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.setDir)
         def slot(item):
             self.tool = self.getSpriteTool(item.name)
-        self.spritesListWidget.itemClicked.connect(slot)
+        self.spritesListWidget.itemPressed.connect(slot)
         self.connect(self.actionUndo, SIGNAL('triggered()'), self.undo)
         self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
 

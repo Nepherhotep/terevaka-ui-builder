@@ -30,7 +30,8 @@ class DesignerGraphicsView(QGraphicsView):
 
     def dropEvent(self, event):
         print('dropEvent')
-        event.accept()
+        pos = self.mapToScene(event.pos())
+        self.addUnit(self.mainWindow.tool, pos.x(), pos.y())
 
     def clear(self):
         self.scene.clear()
