@@ -113,6 +113,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def onItemSelected(self, item):
         self.resourceLabel.setText(item.tool.name)
+        self.posXSpinBox.setValue(item.unit['x'])
+        self.posYSpinBox.setValue(item.unit['y'])
+
 
 class Layout(object):
     HISTORY_LEN = 20
