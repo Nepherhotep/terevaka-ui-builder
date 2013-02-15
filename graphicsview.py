@@ -34,7 +34,7 @@ class DesignerGraphicsView(QGraphicsView):
             self.grabbed = None
         else:
             pos = self.mapToScene(event.pos())
-            self.addItem(self.mainWindow.itemFactory, pos.x(), pos.y())
+            self.addItem(self.mainWindow.selectedItemFactory, pos.x(), pos.y())
             self.mainWindow.onItemSelected(self.selected)
 
     def clear(self):
@@ -66,7 +66,8 @@ class DesignerGraphicsView(QGraphicsView):
         drag.start(Qt.MoveAction)
 
     def addItem(self, itemFactory, x, y):
-        props = self.mainWindow.getCurrentLayout().addProp(self.mainWindow.itemFactory.type, self.mainWindow.itemFactory.name, x, y)
+        props = self.mainWindow.getCurrentLayout().addProp(self.mainWindow.selectedItemFactory.type,
+            self.mainWindow.selectedItemFactory.name, x, y)
         item = itemFactory.createGraphicsItem(x, y, props)
         self.selected = item
         self.scene.addItem(item)

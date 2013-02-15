@@ -19,7 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
         self.connectSlots()
         self.createEmptyLayout()
-        self.itemFactory = None
+        self.selectedItemFactory = None
         self.pixmapsDir = None
         self.pixmapItemFactories = {}
         self.setDirWithPath("./sprites")
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def connectSlots(self):
         self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.setDir)
         def slot(item):
-            self.itemFactory = self.getPixmapItemFactory(item.name)
+            self.selectedItemFactory = self.getPixmapItemFactory(item.name)
         self.spritesListWidget.itemPressed.connect(slot)
         self.connect(self.actionUndo, SIGNAL('triggered()'), self.undo)
         self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
