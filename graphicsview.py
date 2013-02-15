@@ -30,7 +30,7 @@ class DesignerGraphicsView(QGraphicsView):
     def dropEvent(self, event):
         event.accept()
         if self.grabbed:
-            self.grabbed.setPos(self.mapToScene(event.pos()))
+            self.grabbed.setPos(self.mapToScene(event.pos()-self.grabOffset))
             self.grabbed = None
         else:
             pos = self.mapToScene(event.pos())
@@ -53,14 +53,16 @@ class DesignerGraphicsView(QGraphicsView):
             if items:
                 self.grabbed = self.selected
                 self.mainWindow.onItemSelected(self.selected)
-                self.startDrag(self.grabbed)
+                self.startDrag(mouseEvent, self.grabbed)
 
-    def startDrag(self, item):
+    def startDrag(self, mouseEvent, item):
         mimeData = QMimeData()
         drag = QDrag(self)
         drag.setMimeData(mimeData)
         drag.setPixmap(item.tool.pixmap)
-        drag.setHotSpot(QPoint(item.tool.offsetX, item.tool.offsetY))
+        standardOffset = QPoint(item.tool.offsetX, item.tool.offsetY)
+        self.grabOffset = mouseEvent.pos() - self.mapFromScene(item.pos())
+        drag.setHotSpot(standardOffset + self.grabOffset)
         drag.start(Qt.MoveAction)
 
     def addUnit(self, tool, x, y):
