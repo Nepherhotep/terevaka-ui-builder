@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os, sys
+import functools
 from copy import deepcopy
 
 from PyQt4.QtCore import *
@@ -57,7 +58,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
         self.alignBottomRadio.toggled.connect(self.onAlignBottomRadioToggled)
         self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
-        self.posXSpinBox.valueChanged.connect(self.onPosXSpinBoxChanged)
+        self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
+        self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
 
 
     def undo(self):
@@ -140,13 +142,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print('onAlignLeftRadioToggled')
 
     @ifItemSelected
-    def onPosXSpinBoxChanged(self, selectedItem, event):
+    def onPosXSpinBoxChanged(self, selectedItem):
         if self.posXSpinBox.isActiveWindow():
             print('onPoxXSpinBox changed')
-            print(type(event), event)
 
     @ifItemSelected
-    def onPosYSpinBox(self, selectedItem, event):
+    def onPosYSpinBoxChanged(self, selectedItem):
         print('onPoxYSpinBox changed')
 
 
