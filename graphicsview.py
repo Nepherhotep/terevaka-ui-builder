@@ -30,7 +30,7 @@ class DesignerGraphicsView(QGraphicsView):
     def onDragComplete(self, event):
         posMap = event.pos() - self.grabOffset
         self.grabbed.setPos(self.mapToScene(posMap))
-        self.grabbed.updatePos(self.geometry(), posMap)
+        self.mainWindow.getCurrentLayout().moveProp(self.grabbed, self.geometry(), posMap)
         self.mainWindow.updateInfoBar(self.grabbed)
 
     def dropEvent(self, event):
@@ -85,7 +85,7 @@ class DesignerGraphicsView(QGraphicsView):
         #update pos according to selected controls
         item = itemFactory.createGraphicsItem(posScene, prop)
         item.updatePos(self.geometry(), posMap)
-        self.mainWindow.getCurrentLayout().addProp(prop)
+        self.mainWindow.getCurrentLayout().addProp(item)
         self.selected = item
         self.scene.addItem(item)
 

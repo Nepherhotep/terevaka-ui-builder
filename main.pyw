@@ -201,18 +201,17 @@ class Layout(object):
         return newFunction
 
     @saveHistory
-    def addProp(self, prop):
-        prop['id'] = self.incPropId()
-        self.d['props'].append(prop)
+    def addProp(self, item):
+        item.prop['id'] = self.incPropId()
+        self.d['props'].append(item.prop)
 
     @saveHistory
     def removeProp(self, item):
         self.d['props'].remove(item.prop)
 
     @saveHistory
-    def moveProp(self, prop, x, y):
-        prop['x'] = x
-        prop['y'] = y
+    def moveProp(self, item, graphicsViewGeometry, posMap):
+        item.updatePos(graphicsViewGeometry, posMap)
 
     @saveHistory
     def changeLeftAlign(self, prop):
