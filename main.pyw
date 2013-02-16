@@ -134,12 +134,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):
-        print('onAlignBottomRadioChecked')
-        print(event)
+        selectedItem.prop['align_bottom'] = event
+        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
+        selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onAlignLeftRadioToggled(self, selectedItem, event):
-        print('onAlignLeftRadioToggled')
+        selectedItem.prop['align_left'] = event
+        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
+        selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onPosXSpinBoxChanged(self, selectedItem):
