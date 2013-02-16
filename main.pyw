@@ -55,6 +55,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spritesListWidget.itemPressed.connect(slot)
         self.connect(self.actionUndo, SIGNAL('triggered()'), self.undo)
         self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
+        self.alignBottomRadio.toggled.connect(self.onAlignBottomRadioToggled)
+        self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
+        self.posXSpinBox.valueChanged.connect(self.onPosXSpinBoxChanged)
+
 
     def undo(self):
         self.getCurrentLayout().undo()
@@ -127,8 +131,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.posYSpinBox.setValue(item.prop['y'])
 
     @ifItemSelected
-    def onAlignBottomRadioChecked(self, selectedItem):
+    def onAlignBottomRadioToggled(self, selectedItem, event):
         print('onAlignBottomRadioChecked')
+        print(event)
+
+    @ifItemSelected
+    def onAlignLeftRadioToggled(self, selectedItem, event):
+        print('onAlignLeftRadioToggled')
+
+    @ifItemSelected
+    def onPosXSpinBoxChanged(self, selectedItem, event):
+        if self.posXSpinBox.isActiveWindow():
+            print('onPoxXSpinBox changed')
+            print(type(event), event)
+
+    @ifItemSelected
+    def onPosYSpinBox(self, selectedItem, event):
+        print('onPoxYSpinBox changed')
 
 
 
@@ -221,6 +240,7 @@ class Layout(object):
 
     def toDict(self):
         return self.d
+
 
 
 class PixmapItemFactory(object):
