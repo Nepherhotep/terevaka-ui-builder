@@ -2,6 +2,7 @@
 import os, sys
 import functools
 from copy import deepcopy
+from pprint import pprint
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -60,7 +61,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
-
 
     def undo(self):
         self.getCurrentLayout().undo()
@@ -123,6 +123,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @ifItemSelected
     def removeSelectedItem(self, selectedItem):
         self.getCurrentLayout().removeProp(selectedItem)
+        self.graphicsView.scene.removeItem(selectedItem)
+        self.graphicsView.selected = None
 
     def onItemSelected(self, item):
         self.updateInfoBar(item)
@@ -131,6 +133,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resourceLabel.setText(item.name)
         self.posXSpinBox.setValue(item.prop['x'])
         self.posYSpinBox.setValue(item.prop['y'])
+        self.alignLeftRadio.setChecked(item.prop['align_left'])
+        self.alignBottomRadio.setChecked(item.prop['align_bottom'])
 
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):
@@ -204,14 +208,15 @@ class Layout(object):
     @saveHistory
     def removeProp(self, item):
         self.d['props'].remove(item.prop)
-        self.mainWindow.graphicsView.scene.removeItem(item)
-        self.mainWindow.graphicsView.selected = None
 
     @saveHistory
-    def moveProp(self, item, x, y, **kwargs):
-        item.setPos(x, y)
-        item.prop['x'] = x
-        item.prop['y'] = y
+    def moveProp(self, prop, x, y):
+        prop['x'] = x
+        prop['y'] = y
+
+    @saveHistory
+    def changeLeftAlign(self, prop):
+        pass
 
     def undo(self):
         self.mainWindow.graphicsView.selected = None
@@ -238,15 +243,24 @@ class Layout(object):
         for prop in self.d['props']:
             name = prop['name']
             type = prop['type']
-            x = prop['x']
-            y = prop['y']
+            size = self.mainWindow.graphicsView.geometry().size()
+            alignedX = prop['x']
+            alignedY = prop['y']
+            if prop['align_left']:
+                x = alignedX
+            else:
+                x = size.width() - alignedX
+            if prop['align_bottom']:
+                y = size.height() - alignedY
+            else:
+                y = alignedY
             itemFactory = self.mainWindow.getItemFactory(type, name)
-            item = itemFactory.createGraphicsItem(x, y, prop)
+            posScene = self.mainWindow.graphicsView.mapToScene(QPoint(x, y))
+            item = itemFactory.createGraphicsItem(posScene, prop)
             self.mainWindow.graphicsView.scene.addItem(item)
 
     def toDict(self):
         return self.d
-
 
 
 class PixmapItemFactory(object):
@@ -259,8 +273,8 @@ class PixmapItemFactory(object):
         for key, value in params.items():
             setattr(self, key, value)
 
-    def createGraphicsItem(self, pos, prop):
-        item = PixmapItem(self.name, self.pixmap, pos, prop)
+    def createGraphicsItem(self, posScene, prop):
+        item = PixmapItem(self.name, self.pixmap, posScene, prop)
         return item
 
 
