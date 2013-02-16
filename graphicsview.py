@@ -82,9 +82,10 @@ class DesignerGraphicsView(QGraphicsView):
         prop['align_left'] = True
         prop['align_bottom'] = True
 
-        #update pos according to selected controls
         item = itemFactory.createGraphicsItem(posScene, prop)
+        #update pos according to selected controls
         item.updatePos(self.geometry(), posMap)
+        #save prop in layout
         self.mainWindow.getCurrentLayout().addProp(item)
         self.selected = item
         self.scene.addItem(item)

@@ -62,6 +62,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
 
+    def deselect(self):
+        self.graphicsView.selected = None
+        self.posXSpinBox.setValue(0)
+        self.posYSpinBox.setValue(0)
+        self.alignLeftRadio.setChecked(True)
+        self.alignBottomRadio.setChecked(True)
+        self.resourceIdEdit.setText('')
+        self.resourceLabel.setText('')
+
     def undo(self):
         self.getCurrentLayout().undo()
 
@@ -124,7 +133,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def removeSelectedItem(self, selectedItem):
         self.getCurrentLayout().removeProp(selectedItem)
         self.graphicsView.scene.removeItem(selectedItem)
-        self.graphicsView.selected = None
+        self.deselect()
 
     def onItemSelected(self, item):
         self.updateInfoBar(item)
@@ -141,6 +150,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         selectedItem.prop['align_bottom'] = event
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
         selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.getCurrentLayout().changePropAlignBottom(selectedItem, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
@@ -148,6 +158,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         selectedItem.prop['align_left'] = event
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
         selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.getCurrentLayout().changePropAlignLeft(selectedItem, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
@@ -214,11 +225,15 @@ class Layout(object):
         item.updatePos(graphicsViewGeometry, posMap)
 
     @saveHistory
-    def changeLeftAlign(self, prop):
-        pass
+    def changePropAlignLeft(self, item, value):
+        item.prop['align_left'] = value
+
+    @saveHistory
+    def changePropAlignBottom(self, item, value):
+        item.prop['align_bottom'] = value
 
     def undo(self):
-        self.mainWindow.graphicsView.selected = None
+        self.mainWindow.deselect()
         if self.current+1 >= len(self.history):
             print("There are no further actions")
         else:
@@ -228,7 +243,7 @@ class Layout(object):
             self.mainWindow.setWindowModified(True)
 
     def redo(self):
-        self.mainWindow.graphicsView.selected = None
+        self.mainWindow.deselect()
         if self.current > 0:
             self.current -= 1
             self.d = deepcopy(self.history[self.current])
