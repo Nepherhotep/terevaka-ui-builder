@@ -142,23 +142,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resourceLabel.setText(item.name)
         self.posXSpinBox.setValue(item.prop['x'])
         self.posYSpinBox.setValue(item.prop['y'])
-        self.alignLeftRadio.setChecked(item.prop['align_left'])
-        self.alignBottomRadio.setChecked(item.prop['align_bottom'])
+        if item.prop['align_left']:
+            self.alignLeftRadio.setChecked(True)
+        else:
+            self.alignRightRadio.setChecked(True)
+        if item.prop['align_bottom']:
+            self.alignBottomRadio.setChecked(True)
+        else:
+            self.alignTopRadio.setChecked(True)
 
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):
-        selectedItem.prop['align_bottom'] = event
+        self.getCurrentLayout().changePropAlignBottom(selectedItem, event)
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
         selectedItem.updatePos(self.graphicsView.size(), mapPos)
-        self.getCurrentLayout().changePropAlignBottom(selectedItem, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onAlignLeftRadioToggled(self, selectedItem, event):
-        selectedItem.prop['align_left'] = event
+        self.getCurrentLayout().changePropAlignLeft(selectedItem, event)
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
         selectedItem.updatePos(self.graphicsView.size(), mapPos)
-        self.getCurrentLayout().changePropAlignLeft(selectedItem, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
