@@ -39,6 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def resizeEvent(self, evt=None):
         self.updateWindowTitle()
+        self.getCurrentLayout().show()
 
     def updateWindowTitle(self):
         size = self.graphicsView.geometry().size()
