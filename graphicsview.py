@@ -27,13 +27,16 @@ class DesignerGraphicsView(QGraphicsView):
     def dragMoveEvent(self, event):
         event.accept()
 
+    def onDragComplete(self, event):
+        posMap = event.pos() - self.grabOffset
+        self.grabbed.setPos(self.mapToScene(posMap))
+        self.grabbed.updatePos(self.geometry(), posMap)
+        self.mainWindow.updateInfoBar(self.grabbed)
+
     def dropEvent(self, event):
         event.accept()
         if self.grabbed:
-            posMap = event.pos()-self.grabOffset
-            self.grabbed.setPos(self.mapToScene(posMap))
-            self.grabbed.updatePos(self.geometry(), posMap)
-            self.mainWindow.updateInfoBar(self.grabbed)
+            self.onDragComplete(event)
             self.grabbed = None
         else:
             pos = self.mapToScene(event.pos())

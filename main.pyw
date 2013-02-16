@@ -11,6 +11,13 @@ import ImageQt
 from designer_ui import Ui_MainWindow
 
 
+def ifItemSelected(function):
+    def newFunction(self, *args, **kwrags):
+        if self.graphicsView.selected:
+            return function(self, self.graphicsView.selected, *args, **kwrags)
+    return newFunction
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -107,9 +114,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             except Exception, e:
                 print(e, path)
 
-    def removeSelectedItem(self):
-        if self.graphicsView.selected:
-            self.getCurrentLayout().removeProp(self.graphicsView.selected)
+    @ifItemSelected
+    def removeSelectedItem(self, selectedItem):
+        self.getCurrentLayout().removeProp(selectedItem)
 
     def onItemSelected(self, item):
         self.updateInfoBar(item)
@@ -118,6 +125,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resourceLabel.setText(item.name)
         self.posXSpinBox.setValue(item.prop['x'])
         self.posYSpinBox.setValue(item.prop['y'])
+
+    @ifItemSelected
+    def onAlignBottomRadioChecked(self, selectedItem):
+        print('onAlignBottomRadioChecked')
+
 
 
 class Layout(object):
@@ -247,6 +259,7 @@ class PixmapItem(QGraphicsPixmapItem):
         else:
             self.prop['align_bottom'] = False
             self.prop['y'] = posMap.y()
+
 
 def main():
     app = QApplication(sys.argv)
