@@ -31,7 +31,7 @@ class DesignerGraphicsView(QGraphicsView):
     def onDragComplete(self, event):
         posMap = event.pos() - self.grabOffset
         self.grabbed.setPos(self.mapToScene(posMap))
-        self.mainWindow.getCurrentLayout().moveProp(self.grabbed, self.geometry(), posMap)
+        self.mainWindow.getCurrentLayout().changePropPos(self.grabbed, self.geometry(), posMap)
         self.mainWindow.updateInfoBar(self.grabbed)
 
     def dropEvent(self, event):

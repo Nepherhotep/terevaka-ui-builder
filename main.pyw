@@ -158,16 +158,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):
-        self.getCurrentLayout().changePropAlignBottom(selectedItem, event)
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.getCurrentLayout().changePropAlignBottom(selectedItem, self.graphicsView.geometry().size(), mapPos, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onAlignLeftRadioToggled(self, selectedItem, event):
-        self.getCurrentLayout().changePropAlignLeft(selectedItem, event)
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.getCurrentLayout().changePropAlignLeft(selectedItem, self.graphicsView.geometry().size(), mapPos, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
@@ -180,7 +178,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onUnitsXComboBoxChanged(self, selectedItem, event):
-        print('on units x combo box changed')
+        self.getCurrentLayout().changePropAlignLeft(selectedItem, event)
+        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
+        selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onUnitsYComboBoxChanged(self, selectedItem, event):
@@ -236,24 +237,28 @@ class Layout(object):
         self.d[const.KEY_PROPS].remove(item.prop)
 
     @saveHistory
-    def moveProp(self, item, graphicsViewGeometry, posMap):
-        item.updatePos(graphicsViewGeometry, posMap)
+    def changePropPos(self, item, mapSize, mapPos):
+        item.updatePos(mapSize, mapPos)
 
     @saveHistory
-    def changePropAlignLeft(self, item, value):
-        item.prop[const.KEY_ALIGN_LEFT] = value
+    def changePropAlignLeft(self, item, mapSize, mapPos, align):
+        item.prop[const.KEY_ALIGN_LEFT] = align
+        item.updatePos(mapSize, mapPos)
 
     @saveHistory
-    def changePropAlignBottom(self, item, value):
-        item.prop[const.KEY_ALIGN_BOTTOM] = value
+    def changePropAlignBottom(self, item, mapSize, mapPos, align):
+        item.prop[const.KEY_ALIGN_BOTTOM] = align
+        item.updatePos(mapSize, mapPos)
 
     @saveHistory
-    def changePropXUnit(self, item, value):
-        item.prop[const.KEY_X_UNIT] = value
+    def changePropXUnit(self, item, mapSize, mapPos, unit):
+        item.prop[const.KEY_X_UNIT] = unit
+        item.updatePos(mapSize, mapPos)
 
     @saveHistory
-    def changePropYUnit(self, item, value):
-        item.prop[const.KEY_Y_UNIT] = value
+    def changePropYUnit(self, item, mapSize, mapPos, unit):
+        item.prop[const.KEY_Y_UNIT] = unit
+        item.updatePos(mapSize, mapPos)
 
     def undo(self):
         self.mainWindow.deselect()
@@ -332,15 +337,15 @@ class PixmapItem(QGraphicsPixmapItem):
         self.setOffset(-self.offsetX, -self.offsetY)
         self.prop = prop
 
-    def updatePos(self, mapSize, posMap):
+    def updatePos(self, mapSize, mapPos):
         if self.prop[const.KEY_ALIGN_LEFT]:
-            alignedX = posMap.x()
+            alignedX = mapPos.x()
         else:
-            alignedX = mapSize.width() - posMap.x()
+            alignedX = mapSize.width() - mapPos.x()
         if self.prop[const.KEY_ALIGN_BOTTOM]:
-            alignedY = mapSize.height() - posMap.y()
+            alignedY = mapSize.height() - mapPos.y()
         else:
-            alignedY = posMap.y()
+            alignedY = mapPos.y()
         if self.prop[const.KEY_X_UNIT] == const.UNIT_PX:
             self.prop[const.KEY_X] = alignedX
         else:
