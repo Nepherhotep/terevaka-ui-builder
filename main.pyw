@@ -177,8 +177,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
-    def onPosXSpinBoxChanged(self, selectedItem, event):
-        self.getCurrentLayout().changePropXPos(selectedItem, event)
+    def onPosXSpinBoxChanged(self, selectedItem):
+        x = self.posXSpinBox.valueFromText(self.posXSpinBox.text())
+        self.getCurrentLayout().changePropXPos(selectedItem, x)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
