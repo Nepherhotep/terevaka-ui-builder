@@ -81,6 +81,8 @@ class DesignerGraphicsView(QGraphicsView):
         self.mainWindow.alignLeftRadio.setChecked(True)
         prop['align_left'] = True
         prop['align_bottom'] = True
+        prop['x_unit'] = 'px'
+        prop['y_unit'] = 'px'
 
         item = itemFactory.createGraphicsItem(posScene, prop)
         #update pos according to selected controls

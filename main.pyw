@@ -262,8 +262,14 @@ class Layout(object):
             name = prop['name']
             type = prop['type']
             size = self.mainWindow.graphicsView.geometry().size()
-            alignedX = prop['x']
-            alignedY = prop['y']
+            if prop['x_unit'] == 'px':
+                alignedX = prop['x']
+            else:
+                alignedX = prop['x']*self.mainWindow.graphicsView.geometry().size().width()/100
+            if prop['y_unit'] == 'px':
+                alignedY = prop['y']
+            else:
+                alignedY = prop['y']*self.mainWindow.graphicsView.geometry().size().height()/100
             if prop['align_left']:
                 x = alignedX
             else:
@@ -309,14 +315,21 @@ class PixmapItem(QGraphicsPixmapItem):
 
     def updatePos(self, mapSize, posMap):
         if self.prop['align_left']:
-            self.prop['x'] = posMap.x()
+            alignedX = posMap.x()
         else:
-            self.prop['x'] = mapSize.width() - posMap.x()
+            alignedX = mapSize.width() - posMap.x()
         if self.prop['align_bottom']:
-            self.prop['y'] = mapSize.height() - posMap.y()
+            alignedY = mapSize.height() - posMap.y()
         else:
-            self.prop['align_bottom'] = False
-            self.prop['y'] = posMap.y()
+            alignedY = posMap.y()
+        if self.prop['x_unit'] == 'px':
+            self.prop['x'] = alignedX
+        else:
+            self.prop['x'] = alignedX*100/mapSize.width()
+        if self.prop['y_unit'] == 'px':
+            self.prop['y'] = alignedY
+        else:
+            self.prop['y'] = alignedY*100/mapSize.height()
 
 
 def main():
