@@ -1,6 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+import const
 
 
 class DesignerGraphicsView(QGraphicsView):
@@ -73,16 +74,16 @@ class DesignerGraphicsView(QGraphicsView):
 
     def addItem(self, itemFactory, posMap, posScene):
         prop = {}
-        prop['type'] = self.mainWindow.selectedItemFactory.type
-        prop['name'] = self.mainWindow.selectedItemFactory.name
+        prop[const.KEY_TYPE] = self.mainWindow.selectedItemFactory.type
+        prop[const.KEY_NAME] = self.mainWindow.selectedItemFactory.name
 
         #reset controls to default
         self.mainWindow.alignBottomRadio.setChecked(True)
         self.mainWindow.alignLeftRadio.setChecked(True)
-        prop['align_left'] = True
-        prop['align_bottom'] = True
-        prop['x_unit'] = 'px'
-        prop['y_unit'] = 'px'
+        prop[const.KEY_ALIGN_LEFT] = True
+        prop[const.KEY_ALIGN_BOTTOM] = True
+        prop[const.KEY_X_UNIT] = const.UNIT_PX
+        prop[const.KEY_Y_UNIT] = const.UNIT_PX
 
         item = itemFactory.createGraphicsItem(posScene, prop)
         #update pos according to selected controls

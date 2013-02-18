@@ -10,6 +10,8 @@ from PyQt4.QtGui import *
 import Image
 import ImageQt
 
+import const
+
 from designer_ui import Ui_MainWindow
 
 
@@ -143,13 +145,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def updateInfoBar(self, item):
         self.resourceLabel.setText(item.name)
-        self.posXSpinBox.setValue(item.prop['x'])
-        self.posYSpinBox.setValue(item.prop['y'])
-        if item.prop['align_left']:
+        self.posXSpinBox.setValue(item.prop[const.KEY_X])
+        self.posYSpinBox.setValue(item.prop[const.KEY_Y])
+        if item.prop[const.KEY_ALIGN_LEFT]:
             self.alignLeftRadio.setChecked(True)
         else:
             self.alignRightRadio.setChecked(True)
-        if item.prop['align_bottom']:
+        if item.prop[const.KEY_ALIGN_BOTTOM]:
             self.alignBottomRadio.setChecked(True)
         else:
             self.alignTopRadio.setChecked(True)
@@ -193,11 +195,11 @@ class Layout(object):
         self.lastPropId = 0
         if d == None:
             self.d = {}
-            self.d['props'] = []
+            self.d[const.KEY_PROPS] = []
             self.history = []
         else:
             self.d = d
-            for prop in self.d.get('props', []):
+            for prop in self.d.get(const.KEY_PROPS, []):
                 self.incPropId()
             self.history = [deepcopy(d)]
 
@@ -226,12 +228,12 @@ class Layout(object):
 
     @saveHistory
     def addProp(self, item):
-        item.prop['id'] = self.incPropId()
-        self.d['props'].append(item.prop)
+        item.prop[const.KEY_ID] = self.incPropId()
+        self.d[const.KEY_PROPS].append(item.prop)
 
     @saveHistory
     def removeProp(self, item):
-        self.d['props'].remove(item.prop)
+        self.d[const.KEY_PROPS].remove(item.prop)
 
     @saveHistory
     def moveProp(self, item, graphicsViewGeometry, posMap):
@@ -239,11 +241,19 @@ class Layout(object):
 
     @saveHistory
     def changePropAlignLeft(self, item, value):
-        item.prop['align_left'] = value
+        item.prop[const.KEY_ALIGN_LEFT] = value
 
     @saveHistory
     def changePropAlignBottom(self, item, value):
-        item.prop['align_bottom'] = value
+        item.prop[const.KEY_ALIGN_BOTTOM] = value
+
+    @saveHistory
+    def changePropXUnit(self, item, value):
+        item.prop[const.KEY_X_UNIT] = value
+
+    @saveHistory
+    def changePropYUnit(self, item, value):
+        item.prop[const.KEY_Y_UNIT] = value
 
     def undo(self):
         self.mainWindow.deselect()
@@ -267,23 +277,23 @@ class Layout(object):
 
     def show(self):
         self.mainWindow.graphicsView.clear()
-        for prop in self.d['props']:
-            name = prop['name']
-            type = prop['type']
+        for prop in self.d[const.KEY_PROPS]:
+            name = prop[const.KEY_NAME]
+            type = prop[const.KEY_TYPE]
             size = self.mainWindow.graphicsView.geometry().size()
-            if prop['x_unit'] == 'px':
-                alignedX = prop['x']
+            if prop[const.KEY_X_UNIT] == const.UNIT_PX:
+                alignedX = prop[const.KEY_X]
             else:
-                alignedX = prop['x']*self.mainWindow.graphicsView.geometry().size().width()/100
-            if prop['y_unit'] == 'px':
-                alignedY = prop['y']
+                alignedX = prop[const.KEY_X]*self.mainWindow.graphicsView.geometry().size().width()/100
+            if prop[const.KEY_Y_UNIT] == const.UNIT_PX:
+                alignedY = prop[const.KEY_Y]
             else:
-                alignedY = prop['y']*self.mainWindow.graphicsView.geometry().size().height()/100
-            if prop['align_left']:
+                alignedY = prop[const.KEY_Y]*self.mainWindow.graphicsView.geometry().size().height()/100
+            if prop[const.KEY_ALIGN_LEFT]:
                 x = alignedX
             else:
                 x = size.width() - alignedX
-            if prop['align_bottom']:
+            if prop[const.KEY_ALIGN_BOTTOM]:
                 y = size.height() - alignedY
             else:
                 y = alignedY
@@ -323,22 +333,22 @@ class PixmapItem(QGraphicsPixmapItem):
         self.prop = prop
 
     def updatePos(self, mapSize, posMap):
-        if self.prop['align_left']:
+        if self.prop[const.KEY_ALIGN_LEFT]:
             alignedX = posMap.x()
         else:
             alignedX = mapSize.width() - posMap.x()
-        if self.prop['align_bottom']:
+        if self.prop[const.KEY_ALIGN_BOTTOM]:
             alignedY = mapSize.height() - posMap.y()
         else:
             alignedY = posMap.y()
-        if self.prop['x_unit'] == 'px':
-            self.prop['x'] = alignedX
+        if self.prop[const.KEY_X_UNIT] == const.UNIT_PX:
+            self.prop[const.KEY_X] = alignedX
         else:
-            self.prop['x'] = alignedX*100/mapSize.width()
-        if self.prop['y_unit'] == 'px':
-            self.prop['y'] = alignedY
+            self.prop[const.KEY_X] = alignedX*100/mapSize.width()
+        if self.prop[const.KEY_Y_UNIT] == const.UNIT_PX:
+            self.prop[const.KEY_Y] = alignedY
         else:
-            self.prop['y'] = alignedY*100/mapSize.height()
+            self.prop[const.KEY_Y] = alignedY*100/mapSize.height()
 
 
 def main():
