@@ -184,7 +184,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onPosYSpinBoxChanged(self, selectedItem):
-        print('onPoxYSpinBox changed')
+        y = self.posYSpinBox.valueFromText(self.posYSpinBox.text())
+        self.getCurrentLayout().changePropYPos(selectedItem, y)
+        self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onUnitsXComboBoxChanged(self, selectedItem, event):
@@ -259,6 +261,11 @@ class Layout(object):
     @saveHistory
     def changePropXPos(self, item, x):
         item.prop[const.KEY_X] = x
+        item.updateScenePos(self.mainWindow.graphicsView)
+
+    @saveHistory
+    def changePropYPos(self, item, y):
+        item.prop[const.KEY_Y] = y
         item.updateScenePos(self.mainWindow.graphicsView)
 
     @saveHistory
