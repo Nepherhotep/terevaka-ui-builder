@@ -178,14 +178,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onUnitsXComboBoxChanged(self, selectedItem, event):
-        self.getCurrentLayout().changePropAlignLeft(selectedItem, event)
+        units = unicode(self.unitsXComboBox.currentText()).lower()
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        selectedItem.updatePos(self.graphicsView.size(), mapPos)
+        self.getCurrentLayout().changePropXUnit(selectedItem, self.graphicsView.geometry().size(), mapPos, units)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onUnitsYComboBoxChanged(self, selectedItem, event):
-        print('on units y combo box changed')
+        units = unicode(self.unitsYComboBox.currentText()).lower()
+        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
+        self.getCurrentLayout().changePropYUnit(selectedItem, self.graphicsView.geometry().size(), mapPos, units)
+        self.updateInfoBar(selectedItem)
 
 
 class Layout(object):
