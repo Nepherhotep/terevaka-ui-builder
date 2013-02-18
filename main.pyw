@@ -155,6 +155,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.alignBottomRadio.setChecked(True)
         else:
             self.alignTopRadio.setChecked(True)
+        if item.prop[const.KEY_X_UNIT] == const.UNIT_PX:
+            self.unitsXComboBox.setCurrentIndex(const.UNIT_PX_POS)
+        else:
+            self.unitsXComboBox.setCurrentIndex(const.UNIT_PERCENT_POS)
+        if item.prop[const.KEY_Y_UNIT] == const.UNIT_PX:
+            self.unitsYComboBox.setCurrentIndex(const.UNIT_PX_POS)
+        else:
+            self.unitsYComboBox.setCurrentIndex(const.UNIT_PERCENT_POS)
 
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):

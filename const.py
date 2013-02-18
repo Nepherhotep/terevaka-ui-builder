@@ -13,4 +13,7 @@ KEY_PROPS = 'props'
 KEY_ID = 'id'
 
 UNIT_PX = 'px'
+UNIT_PX_POS = 0
+
 UNIT_PERCENT = '%'
+UNIT_PERCENT_POS = 1
