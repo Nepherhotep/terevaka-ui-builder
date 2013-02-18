@@ -167,19 +167,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropAlignBottom(selectedItem, self.graphicsView.geometry().size(), mapPos, event)
+        self.getCurrentLayout().changePropAlignBottom(selectedItem, mapPos, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onAlignLeftRadioToggled(self, selectedItem, event):
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropAlignLeft(selectedItem, self.graphicsView.geometry().size(), mapPos, event)
+        self.getCurrentLayout().changePropAlignLeft(selectedItem, mapPos, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
-    def onPosXSpinBoxChanged(self, selectedItem):
-        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropPos(selectedItem, self.graphicsView.geometry().size(), mapPos)
+    def onPosXSpinBoxChanged(self, selectedItem, event):
+        self.getCurrentLayout().changePropXPos(selectedItem, event)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
@@ -190,14 +189,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def onUnitsXComboBoxChanged(self, selectedItem, event):
         units = unicode(self.unitsXComboBox.currentText()).lower()
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropXUnit(selectedItem, self.graphicsView.geometry().size(), mapPos, units)
+        self.getCurrentLayout().changePropXUnit(selectedItem, mapPos, units)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onUnitsYComboBoxChanged(self, selectedItem, event):
         units = unicode(self.unitsYComboBox.currentText()).lower()
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropYUnit(selectedItem, self.graphicsView.geometry().size(), mapPos, units)
+        self.getCurrentLayout().changePropYUnit(selectedItem, mapPos, units)
         self.updateInfoBar(selectedItem)
 
 
@@ -216,6 +215,9 @@ class Layout(object):
             for prop in self.d.get(const.KEY_PROPS, []):
                 self.incPropId()
             self.history = [deepcopy(d)]
+
+    def getMapSize(self):
+        return self.mainWindow.graphicsView.geometry().size()
 
     def incPropId(self):
         self.lastPropId += 1
@@ -250,28 +252,33 @@ class Layout(object):
         self.d[const.KEY_PROPS].remove(item.prop)
 
     @saveHistory
-    def changePropPos(self, item, mapSize, mapPos):
-        item.updatePropPos(mapSize, mapPos)
+    def changePropPos(self, item, mapPos):
+        item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
-    def changePropAlignLeft(self, item, mapSize, mapPos, align):
+    def changePropXPos(self, item, x):
+        item.prop[const.KEY_X] = x
+        item.updateScenePos(self.mainWindow.graphicsView)
+
+    @saveHistory
+    def changePropAlignLeft(self, item, mapPos, align):
         item.prop[const.KEY_ALIGN_LEFT] = align
-        item.updatePropPos(mapSize, mapPos)
+        item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
-    def changePropAlignBottom(self, item, mapSize, mapPos, align):
+    def changePropAlignBottom(self, item, mapPos, align):
         item.prop[const.KEY_ALIGN_BOTTOM] = align
-        item.updatePropPos(mapSize, mapPos)
+        item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
-    def changePropXUnit(self, item, mapSize, mapPos, unit):
+    def changePropXUnit(self, item, mapPos, unit):
         item.prop[const.KEY_X_UNIT] = unit
-        item.updatePropPos(mapSize, mapPos)
+        item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
-    def changePropYUnit(self, item, mapSize, mapPos, unit):
+    def changePropYUnit(self, item, mapPos, unit):
         item.prop[const.KEY_Y_UNIT] = unit
-        item.updatePropPos(mapSize, mapPos)
+        item.updatePropPos(self.getMapSize(), mapPos)
 
     def undo(self):
         self.mainWindow.deselect()
