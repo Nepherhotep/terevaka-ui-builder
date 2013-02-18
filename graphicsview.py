@@ -85,9 +85,10 @@ class DesignerGraphicsView(QGraphicsView):
         prop[const.KEY_X_UNIT] = const.UNIT_PX
         prop[const.KEY_Y_UNIT] = const.UNIT_PX
 
-        item = itemFactory.createGraphicsItem(posScene, prop)
+        item = itemFactory.createGraphicsItem(prop)
         #update pos according to selected controls
-        item.updatePos(self.geometry(), posMap)
+        item.updatePropPos(self.geometry(), posMap)
+        item.updateScenePos(self)
         #save prop in layout
         self.mainWindow.getCurrentLayout().addProp(item)
         self.selected = item

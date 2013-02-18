@@ -178,7 +178,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onPosXSpinBoxChanged(self, selectedItem):
-        print('onPoxXSpinBox changed')
+        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
+        self.getCurrentLayout().changePropPos(selectedItem, self.graphicsView.geometry().size(), mapPos)
+        self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onPosYSpinBoxChanged(self, selectedItem):
@@ -249,27 +251,27 @@ class Layout(object):
 
     @saveHistory
     def changePropPos(self, item, mapSize, mapPos):
-        item.updatePos(mapSize, mapPos)
+        item.updatePropPos(mapSize, mapPos)
 
     @saveHistory
     def changePropAlignLeft(self, item, mapSize, mapPos, align):
         item.prop[const.KEY_ALIGN_LEFT] = align
-        item.updatePos(mapSize, mapPos)
+        item.updatePropPos(mapSize, mapPos)
 
     @saveHistory
     def changePropAlignBottom(self, item, mapSize, mapPos, align):
         item.prop[const.KEY_ALIGN_BOTTOM] = align
-        item.updatePos(mapSize, mapPos)
+        item.updatePropPos(mapSize, mapPos)
 
     @saveHistory
     def changePropXUnit(self, item, mapSize, mapPos, unit):
         item.prop[const.KEY_X_UNIT] = unit
-        item.updatePos(mapSize, mapPos)
+        item.updatePropPos(mapSize, mapPos)
 
     @saveHistory
     def changePropYUnit(self, item, mapSize, mapPos, unit):
         item.prop[const.KEY_Y_UNIT] = unit
-        item.updatePos(mapSize, mapPos)
+        item.updatePropPos(mapSize, mapPos)
 
     def undo(self):
         self.mainWindow.deselect()
@@ -296,26 +298,9 @@ class Layout(object):
         for prop in self.d[const.KEY_PROPS]:
             name = prop[const.KEY_NAME]
             type = prop[const.KEY_TYPE]
-            size = self.mainWindow.graphicsView.geometry().size()
-            if prop[const.KEY_X_UNIT] == const.UNIT_PX:
-                alignedX = prop[const.KEY_X]
-            else:
-                alignedX = prop[const.KEY_X]*self.mainWindow.graphicsView.geometry().size().width()/100
-            if prop[const.KEY_Y_UNIT] == const.UNIT_PX:
-                alignedY = prop[const.KEY_Y]
-            else:
-                alignedY = prop[const.KEY_Y]*self.mainWindow.graphicsView.geometry().size().height()/100
-            if prop[const.KEY_ALIGN_LEFT]:
-                x = alignedX
-            else:
-                x = size.width() - alignedX
-            if prop[const.KEY_ALIGN_BOTTOM]:
-                y = size.height() - alignedY
-            else:
-                y = alignedY
             itemFactory = self.mainWindow.getItemFactory(type, name)
-            posScene = self.mainWindow.graphicsView.mapToScene(QPoint(x, y))
-            item = itemFactory.createGraphicsItem(posScene, prop)
+            item = itemFactory.createGraphicsItem(prop)
+            item.updateScenePos(self.mainWindow.graphicsView)
             self.mainWindow.graphicsView.scene.addItem(item)
 
     def toDict(self):
@@ -332,23 +317,42 @@ class PixmapItemFactory(object):
         for key, value in params.items():
             setattr(self, key, value)
 
-    def createGraphicsItem(self, posScene, prop):
-        item = PixmapItem(self.name, self.pixmap, posScene, prop)
+    def createGraphicsItem(self, prop):
+        item = PixmapItem(self.name, self.pixmap, prop)
         return item
 
 
 class PixmapItem(QGraphicsPixmapItem):
-    def __init__(self, name, pixmap, pos, prop):
+    def __init__(self, name, pixmap, prop):
         super(PixmapItem, self).__init__(pixmap)
         self.name = name
         self.setFlag(QGraphicsItem.ItemIsMovable)
-        self.setPos(pos)
         self.offsetX = self.pixmap().width()/2
         self.offsetY = self.pixmap().height()/2
         self.setOffset(-self.offsetX, -self.offsetY)
         self.prop = prop
 
-    def updatePos(self, mapSize, mapPos):
+    def updateScenePos(self, graphicsView):
+        mapSize = graphicsView.geometry().size()
+        if self.prop[const.KEY_X_UNIT] == const.UNIT_PX:
+            alignedX = self.prop[const.KEY_X]
+        else:
+            alignedX = self.prop[const.KEY_X]*mapSize.width()/100
+        if self.prop[const.KEY_Y_UNIT] == const.UNIT_PX:
+            alignedY = self.prop[const.KEY_Y]
+        else:
+            alignedY = self.prop[const.KEY_Y]*mapSize.height()/100
+        if self.prop[const.KEY_ALIGN_LEFT]:
+            x = alignedX
+        else:
+            x = mapSize.width() - alignedX
+        if self.prop[const.KEY_ALIGN_BOTTOM]:
+            y = mapSize.height() - alignedY
+        else:
+            y = alignedY
+        self.setPos(graphicsView.mapToScene(QPoint(x, y)))
+
+    def updatePropPos(self, mapSize, mapPos):
         if self.prop[const.KEY_ALIGN_LEFT]:
             alignedX = mapPos.x()
         else:
