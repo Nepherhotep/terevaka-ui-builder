@@ -62,6 +62,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
+        self.unitsXComboBox.activated.connect(self.onUnitsXComboBoxChanged)
+        self.unitsYComboBox.activated.connect(self.onUnitsYComboBoxChanged)
 
     def deselect(self):
         self.graphicsView.selected = None
@@ -174,6 +176,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def onPosYSpinBoxChanged(self, selectedItem):
         print('onPoxYSpinBox changed')
 
+    @ifItemSelected
+    def onUnitsXComboBoxChanged(self, selectedItem, event):
+        print('on units x combo box changed')
+
+    @ifItemSelected
+    def onUnitsYComboBoxChanged(self, selectedItem, event):
+        print('on units y combo box changed')
 
 
 class Layout(object):
