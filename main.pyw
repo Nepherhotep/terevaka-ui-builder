@@ -168,8 +168,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @ifItemSelected
     def onPosXSpinBoxChanged(self, selectedItem):
-        if self.posXSpinBox.isActiveWindow():
-            print('onPoxXSpinBox changed')
+        print('onPoxXSpinBox changed')
 
     @ifItemSelected
     def onPosYSpinBoxChanged(self, selectedItem):
@@ -324,6 +323,7 @@ def main():
     app = QApplication(sys.argv)
     form = MainWindow()
     form.show()
+    form.raise_()
     app.exec_()
 
 
