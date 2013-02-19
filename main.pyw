@@ -13,6 +13,7 @@ import ImageQt
 import const
 
 from designer_ui import Ui_MainWindow
+import json
 
 
 def ifItemSelected(function):
@@ -37,6 +38,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setDirWithPath("./sprites")
         self.selected = None
         self.grabbed = None
+        self.workingDir = '.'
+        self.layoutPath = None
+        self.currentFilePath = None
 
     def showEvent(self, event):
         super(MainWindow, self).showEvent(event)
@@ -69,6 +73,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
         self.unitsXComboBox.activated.connect(self.onUnitsXComboBoxChanged)
         self.unitsYComboBox.activated.connect(self.onUnitsYComboBoxChanged)
+        self.actionNew.triggered.connect(self.newFile)
+        self.actionSave.triggered.connect(self.saveFile)
+        self.actionSave_As.triggered.connect(self.saveFileAs)
+        self.actionOpen.triggered.connect(self.openFile)
 
     def deselect(self):
         self.selected = None
@@ -91,9 +99,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setDirWithPath(dirPath)
 
     def setDirWithPath(self, dirPath):
+        self.workingDir = dirPath
         self.pixmapsDir = unicode(dirPath)
         listDir = map(lambda x: os.path.join(self.pixmapsDir, x), self.filteredListDir(dirPath))
         self.createPreviews(self.spritesListWidget, listDir, 120)
+        self.workingDirLabel.setText(dirPath)
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
@@ -208,6 +218,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
         self.getCurrentLayout().changePropYUnit(selectedItem, mapPos, units)
         self.updateInfoBar(selectedItem)
+
+    def newFile(self):
+        self.currentFileName = None
+        self.graphicsView.clear()
+        self.layout = Layout(self)
+
+    def openFile(self):
+        path=QFileDialog.getOpenFileName(None, "FileDialog")
+        if path:
+            with open(path) as f:
+                self.currentFilePath = path
+                self.loadFromString(f.read(), json)
+                self.setWindowModified(False)
+
+    def saveFile(self, formatter=None):
+        if not formatter:
+            formatter = json
+        if self.currentFilePath:
+            with open(self.currentFilePath, 'w') as f:
+                f.write(formatter.dumps(self.getCurrentLayout().toDict()))
+                self.setWindowModified(False)
+        else:
+            self.saveFileAs()
+
+    def saveFileAs(self, *args, **kwargs):
+        filename=QFileDialog.getSaveFileName(None, "FileDialog")
+        if filename:
+            self.currentFilePath = filename
+            self.saveFile(*args, **kwargs)
 
 
 class Layout(object):

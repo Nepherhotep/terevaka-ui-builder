@@ -99,7 +99,7 @@
           <property name="title">
            <string>Working dir</string>
           </property>
-          <widget class="QLabel" name="label_6">
+          <widget class="QLabel" name="workingDirLabel">
            <property name="geometry">
             <rect>
              <x>11</x>
@@ -112,7 +112,7 @@
             <string>Not Specified</string>
            </property>
           </widget>
-          <widget class="QToolButton" name="toolButton">
+          <widget class="QToolButton" name="workingDirToolButton">
            <property name="geometry">
             <rect>
              <x>146</x>
@@ -138,7 +138,7 @@
           <property name="title">
            <string>Layout path</string>
           </property>
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="layoutPathLabel">
            <property name="geometry">
             <rect>
              <x>11</x>
@@ -151,7 +151,7 @@
             <string>Not Specified</string>
            </property>
           </widget>
-          <widget class="QToolButton" name="toolButton_2">
+          <widget class="QToolButton" name="layoutPathToolButton">
            <property name="geometry">
             <rect>
              <x>146</x>
@@ -540,6 +540,7 @@
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -568,6 +569,9 @@
    <property name="text">
     <string>New</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionUndo">
    <property name="text">
@@ -592,10 +596,16 @@
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionRedo">
@@ -610,10 +620,24 @@
    <property name="text">
     <string>Set Layout Path</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="actionPublish_Layout">
    <property name="text">
     <string>Publish Layout</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Return</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As ...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>
