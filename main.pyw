@@ -110,11 +110,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if path:
             self.setLayoutPath(path)
 
+    def setLayoutPathLabelText(self, path):
+        self.layoutPathLabel.setText(self.elided(path))
+        self.layoutPathLabel.setToolTip(path)
+
     def setLayoutPath(self, path):
         path = unicode(path)
         self.layoutPath = path
-        self.layoutPathLabel.setText(path)
+        self.setLayoutPathLabelText(path)
         self.getCurrentLayout().setLayoutPath(path)
+
+    def setWorkingDirLabelText(self, dirPath):
+        self.workingDirLabel.setText(self.elided(dirPath))
+        self.workingDirLabel.setToolTip(dirPath)
 
     def setDirWithPath(self, dirPath):
         self.clearProject()
@@ -122,7 +130,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.getCurrentLayout().setWorkingDir(dirPath)
         listDir = map(lambda x: os.path.join(self.workingDir, x), self.filteredListDir(dirPath))
         self.createPreviews(self.spritesListWidget, listDir, 120)
-        self.workingDirLabel.setText(dirPath)
+        self.setWorkingDirLabelText(dirPath)
         self.getCurrentLayout().toDict()[const.KEY_WORKING_DIR] = self.workingDir
 
     def filteredListDir(self, dirName):
@@ -286,6 +294,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.currentFilePath = filename
             self.saveFile(*args, **kwargs)
 
+    def elided(self, text, width=20):
+        if len(text) > width:
+            return '...%s' %text[-width+3:]
+        else:
+            return text
+
 
 class Layout(object):
     HISTORY_LEN = 20
@@ -413,8 +427,8 @@ class Layout(object):
             item = itemFactory.createGraphicsItem(prop)
             item.updateScenePos(self.mainWindow.graphicsView)
             self.mainWindow.graphicsView.scene.addItem(item)
-            self.mainWindow.workingDirLabel.setText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
-            self.mainWindow.layoutPathLabel.setText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
+            self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
+            self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
 
     def toDict(self):
         return self.d
