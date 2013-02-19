@@ -402,6 +402,7 @@ class Layout(object):
             item = itemFactory.createGraphicsItem(prop)
             item.updateScenePos(self.mainWindow.graphicsView)
             self.mainWindow.graphicsView.scene.addItem(item)
+            self.mainWindow.workingDirLabel.setText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
             self.mainWindow.layoutPathLabel.setText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
 
     def toDict(self):
