@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1096</width>
-    <height>525</height>
+    <width>1098</width>
+    <height>549</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -55,7 +55,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>354</height>
+           <height>378</height>
           </rect>
          </property>
          <attribute name="label">
@@ -81,7 +81,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>354</height>
+           <height>378</height>
           </rect>
          </property>
          <attribute name="label">
@@ -104,7 +104,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>354</height>
+           <height>378</height>
           </rect>
          </property>
          <attribute name="label">
@@ -561,6 +561,38 @@
           <string/>
          </property>
         </widget>
+        <widget class="QFrame" name="dropPanel">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>400</y>
+           <width>181</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="label_10">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>25</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Drag here to Drop</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -568,13 +600,19 @@
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1096</width>
+     <width>1098</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -592,6 +630,9 @@
     <addaction name="actionRedo"/>
    </widget>
    <widget class="QMenu" name="menuResources">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Resources</string>
     </property>

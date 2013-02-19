@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Fri Feb 15 22:47:54 2013
+# Created: Tue Feb 19 10:50:24 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1096, 525)
+        MainWindow.resize(1098, 549)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.toolBox.setFrameShape(QtGui.QFrame.NoFrame)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.sprites = QtGui.QWidget()
-        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 354))
+        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 378))
         self.sprites.setObjectName(_fromUtf8("sprites"))
         self.spritesListWidget = QtGui.QListWidget(self.sprites)
         self.spritesListWidget.setGeometry(QtCore.QRect(10, 0, 181, 401))
@@ -58,14 +58,14 @@ class Ui_MainWindow(object):
         self.spritesListWidget.setObjectName(_fromUtf8("spritesListWidget"))
         self.toolBox.addItem(self.sprites, _fromUtf8(""))
         self.objects = QtGui.QWidget()
-        self.objects.setGeometry(QtCore.QRect(0, 0, 200, 354))
+        self.objects.setGeometry(QtCore.QRect(0, 0, 200, 378))
         self.objects.setObjectName(_fromUtf8("objects"))
         self.objectsListWidget = QtGui.QListWidget(self.objects)
         self.objectsListWidget.setGeometry(QtCore.QRect(10, 0, 181, 401))
         self.objectsListWidget.setObjectName(_fromUtf8("objectsListWidget"))
         self.toolBox.addItem(self.objects, _fromUtf8(""))
         self.layout = QtGui.QWidget()
-        self.layout.setGeometry(QtCore.QRect(0, 0, 200, 354))
+        self.layout.setGeometry(QtCore.QRect(0, 0, 200, 378))
         self.layout.setObjectName(_fromUtf8("layout"))
         self.layoutTreeWidget = QtGui.QTreeWidget(self.layout)
         self.layoutTreeWidget.setGeometry(QtCore.QRect(10, 0, 181, 381))
@@ -190,17 +190,29 @@ class Ui_MainWindow(object):
         self.resourceLabel.setGeometry(QtCore.QRect(50, 10, 141, 16))
         self.resourceLabel.setText(_fromUtf8(""))
         self.resourceLabel.setObjectName(_fromUtf8("resourceLabel"))
+        self.dropPanel = QtGui.QFrame(self.frame)
+        self.dropPanel.setGeometry(QtCore.QRect(10, 400, 181, 71))
+        self.dropPanel.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.dropPanel.setFrameShadow(QtGui.QFrame.Raised)
+        self.dropPanel.setObjectName(_fromUtf8("dropPanel"))
+        self.label_10 = QtGui.QLabel(self.dropPanel)
+        self.label_10.setGeometry(QtCore.QRect(10, 25, 161, 21))
+        self.label_10.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_10.setObjectName(_fromUtf8("label_10"))
         self.horizontalLayout.addWidget(self.frame)
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1096, 22))
+        self.menubar.setEnabled(True)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1098, 22))
+        self.menubar.setNativeMenuBar(True)
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
         self.menuResources = QtGui.QMenu(self.menubar)
+        self.menuResources.setEnabled(True)
         self.menuResources.setObjectName(_fromUtf8("menuResources"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -261,6 +273,7 @@ class Ui_MainWindow(object):
         self.unitsHeightComboBox.setItemText(1, _translate("MainWindow", "%", None))
         self.label_8.setText(_translate("MainWindow", "Size", None))
         self.label_9.setText(_translate("MainWindow", "Res.", None))
+        self.label_10.setText(_translate("MainWindow", "Drag here to Drop", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.menuResources.setTitle(_translate("MainWindow", "Resources", None))
