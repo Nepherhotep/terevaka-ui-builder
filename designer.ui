@@ -55,7 +55,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>378</height>
+           <height>412</height>
           </rect>
          </property>
          <attribute name="label">
@@ -75,55 +75,95 @@
           </property>
          </widget>
         </widget>
-        <widget class="QWidget" name="objects">
+        <widget class="QWidget" name="properties">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>378</height>
+           <height>412</height>
           </rect>
          </property>
          <attribute name="label">
-          <string>Objects</string>
+          <string>Properties</string>
          </attribute>
-         <widget class="QListWidget" name="objectsListWidget">
+         <widget class="QGroupBox" name="groupBox">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>0</y>
             <width>181</width>
-            <height>401</height>
+            <height>51</height>
            </rect>
           </property>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="layout">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>200</width>
-           <height>378</height>
-          </rect>
-         </property>
-         <attribute name="label">
-          <string>Layout</string>
-         </attribute>
-         <widget class="QTreeWidget" name="layoutTreeWidget">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>0</y>
-            <width>181</width>
-            <height>381</height>
-           </rect>
+          <property name="title">
+           <string>Working dir</string>
           </property>
-          <column>
-           <property name="text">
-            <string notr="true">1</string>
+          <widget class="QLabel" name="label_6">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>20</y>
+             <width>131</width>
+             <height>31</height>
+            </rect>
            </property>
-          </column>
+           <property name="text">
+            <string>Not Specified</string>
+           </property>
+          </widget>
+          <widget class="QToolButton" name="toolButton">
+           <property name="geometry">
+            <rect>
+             <x>146</x>
+             <y>24</y>
+             <width>27</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>181</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Layout path</string>
+          </property>
+          <widget class="QLabel" name="label_7">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>20</y>
+             <width>131</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Not Specified</string>
+           </property>
+          </widget>
+          <widget class="QToolButton" name="toolButton_2">
+           <property name="geometry">
+            <rect>
+             <x>146</x>
+             <y>24</y>
+             <width>27</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
          </widget>
         </widget>
        </widget>
@@ -516,6 +556,8 @@
      <string>Resources</string>
     </property>
     <addaction name="actionSet_Dir"/>
+    <addaction name="actionSet_Layout_Path"/>
+    <addaction name="actionPublish_Layout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -562,6 +604,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionSet_Layout_Path">
+   <property name="text">
+    <string>Set Layout Path</string>
+   </property>
+  </action>
+  <action name="actionPublish_Layout">
+   <property name="text">
+    <string>Publish Layout</string>
    </property>
   </action>
  </widget>
