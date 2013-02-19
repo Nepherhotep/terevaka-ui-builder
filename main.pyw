@@ -64,7 +64,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.layout
 
     def connectSlots(self):
-        self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.setDir)
+        self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.selectDir)
         def slot(item):
             self.selectedItemFactory = self.getPixmapItemFactory(item.name)
         self.spritesListWidget.itemPressed.connect(slot)
@@ -80,7 +80,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionSave.triggered.connect(self.saveFile)
         self.actionSave_As.triggered.connect(self.saveFileAs)
         self.actionOpen.triggered.connect(self.openFile)
-        self.workingDirToolButton.clicked.connect(self.setDir)
+        self.workingDirToolButton.clicked.connect(self.selectDir)
+        self.layoutPathToolButton.clicked.connect(self.selectLayoutPath)
 
     def deselect(self):
         self.selected = None
@@ -97,19 +98,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def redo(self):
         self.getCurrentLayout().redo()
 
-    def setDir(self):
+    def selectDir(self):
         dirPath=QFileDialog.getExistingDirectory(None, "Set Dir")
         if dirPath:
             self.setDirWithPath(dirPath)
 
+    def selectLayoutPath(self):
+        path=QFileDialog.getOpenFileName(None, "Select Layout Path")
+        if path:
+            self.setLayoutPath(path)
+
     def setLayoutPath(self, path):
+        path = unicode(path)
         self.layoutPath = path
         self.layoutPathLabel.setText(path)
-        self.getCurrentLayout().toDict()[const.KEY_LAYOUT_PATH] = path
+        self.getCurrentLayout().setLayoutPath(path)
 
     def setDirWithPath(self, dirPath):
         self.clearProject()
         self.workingDir = unicode(dirPath)
+        self.getCurrentLayout().setWorkingDir(dirPath)
         listDir = map(lambda x: os.path.join(self.workingDir, x), self.filteredListDir(dirPath))
         self.createPreviews(self.spritesListWidget, listDir, 120)
         self.workingDirLabel.setText(dirPath)
@@ -357,6 +365,14 @@ class Layout(object):
         item.prop[const.KEY_Y_UNIT] = unit
         item.updatePropPos(self.getMapSize(), mapPos)
 
+    @saveHistory
+    def setLayoutPath(self, layoutPath):
+        self.d[const.KEY_LAYOUT_PATH] = layoutPath
+
+    @saveHistory
+    def setWorkingDir(self, dirPath):
+        self.d[const.KEY_WORKING_DIR] = dirPath
+
     def undo(self):
         self.mainWindow.deselect()
         if self.current+1 >= len(self.history):
@@ -386,6 +402,7 @@ class Layout(object):
             item = itemFactory.createGraphicsItem(prop)
             item.updateScenePos(self.mainWindow.graphicsView)
             self.mainWindow.graphicsView.scene.addItem(item)
+            self.mainWindow.layoutPathLabel.setText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
 
     def toDict(self):
         return self.d
