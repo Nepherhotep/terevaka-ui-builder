@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import logging
 import os, sys
 import functools
 from copy import deepcopy
@@ -98,12 +99,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dirPath:
             self.setDirWithPath(dirPath)
 
+    def setLayoutPath(self, path):
+        self.layoutPath = path
+        self.layoutPathLabel.setText(path)
+        self.getCurrentLayout().toDict()[const.KEY_LAYOUT_PATH]
+
     def setDirWithPath(self, dirPath):
         self.workingDir = dirPath
         self.pixmapsDir = unicode(dirPath)
         listDir = map(lambda x: os.path.join(self.pixmapsDir, x), self.filteredListDir(dirPath))
         self.createPreviews(self.spritesListWidget, listDir, 120)
         self.workingDirLabel.setText(dirPath)
+        self.getCurrentLayout().toDict()[const.KEY_WORKING_DIR] = dirPath
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
@@ -222,7 +229,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def newFile(self):
         self.currentFileName = None
         self.graphicsView.clear()
-        self.layout = Layout(self)
+        self.createEmptyLayout()
 
     def openFile(self):
         path=QFileDialog.getOpenFileName(None, "FileDialog")
@@ -231,6 +238,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.currentFilePath = path
                 self.loadFromString(f.read(), json)
                 self.setWindowModified(False)
+
+    def loadFromString(self, s, formatter):
+        self.graphicsView.clear()
+        try:
+            d = formatter.loads(s)
+        except Exception as e:
+            logging.exception(e)
+            d = {}
+        if const.KEY_WORKING_DIR in d:
+            self.setDirWithPath(d[const.KEY_WORKING_DIR])
+        if const.KEY_LAYOUT_PATH in d:
+            self.setLayoutPath(d[const.KEY_LAYOUT_PATH])
+        self.layout = Layout(self, d)
+        self.layout.show()
 
     def saveFile(self, formatter=None):
         if not formatter:

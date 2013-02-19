@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Tue Feb 19 16:38:39 2013
+# Created: Tue Feb 19 16:56:29 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
         self.actionOpen.setText(_translate("MainWindow", "Open", None))
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
-        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S, Ctrl+S", None))
+        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S", None))
         self.actionRedo.setText(_translate("MainWindow", "Redo", None))
         self.actionRedo.setShortcut(_translate("MainWindow", "Ctrl+Y", None))
         self.actionSet_Layout_Path.setText(_translate("MainWindow", "Set Layout Path", None))
