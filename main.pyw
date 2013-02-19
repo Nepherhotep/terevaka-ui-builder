@@ -36,7 +36,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.selectedItemFactory = None
         self.workingDir = None
         self.pixmapItemFactories = {}
-        self.setDirWithPath("./sprites")
         self.selected = None
         self.grabbed = None
         self.layoutPath = None
