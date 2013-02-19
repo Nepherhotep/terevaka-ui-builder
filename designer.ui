@@ -561,7 +561,7 @@
           <string/>
          </property>
         </widget>
-        <widget class="QFrame" name="dropPanel">
+        <widget class="DropPanel" name="dropPanel">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -691,6 +691,12 @@
    <class>DesignerGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header location="global">graphicsview</header>
+  </customwidget>
+  <customwidget>
+   <class>DropPanel</class>
+   <extends>QFrame</extends>
+   <header location="global">drop_panel</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

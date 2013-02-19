@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Tue Feb 19 10:50:24 2013
+# Created: Tue Feb 19 14:53:59 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -190,7 +190,7 @@ class Ui_MainWindow(object):
         self.resourceLabel.setGeometry(QtCore.QRect(50, 10, 141, 16))
         self.resourceLabel.setText(_fromUtf8(""))
         self.resourceLabel.setObjectName(_fromUtf8("resourceLabel"))
-        self.dropPanel = QtGui.QFrame(self.frame)
+        self.dropPanel = DropPanel(self.frame)
         self.dropPanel.setGeometry(QtCore.QRect(10, 400, 181, 71))
         self.dropPanel.setFrameShape(QtGui.QFrame.StyledPanel)
         self.dropPanel.setFrameShadow(QtGui.QFrame.Raised)
@@ -288,3 +288,4 @@ class Ui_MainWindow(object):
         self.actionRedo.setShortcut(_translate("MainWindow", "Ctrl+Y", None))
 
 from graphicsview import DesignerGraphicsView
+from drop_panel import DropPanel
