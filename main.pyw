@@ -260,11 +260,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             formatter = json
         if self.currentFilePath:
             with open(self.currentFilePath, 'w') as f:
-                try:
-                    f.write(formatter.dumps(self.getCurrentLayout().toDict()))
-                except Exception,e:
-                    pprint(self.getCurrentLayout().toDict())
-                    print('failed to format layout', e)
+                f.write(formatter.dumps(self.getCurrentLayout().toDict()))
                 self.setWindowModified(False)
         else:
             self.saveFileAs()
