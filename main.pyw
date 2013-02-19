@@ -32,14 +32,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dropPanel.mainWindow = self
         self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
         self.connectSlots()
-        self.createEmptyLayout()
+        self.layout = Layout(self)
         self.selectedItemFactory = None
-        self.pixmapsDir = None
+        self.workingDir = None
         self.pixmapItemFactories = {}
         self.setDirWithPath("./sprites")
         self.selected = None
         self.grabbed = None
-        self.workingDir = '.'
         self.layoutPath = None
         self.currentFilePath = None
 
@@ -55,8 +54,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         size = self.graphicsView.geometry().size()
         self.setWindowTitle("Size %sx%s" %(size.width(), size.height()))
 
-    def createEmptyLayout(self):
+    def clearProject(self):
         self.layout = Layout(self)
+        self.graphicsView.clear()
+        self.spritesListWidget.clear()
+        self.pixmapItemFactories.clear()
 
     def getCurrentLayout(self):
         return self.layout
@@ -78,6 +80,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionSave.triggered.connect(self.saveFile)
         self.actionSave_As.triggered.connect(self.saveFileAs)
         self.actionOpen.triggered.connect(self.openFile)
+        self.workingDirToolButton.clicked.connect(self.setDir)
 
     def deselect(self):
         self.selected = None
@@ -95,29 +98,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.getCurrentLayout().redo()
 
     def setDir(self):
-        dirPath=QFileDialog.getExistingDirectory(None, "Set Dir", ".")
+        dirPath=QFileDialog.getExistingDirectory(None, "Set Dir")
         if dirPath:
             self.setDirWithPath(dirPath)
 
     def setLayoutPath(self, path):
         self.layoutPath = path
         self.layoutPathLabel.setText(path)
-        self.getCurrentLayout().toDict()[const.KEY_LAYOUT_PATH]
+        self.getCurrentLayout().toDict()[const.KEY_LAYOUT_PATH] = path
 
     def setDirWithPath(self, dirPath):
-        self.workingDir = dirPath
-        self.pixmapsDir = unicode(dirPath)
-        listDir = map(lambda x: os.path.join(self.pixmapsDir, x), self.filteredListDir(dirPath))
+        self.clearProject()
+        self.workingDir = unicode(dirPath)
+        listDir = map(lambda x: os.path.join(self.workingDir, x), self.filteredListDir(dirPath))
         self.createPreviews(self.spritesListWidget, listDir, 120)
         self.workingDirLabel.setText(dirPath)
-        self.getCurrentLayout().toDict()[const.KEY_WORKING_DIR] = dirPath
+        self.getCurrentLayout().toDict()[const.KEY_WORKING_DIR] = self.workingDir
 
     def filteredListDir(self, dirName):
         # remove Thumbs.db and hidden files from list
         return [f for f in os.listdir(dirName) if ((not f.startswith(".")) and (f.lower()[-4:] in ('.png', '.jpg')))]
         
     def getPixmapItemFactory(self, uniqueName):
-        path = os.path.join(self.pixmapsDir, uniqueName)
+        path = os.path.join(self.workingDir, uniqueName)
         if path in self.pixmapItemFactories:
             return self.pixmapItemFactories[path]
         else:
@@ -228,8 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def newFile(self):
         self.currentFileName = None
-        self.graphicsView.clear()
-        self.createEmptyLayout()
+        self.clearProject()
 
     def openFile(self):
         path=QFileDialog.getOpenFileName(None, "FileDialog")
@@ -258,7 +260,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             formatter = json
         if self.currentFilePath:
             with open(self.currentFilePath, 'w') as f:
-                f.write(formatter.dumps(self.getCurrentLayout().toDict()))
+                try:
+                    f.write(formatter.dumps(self.getCurrentLayout().toDict()))
+                except Exception,e:
+                    pprint(self.getCurrentLayout().toDict())
+                    print('failed to format layout', e)
                 self.setWindowModified(False)
         else:
             self.saveFileAs()
