@@ -17,8 +17,8 @@ from designer_ui import Ui_MainWindow
 
 def ifItemSelected(function):
     def newFunction(self, *args, **kwrags):
-        if self.graphicsView.selected:
-            return function(self, self.graphicsView.selected, *args, **kwrags)
+        if self.selected:
+            return function(self, self.selected, *args, **kwrags)
     return newFunction
 
 
@@ -35,6 +35,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pixmapsDir = None
         self.pixmapItemFactories = {}
         self.setDirWithPath("./sprites")
+        self.selected = None
+        self.grabbed = None
 
     def showEvent(self, event):
         super(MainWindow, self).showEvent(event)
@@ -69,7 +71,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.unitsYComboBox.activated.connect(self.onUnitsYComboBoxChanged)
 
     def deselect(self):
-        self.graphicsView.selected = None
+        self.selected = None
         self.posXSpinBox.setValue(0)
         self.posYSpinBox.setValue(0)
         self.alignLeftRadio.setChecked(True)
@@ -142,7 +144,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.deselect()
 
     def onItemSelected(self, item):
+        self.selected = item
         self.updateInfoBar(item)
+
+    def clearGrabbed(self):
+        self.grabbed = None
 
     def updateInfoBar(self, item):
         self.resourceLabel.setText(item.name)

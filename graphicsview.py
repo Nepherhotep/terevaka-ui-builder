@@ -16,8 +16,6 @@ class DesignerGraphicsView(QGraphicsView):
         self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QGraphicsView.AnchorViewCenter)
         self.setAcceptDrops(True)
-        self.selected = None
-        self.grabbed = None
 
     def dragEnterEvent(self, event):
         event.accept()
@@ -30,19 +28,18 @@ class DesignerGraphicsView(QGraphicsView):
 
     def onDragComplete(self, event):
         posMap = event.pos() - self.grabOffset
-        self.grabbed.setPos(self.mapToScene(posMap))
-        self.mainWindow.getCurrentLayout().changePropPos(self.grabbed, posMap)
-        self.mainWindow.updateInfoBar(self.grabbed)
+        self.mainWindow.grabbed.setPos(self.mapToScene(posMap))
+        self.mainWindow.getCurrentLayout().changePropPos(self.mainWindow.grabbed, posMap)
+        self.mainWindow.updateInfoBar(self.mainWindow.grabbed)
 
     def dropEvent(self, event):
         event.accept()
-        if self.grabbed:
+        if self.mainWindow.grabbed:
             self.onDragComplete(event)
-            self.grabbed = None
+            self.mainWindow.grabbed = None
         else:
             pos = self.mapToScene(event.pos())
             self.addItem(self.mainWindow.selectedItemFactory, event.pos(), pos)
-            self.mainWindow.onItemSelected(self.selected)
 
     def clear(self):
         self.scene.clear()
@@ -52,15 +49,10 @@ class DesignerGraphicsView(QGraphicsView):
         pos = self.mapToScene(mouseEvent.pos())
         items = self.scene.items(pos)
         if items:
-            self.selected = items[0]
-        if mouseEvent.button() == Qt.RightButton:
-            if items:
-                self.mainWindow.removeSelectedItem()
-        else:
-            if items:
-                self.grabbed = self.selected
-                self.mainWindow.onItemSelected(self.selected)
-                self.startDrag(mouseEvent, self.grabbed)
+            self.mainWindow.onItemSelected(items[0])
+            if mouseEvent.button() == Qt.LeftButton:
+                self.mainWindow.grabbed = items[0]
+                self.startDrag(mouseEvent, self.mainWindow.grabbed)
 
     def startDrag(self, mouseEvent, item):
         mimeData = QMimeData()
@@ -78,8 +70,6 @@ class DesignerGraphicsView(QGraphicsView):
         prop[const.KEY_NAME] = self.mainWindow.selectedItemFactory.name
 
         #reset controls to default
-        self.mainWindow.alignBottomRadio.setChecked(True)
-        self.mainWindow.alignLeftRadio.setChecked(True)
         prop[const.KEY_ALIGN_LEFT] = True
         prop[const.KEY_ALIGN_BOTTOM] = True
         prop[const.KEY_X_UNIT] = const.UNIT_PX
@@ -91,8 +81,7 @@ class DesignerGraphicsView(QGraphicsView):
         item.updateScenePos(self)
         #save prop in layout
         self.mainWindow.getCurrentLayout().addProp(item)
-        self.selected = item
         self.scene.addItem(item)
-
+        self.mainWindow.onItemSelected(item)
 
 

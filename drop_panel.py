@@ -23,9 +23,9 @@ class DropPanel(QFrame):
     def dropEvent(self, event):
         self.setBackgroundColor(self.defaultColor)
         event.accept()
-        if self.mainWindow.graphicsView.grabbed:
+        if self.mainWindow.grabbed:
             self.mainWindow.removeSelectedItem()
-            self.mainWindow.graphicsView.grabbed = None
+            self.mainWindow.grabbed = None
 
     def setBackgroundColor(self, color):
         palette = self.palette()
