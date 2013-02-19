@@ -28,11 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.graphicsView.mainWindow = self
-        self.dropPanel.mainWindow = self
-        self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
-        self.connectSlots()
-        self.layout = Layout(self)
+
         self.selectedItemFactory = None
         self.workingDir = None
         self.pixmapItemFactories = {}
@@ -40,6 +36,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.grabbed = None
         self.layoutPath = None
         self.currentFilePath = None
+
+        self.graphicsView.mainWindow = self
+        self.dropPanel.mainWindow = self
+        self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
+        self.connectSlots()
+        self.layout = Layout(self)
 
     def showEvent(self, event):
         super(MainWindow, self).showEvent(event)
@@ -81,6 +83,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionOpen.triggered.connect(self.openFile)
         self.workingDirToolButton.clicked.connect(self.selectDir)
         self.layoutPathToolButton.clicked.connect(self.selectLayoutPath)
+        self.resourceIdEdit.textEdited.connect(self.onUidChanged)
 
     def deselect(self):
         self.selected = None
@@ -197,6 +200,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.unitsYComboBox.setCurrentIndex(const.UNIT_PX_POS)
         else:
             self.unitsYComboBox.setCurrentIndex(const.UNIT_PERCENT_POS)
+        self.resourceIdEdit.setText(item.prop.get(const.KEY_UID, ''))
 
     @ifItemSelected
     def onAlignBottomRadioToggled(self, selectedItem, event):
@@ -235,6 +239,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
         self.getCurrentLayout().changePropYUnit(selectedItem, mapPos, units)
         self.updateInfoBar(selectedItem)
+
+    @ifItemSelected
+    def onUidChanged(self, selectedItem, event):
+        self.getCurrentLayout().changePropUid(selectedItem, unicode(event))
 
     def newFile(self):
         self.currentFileName = None
@@ -325,6 +333,10 @@ class Layout(object):
     def addProp(self, item):
         item.prop[const.KEY_ID] = self.incPropId()
         self.d[const.KEY_PROPS].append(item.prop)
+
+    @saveHistory
+    def changePropUid(self, item, uid):
+        item.prop[const.KEY_UID] = uid
 
     @saveHistory
     def removeProp(self, item):

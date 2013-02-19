@@ -11,6 +11,7 @@ KEY_NAME = 'name'
 KEY_TYPE = 'type'
 KEY_PROPS = 'props'
 KEY_ID = 'id'
+KEY_UID = 'uid'
 KEY_WORKING_DIR = 'working_dir'
 KEY_LAYOUT_PATH = 'layout_path'
 
