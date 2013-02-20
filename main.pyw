@@ -1,20 +1,18 @@
 #!/usr/bin/python
+import json
 import logging
 import os, sys
-import functools
 from copy import deepcopy
 from pprint import pprint
 
+import Image
+import ImageQt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-import Image
-import ImageQt
-
 import const
-
 from designer_ui import Ui_MainWindow
-import json
+from exporters import LuaExporter
 
 
 def ifItemSelected(function):
@@ -65,12 +63,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.layout
 
     def connectSlots(self):
-        self.connect(self.actionSet_Dir, SIGNAL('triggered()'), self.selectDir)
+        self.actionSet_Dir.triggered.connect(self.selectDir)
         def slot(item):
             self.selectedItemFactory = self.getPixmapItemFactory(item.name)
         self.spritesListWidget.itemPressed.connect(slot)
-        self.connect(self.actionUndo, SIGNAL('triggered()'), self.undo)
-        self.connect(self.actionRedo, SIGNAL('triggered()'), self.redo)
+        self.actionUndo.triggered.connect(self.undo)
+        self.actionRedo.triggered.connect(self.redo)
         self.alignBottomRadio.toggled.connect(self.onAlignBottomRadioToggled)
         self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
@@ -81,6 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionSave.triggered.connect(self.saveFile)
         self.actionSave_As.triggered.connect(self.saveFileAs)
         self.actionOpen.triggered.connect(self.openFile)
+        self.actionExport_Layout.triggered.connect(self.exportLayout)
         self.workingDirToolButton.clicked.connect(self.selectDir)
         self.layoutPathToolButton.clicked.connect(self.selectLayoutPath)
         self.resourceIdEdit.textEdited.connect(self.onUidChanged)
@@ -109,6 +108,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         path=QFileDialog.getOpenFileName(None, "Select Layout Path")
         if path:
             self.setLayoutPath(path)
+            return path
 
     def setLayoutPathLabelText(self, path):
         self.layoutPathLabel.setText(self.elided(path))
@@ -293,6 +293,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if filename:
             self.currentFilePath = filename
             self.saveFile(*args, **kwargs)
+
+    def exportLayout(self):
+        layoutPath = self.getCurrentLayout().toDict().get(const.KEY_LAYOUT_PATH)
+        if not layoutPath:
+            layoutPath = self.selectLayoutPath()
+        exporter = LuaExporter()
+        if layoutPath:
+            with open(layoutPath, 'w') as out:
+                out.write(exporter.export(self.getCurrentLayout().toDict()))
 
     def elided(self, text, width=20):
         if len(text) > width:
@@ -496,6 +505,7 @@ class PixmapItem(QGraphicsPixmapItem):
             self.prop[const.KEY_Y] = alignedY
         else:
             self.prop[const.KEY_Y] = alignedY*100/mapSize.height()
+
 
 
 def main():
