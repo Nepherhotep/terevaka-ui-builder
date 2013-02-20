@@ -5,8 +5,6 @@ import os, sys
 from copy import deepcopy
 from pprint import pprint
 
-import Image
-import ImageQt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -155,14 +153,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def getCurrentLayout(self):
         return self.layout
 
-    def createPreviews(self, listWidget, iconPathList, iconSize, thumbnail=False):
+    def createPreviews(self, listWidget, iconPathList, iconSize):
         listWidget.setIconSize(QSize(iconSize, iconSize))
         for path in sorted(iconPathList):
-            picture = Image.open(path)
-            if thumbnail:
-                picture.thumbnail((thumbnail, thumbnail), Image.ANTIALIAS)
             try:
-                icon = QIcon(QPixmap.fromImage(ImageQt.ImageQt(picture)))
+                icon = QIcon(QPixmap(path))
                 filename = os.path.basename(path)
                 if len(filename) <= 20:
                     label = filename
@@ -448,8 +443,7 @@ class PixmapItemFactory(object):
         self.name = name
         self.type = 'sprite'
         self.path = path
-        picture = Image.open(path)
-        self.pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
+        self.pixmap = QPixmap(path)
         for key, value in params.items():
             setattr(self, key, value)
 
