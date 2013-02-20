@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Tue Feb 19 16:56:29 2013
+# Created: Wed Feb 20 12:33:27 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -91,13 +91,14 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
         self.resourceIdEdit = QtGui.QLineEdit(self.frame)
-        self.resourceIdEdit.setGeometry(QtCore.QRect(30, 40, 161, 22))
+        self.resourceIdEdit.setGeometry(QtCore.QRect(40, 40, 151, 22))
         self.resourceIdEdit.setInputMask(_fromUtf8(""))
         self.resourceIdEdit.setText(_fromUtf8(""))
         self.resourceIdEdit.setPlaceholderText(_fromUtf8(""))
         self.resourceIdEdit.setObjectName(_fromUtf8("resourceIdEdit"))
         self.label = QtGui.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(10, 42, 21, 16))
+        self.label.setGeometry(QtCore.QRect(7, 41, 31, 20))
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName(_fromUtf8("label"))
         self.frame_2 = QtGui.QFrame(self.frame)
         self.frame_2.setGeometry(QtCore.QRect(10, 80, 181, 201))
@@ -239,7 +240,7 @@ class Ui_MainWindow(object):
         self.layoutPathLabel.setText(_translate("MainWindow", "Not Specified", None))
         self.layoutPathToolButton.setText(_translate("MainWindow", "...", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.properties), _translate("MainWindow", "Properties", None))
-        self.label.setText(_translate("MainWindow", "ID", None))
+        self.label.setText(_translate("MainWindow", "UID", None))
         self.unitsXComboBox.setItemText(0, _translate("MainWindow", "Px", None))
         self.unitsXComboBox.setItemText(1, _translate("MainWindow", "%", None))
         self.label_2.setText(_translate("MainWindow", "X", None))
