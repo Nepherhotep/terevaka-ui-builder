@@ -147,7 +147,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return itemFactory
 
     def getItemFactory(self, itemFactoryType, name):
-        if itemFactoryType == 'pixmap':
+        if itemFactoryType == 'sprite':
             return self.getPixmapItemFactory(name)
         else:
             raise Exception, "Unsupported itemFactoryTime type %s" %itemFactoryType
@@ -446,7 +446,7 @@ class Layout(object):
 class PixmapItemFactory(object):
     def __init__(self, name, path, **params):
         self.name = name
-        self.type = 'pixmap'
+        self.type = 'sprite'
         self.path = path
         picture = Image.open(path)
         self.pixmap = QPixmap.fromImage(ImageQt.ImageQt(picture))
