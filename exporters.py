@@ -8,17 +8,22 @@ class LuaExporter(object):
     def export(self, d):
         out = StringIO()
         out.write("return {\n")
-        for prop in d[const.KEY_PROPS]:
+        props = d[const.KEY_PROPS]
+        for i, prop in enumerate(props):
             out.write(self.formatProp(prop))
-            out.write(",\n")
+            if i + 1 < len(props):
+                out.write(",\n")
+            else:
+                out.write("\n")
+        out.write("}")
         out.seek(0)
         return out.read()
 
     def formatProp(self, prop):
-        s = "   {"
+        s = "    {\n"
         for key, value in prop.items():
             s += self.formatKeyValue(key, value)
-        s += "  }"
+        s += "    }"
         return s
 
     def formatBool(self, b):
@@ -29,9 +34,9 @@ class LuaExporter(object):
 
     def formatKeyValue(self, key, value):
         if type(value) in (int, float):
-            return "    [\"%s\"] = %s,\n" %(key, value)
+            return "        [\"%s\"] = %s,\n" %(key, value)
         if type(value) == bool:
-            return "    [\"%s\"] = %s,\n" %(key, self.formatBool(value))
+            return "        [\"%s\"] = %s,\n" %(key, self.formatBool(value))
         else:
-            return "    [\"%s\"] = %s,\n" %(key, self.formatString(value))
+            return "        [\"%s\"] = %s,\n" %(key, self.formatString(value))
 
