@@ -561,7 +561,7 @@
     </property>
     <addaction name="actionSet_Dir"/>
     <addaction name="actionSet_Layout_Path"/>
-    <addaction name="actionPublish_Layout"/>
+    <addaction name="actionExport_Layout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -627,9 +627,9 @@
     <string>Ctrl+L</string>
    </property>
   </action>
-  <action name="actionPublish_Layout">
+  <action name="actionExport_Layout">
    <property name="text">
-    <string>Publish Layout</string>
+    <string>Export Layout</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Return</string>

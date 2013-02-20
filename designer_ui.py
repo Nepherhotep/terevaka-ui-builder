@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Feb 20 12:33:27 2013
+# Created: Wed Feb 20 12:45:02 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -209,8 +209,8 @@ class Ui_MainWindow(object):
         self.actionRedo.setObjectName(_fromUtf8("actionRedo"))
         self.actionSet_Layout_Path = QtGui.QAction(MainWindow)
         self.actionSet_Layout_Path.setObjectName(_fromUtf8("actionSet_Layout_Path"))
-        self.actionPublish_Layout = QtGui.QAction(MainWindow)
-        self.actionPublish_Layout.setObjectName(_fromUtf8("actionPublish_Layout"))
+        self.actionExport_Layout = QtGui.QAction(MainWindow)
+        self.actionExport_Layout.setObjectName(_fromUtf8("actionExport_Layout"))
         self.actionSave_As = QtGui.QAction(MainWindow)
         self.actionSave_As.setObjectName(_fromUtf8("actionSave_As"))
         self.menuFile.addAction(self.actionNew)
@@ -221,7 +221,7 @@ class Ui_MainWindow(object):
         self.menuEdit.addAction(self.actionRedo)
         self.menuResources.addAction(self.actionSet_Dir)
         self.menuResources.addAction(self.actionSet_Layout_Path)
-        self.menuResources.addAction(self.actionPublish_Layout)
+        self.menuResources.addAction(self.actionExport_Layout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuResources.menuAction())
@@ -274,8 +274,8 @@ class Ui_MainWindow(object):
         self.actionRedo.setShortcut(_translate("MainWindow", "Ctrl+Y", None))
         self.actionSet_Layout_Path.setText(_translate("MainWindow", "Set Layout Path", None))
         self.actionSet_Layout_Path.setShortcut(_translate("MainWindow", "Ctrl+L", None))
-        self.actionPublish_Layout.setText(_translate("MainWindow", "Publish Layout", None))
-        self.actionPublish_Layout.setShortcut(_translate("MainWindow", "Ctrl+Return", None))
+        self.actionExport_Layout.setText(_translate("MainWindow", "Export Layout", None))
+        self.actionExport_Layout.setShortcut(_translate("MainWindow", "Ctrl+Return", None))
         self.actionSave_As.setText(_translate("MainWindow", "Save As ...", None))
         self.actionSave_As.setShortcut(_translate("MainWindow", "Ctrl+Shift+S", None))
 
