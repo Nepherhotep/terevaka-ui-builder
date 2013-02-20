@@ -105,7 +105,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setDirWithPath(dirPath)
 
     def selectLayoutPath(self):
-        path=QFileDialog.getOpenFileName(None, "Select Layout Path")
+        path=QFileDialog.getSaveFileName(None, "Select Layout Path")
         if path:
             self.setLayoutPath(path)
             return path
