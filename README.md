@@ -1,6 +1,19 @@
 Terevaka UI Builder
 ===================
 
-Future UI designer for terevaka application framework
+Requirement
+-------------------
+
+* Python2.7
+* PyQt
+
+Running
+-------------------
+
+```git clone https://github.com/Nepherhotep/terevaka-ui-builder```
+
+```cd terevaka-ui-builder```
+
+```python main.pyw```
 
 Terevaka UI Builder is licensed under GNU LGPL license
