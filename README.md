@@ -16,4 +16,7 @@ Running
 
 ```python main.pyw```
 
+License
+-------------------
+
 Terevaka UI Builder is licensed under GNU LGPL license
