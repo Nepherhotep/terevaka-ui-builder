@@ -14,6 +14,12 @@ KEY_ID = 'id'
 KEY_UID = 'uid'
 KEY_WORKING_DIR = 'working_dir'
 KEY_LAYOUT_PATH = 'layout_path'
+KEY_LAYOUT_TYPE = 'layout_type'
+
+ELASTIC_LAYOUT_TYPE = 'elastic'
+SCALABLE_LAYOUT_TYPE = 'scalable'
+
+
 
 UNIT_PX = 'px'
 UNIT_PX_POS = 0

@@ -30,6 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pixmapItemFactories = {}
         self.selected = None
         self.grabbed = None
+        self.layoutType = const.ELASTIC_LAYOUT_TYPE
         self.layoutPath = None
         self.currentFilePath = None
 
@@ -81,6 +82,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.workingDirToolButton.clicked.connect(self.selectDir)
         self.layoutPathToolButton.clicked.connect(self.selectLayoutPath)
         self.resourceIdEdit.textEdited.connect(self.onUidChanged)
+        self.elasticLayoutRadio.toggled.connect(self.onLayoutTypeChanged)
 
     def deselect(self):
         self.selected = None
@@ -117,6 +119,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.layoutPath = path
         self.setLayoutPathLabelText(path)
         self.getCurrentLayout().setLayoutPath(path)
+
+    def onLayoutTypeChanged(self):
+        if self.elasticLayoutRadio.isChecked():
+           self.setLayoutType(const.ELASTIC_LAYOUT_TYPE)
+        else:
+            self.setLayoutType(const.SCALABLE_LAYOUT_TYPE)
+
+    def setLayoutType(self, layoutType):
+        self.showLayoutType(layoutType)
+        self.getCurrentLayout().setLayoutType(layoutType)
+
+    def showLayoutType(self, layoutType):
+        isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
+        self.elasticLayoutRadio.setChecked(isElastic)
+        self.scalableLayoutRadio.setChecked(not isElastic)
+        self.anchorXSpinBox.setEnabled(not isElastic)
+        self.anchorYSpinBox.setEnabled(not isElastic)
 
     def setWorkingDirLabelText(self, dirPath):
         self.workingDirLabel.setText(self.elided(dirPath))
@@ -270,6 +289,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setDirWithPath(d[const.KEY_WORKING_DIR])
         if const.KEY_LAYOUT_PATH in d:
             self.setLayoutPath(d[const.KEY_LAYOUT_PATH])
+        if const.KEY_LAYOUT_TYPE in d:
+            self.setLayoutType(d[const.KEY_LAYOUT_TYPE])
+        else:
+            self.setLayoutType(const.ELASTIC_LAYOUT_TYPE)
         self.layout = Layout(self, d)
         self.layout.show()
 
@@ -314,6 +337,7 @@ class Layout(object):
         if d == None:
             self.d = {}
             self.d[const.KEY_PROPS] = []
+            self.d[const.KEY_LAYOUT_TYPE] = const.ELASTIC_LAYOUT_TYPE
             self.history = []
         else:
             self.d = d
@@ -395,6 +419,10 @@ class Layout(object):
         item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
+    def setLayoutType(self, layoutType):
+        self.d[const.KEY_LAYOUT_TYPE] = layoutType
+
+    @saveHistory
     def setLayoutPath(self, layoutPath):
         self.d[const.KEY_LAYOUT_PATH] = layoutPath
 
@@ -431,8 +459,9 @@ class Layout(object):
             item = itemFactory.createGraphicsItem(prop)
             item.updateScenePos(self.mainWindow.graphicsView)
             self.mainWindow.graphicsView.scene.addItem(item)
-            self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
-            self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
+        self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
+        self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
+        self.mainWindow.showLayoutType(self.d.get(const.KEY_LAYOUT_TYPE))
 
     def toDict(self):
         return self.d
