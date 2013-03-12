@@ -122,11 +122,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def onLayoutTypeChanged(self):
         if self.elasticLayoutRadio.isChecked():
-           self.setLayoutType(const.ELASTIC_LAYOUT_TYPE)
+            layoutType = const.ELASTIC_LAYOUT_TYPE
         else:
-            self.setLayoutType(const.SCALABLE_LAYOUT_TYPE)
-
-    def setLayoutType(self, layoutType):
+            layoutType = const.SCALABLE_LAYOUT_TYPE
         self.updateLayoutTypeUI(layoutType)
         self.getCurrentLayout().setLayoutType(layoutType)
 
