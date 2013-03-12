@@ -46,7 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def resizeEvent(self, evt=None):
         self.updateWindowTitle()
-        self.getCurrentLayout().show()
+        self.getCurrentLayout().updateUI()
 
     def updateWindowTitle(self):
         size = self.graphicsView.geometry().size()
@@ -127,10 +127,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setLayoutType(const.SCALABLE_LAYOUT_TYPE)
 
     def setLayoutType(self, layoutType):
-        self.showLayoutType(layoutType)
+        self.updateLayoutTypeUI(layoutType)
         self.getCurrentLayout().setLayoutType(layoutType)
 
-    def showLayoutType(self, layoutType):
+    def updateLayoutTypeUI(self, layoutType):
         isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
         self.elasticLayoutRadio.setChecked(isElastic)
         self.scalableLayoutRadio.setChecked(not isElastic)
@@ -294,7 +294,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.setLayoutType(const.ELASTIC_LAYOUT_TYPE)
         self.layout = Layout(self, d)
-        self.layout.show()
+        self.layout.updateUI()
 
     def saveFile(self, formatter=None):
         if not formatter:
@@ -437,7 +437,7 @@ class Layout(object):
         else:
             self.current += 1
             self.d = deepcopy(self.history[self.current])
-            self.show()
+            self.updateUI()
             self.mainWindow.setWindowModified(True)
 
     def redo(self):
@@ -445,12 +445,12 @@ class Layout(object):
         if self.current > 0:
             self.current -= 1
             self.d = deepcopy(self.history[self.current])
-            self.show()
+            self.updateUI()
             self.mainWindow.setWindowModified(True)
         else:
             print("There are no further actions")
 
-    def show(self):
+    def updateUI(self):
         self.mainWindow.graphicsView.clear()
         for prop in self.d[const.KEY_PROPS]:
             name = prop[const.KEY_NAME]
@@ -461,7 +461,7 @@ class Layout(object):
             self.mainWindow.graphicsView.scene.addItem(item)
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
-        self.mainWindow.showLayoutType(self.d.get(const.KEY_LAYOUT_TYPE))
+        self.mainWindow.updateLayoutTypeUI(self.d.get(const.KEY_LAYOUT_TYPE))
 
     def toDict(self):
         return self.d
