@@ -125,17 +125,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             layoutType = const.ELASTIC_LAYOUT_TYPE
         else:
             layoutType = const.SCALABLE_LAYOUT_TYPE
-        self.updateLayoutTypeUI(layoutType)
         self.getCurrentLayout().setLayoutType(layoutType)
+        self.getCurrentLayout().updateUI()
 
     def updateLayoutTypeUI(self, layoutType):
         isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
         self.elasticLayoutRadio.setChecked(isElastic)
         self.scalableLayoutRadio.setChecked(not isElastic)
-        for view in [self.anchorLabel, self.anchorXSpinBox, self.anchorYLabel,
+        for view in [self.anchorLabel, self.anchorXLabel, self.anchorYLabel,
                      self.anchorXSpinBox, self.anchorYSpinBox]:
             view.setEnabled(not isElastic)
-
+        graphicsGeometry = self.graphicsView.geometry()
+        if not isElastic:
+            self.graphicsView.setGeometry(QRect(graphicsGeometry.x(), graphicsGeometry.y(),
+                                                self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text()),
+                                                self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())))
 
     def setWorkingDirLabelText(self, dirPath):
         self.workingDirLabel.setText(self.elided(dirPath))
@@ -451,6 +455,7 @@ class Layout(object):
             print("There are no further actions")
 
     def updateUI(self):
+        self.mainWindow.updateLayoutTypeUI(self.d.get(const.KEY_LAYOUT_TYPE))
         self.mainWindow.graphicsView.clear()
         for prop in self.d[const.KEY_PROPS]:
             name = prop[const.KEY_NAME]
@@ -461,7 +466,7 @@ class Layout(object):
             self.mainWindow.graphicsView.scene.addItem(item)
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
-        self.mainWindow.updateLayoutTypeUI(self.d.get(const.KEY_LAYOUT_TYPE))
+        self.mainWindow.updateWindowTitle()
 
     def toDict(self):
         return self.d
