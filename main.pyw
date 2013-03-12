@@ -72,6 +72,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
+        self.anchorXSpinBox.editingFinished.connect(self.onAnchorXChanged)
+        self.anchorYSpinBox.editingFinished.connect(self.onAnchorYChanged)
         self.unitsXComboBox.activated.connect(self.onUnitsXComboBoxChanged)
         self.unitsYComboBox.activated.connect(self.onUnitsYComboBoxChanged)
         self.actionNew.triggered.connect(self.newFile)
@@ -127,6 +129,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             layoutType = const.SCALABLE_LAYOUT_TYPE
         self.getCurrentLayout().setLayoutType(layoutType)
         self.getCurrentLayout().updateUI()
+
+    def onAnchorXChanged(self):
+        self.getCurrentLayout().setLayoutAnchorX(self.anchorXSpinBox.valueFromText(self.anchorXSpinBox.text()))
+
+    def onAnchorYChanged(self):
+        self.getCurrentLayout().setLayoutAnchorY(self.anchorYSpinBox.valueFromText(self.anchorYSpinBox.text()))
 
     def updateLayoutTypeUI(self, layoutType):
         isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
@@ -293,10 +301,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setDirWithPath(d[const.KEY_WORKING_DIR])
         if const.KEY_LAYOUT_PATH in d:
             self.setLayoutPath(d[const.KEY_LAYOUT_PATH])
-        if const.KEY_LAYOUT_TYPE in d:
-            self.setLayoutType(d[const.KEY_LAYOUT_TYPE])
-        else:
-            self.setLayoutType(const.ELASTIC_LAYOUT_TYPE)
         self.layout = Layout(self, d)
         self.layout.updateUI()
 
@@ -427,6 +431,14 @@ class Layout(object):
         self.d[const.KEY_LAYOUT_TYPE] = layoutType
 
     @saveHistory
+    def setLayoutAnchorX(self, value):
+        self.d[const.KEY_LAYOUT_ANCHOR_X] = value
+
+    @saveHistory
+    def setLayoutAnchorY(self, value):
+        self.d[const.KEY_LAYOUT_ANCHOR_Y] = value
+
+    @saveHistory
     def setLayoutPath(self, layoutPath):
         self.d[const.KEY_LAYOUT_PATH] = layoutPath
 
@@ -455,7 +467,7 @@ class Layout(object):
             print("There are no further actions")
 
     def updateUI(self):
-        self.mainWindow.updateLayoutTypeUI(self.d.get(const.KEY_LAYOUT_TYPE))
+        self.mainWindow.updateLayoutTypeUI(self.d.get(const.KEY_LAYOUT_TYPE, const.ELASTIC_LAYOUT_TYPE))
         self.mainWindow.graphicsView.clear()
         for prop in self.d[const.KEY_PROPS]:
             name = prop[const.KEY_NAME]
@@ -467,6 +479,8 @@ class Layout(object):
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.updateWindowTitle()
+        self.mainWindow.anchorXSpinBox.setValue(self.d.get(const.KEY_LAYOUT_ANCHOR_X, const.DEFAULT_ANCHOR_X))
+        self.mainWindow.anchorYSpinBox.setValue(self.d.get(const.KEY_LAYOUT_ANCHOR_Y, const.DEFAULT_ANCHOR_Y))
 
     def toDict(self):
         return self.d
@@ -533,6 +547,7 @@ class PixmapItem(QGraphicsPixmapItem):
             self.prop[const.KEY_Y] = alignedY
         else:
             self.prop[const.KEY_Y] = alignedY*100/mapSize.height()
+
 
 
 

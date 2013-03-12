@@ -15,11 +15,14 @@ KEY_UID = 'uid'
 KEY_WORKING_DIR = 'working_dir'
 KEY_LAYOUT_PATH = 'layout_path'
 KEY_LAYOUT_TYPE = 'layout_type'
+KEY_LAYOUT_ANCHOR_X = 'layout_anchor_x'
+KEY_LAYOUT_ANCHOR_Y = 'layout_anchor_y'
 
 ELASTIC_LAYOUT_TYPE = 'elastic'
 SCALABLE_LAYOUT_TYPE = 'scalable'
 
-
+DEFAULT_ANCHOR_X = 320
+DEFAULT_ANCHOR_Y = 240
 
 UNIT_PX = 'px'
 UNIT_PX_POS = 0
