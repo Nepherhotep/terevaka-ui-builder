@@ -132,8 +132,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
         self.elasticLayoutRadio.setChecked(isElastic)
         self.scalableLayoutRadio.setChecked(not isElastic)
-        self.anchorXSpinBox.setEnabled(not isElastic)
-        self.anchorYSpinBox.setEnabled(not isElastic)
+        for view in [self.anchorLabel, self.anchorXSpinBox, self.anchorYLabel,
+                     self.anchorXSpinBox, self.anchorYSpinBox]:
+            view.setEnabled(not isElastic)
+
 
     def setWorkingDirLabelText(self, dirPath):
         self.workingDirLabel.setText(self.elided(dirPath))
