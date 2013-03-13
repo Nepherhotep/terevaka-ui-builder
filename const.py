@@ -15,16 +15,18 @@ KEY_UID = 'uid'
 KEY_WORKING_DIR = 'working_dir'
 KEY_LAYOUT_PATH = 'layout_path'
 KEY_LAYOUT_TYPE = 'layout_type'
-KEY_LAYOUT_ANCHOR_X = 'layout_anchor_x'
-KEY_LAYOUT_ANCHOR_Y = 'layout_anchor_y'
+KEY_LAYOUT_H_ALIGN = 'layout_h_align'#h = horizontal
 KEY_LAYOUT_WIDTH = 'layout_width'
 KEY_LAYOUT_HEIGHT = 'layout_height'
 
 ELASTIC_LAYOUT_TYPE = 'elastic'
 SCALABLE_LAYOUT_TYPE = 'scalable'
 
-DEFAULT_ANCHOR_X = 320
-DEFAULT_ANCHOR_Y = 240
+ALIGN_LEFT = 'left'
+ALIGN_RIGHT = 'right'
+ALIGN_CENTER = 'center'
+
+DEFAULT_LAYOUT_H_ALIGN = ALIGN_CENTER
 
 UNIT_PX = 'px'
 UNIT_PX_POS = 0

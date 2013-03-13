@@ -70,10 +70,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionRedo.triggered.connect(self.redo)
         self.alignBottomRadio.toggled.connect(self.onAlignBottomRadioToggled)
         self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
+        self.layoutHAlignCenterRadio.toggled.connect(self.onLayoutHAlignChanged)
+        self.layoutHAlignLeftRadio.toggled.connect(self.onLayoutHAlignChanged)
+        self.layoutHAlignRightRadio.toggled.connect(self.onLayoutHAlignChanged)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
-        self.anchorXSpinBox.editingFinished.connect(self.onAnchorXChanged)
-        self.anchorYSpinBox.editingFinished.connect(self.onAnchorYChanged)
         self.unitsXComboBox.activated.connect(self.onUnitsXComboBoxChanged)
         self.unitsYComboBox.activated.connect(self.onUnitsYComboBoxChanged)
         self.actionNew.triggered.connect(self.newFile)
@@ -122,35 +123,46 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setLayoutPathLabelText(path)
         self.getCurrentLayout().setLayoutPath(path)
 
+    def getLayoutHAlignFromUI(self):
+        if self.layoutHAlignCenterRadio.isChecked():
+            return const.ALIGN_CENTER
+        elif self.layoutHAlignLeftRadio.isChecked():
+            return const.ALIGN_LEFT
+        else:
+            return const.ALIGN_RIGHT
+
     def onLayoutTypeChanged(self):
         if self.elasticLayoutRadio.isChecked():
             self.getCurrentLayout().setLayoutElastic()
         else:
-            anchorX = self.anchorXSpinBox.valueFromText(self.anchorXSpinBox.text())
-            anchorY = self.anchorYSpinBox.valueFromText(self.anchorYSpinBox.text())
+            align = self.getLayoutHAlignFromUI()
             layoutWidth = self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text())
             layoutHeight = self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())
-            self.getCurrentLayout().setLayoutScalable(anchorX, anchorY, layoutWidth, layoutHeight)
+            self.getCurrentLayout().setLayoutScalable(layoutWidth, layoutHeight, align)
         self.getCurrentLayout().updateUI()
 
-    def onAnchorXChanged(self):
-        self.getCurrentLayout().setLayoutAnchorX(self.anchorXSpinBox.valueFromText(self.anchorXSpinBox.text()))
-
-    def onAnchorYChanged(self):
-        self.getCurrentLayout().setLayoutAnchorY(self.anchorYSpinBox.valueFromText(self.anchorYSpinBox.text()))
+    def onLayoutHAlignChanged(self):
+        align = self.getLayoutHAlignFromUI()
+        self.getCurrentLayout().setLayoutHAlign(align)
 
     def updateLayoutTypeUI(self, layoutType):
         isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
         self.elasticLayoutRadio.setChecked(isElastic)
         self.scalableLayoutRadio.setChecked(not isElastic)
-        for view in [self.anchorLabel, self.anchorXLabel, self.anchorYLabel,
-                     self.anchorXSpinBox, self.anchorYSpinBox]:
-            view.setEnabled(not isElastic)
+        self.layoutHAlignBox.setEnabled(not isElastic)
         graphicsGeometry = self.graphicsView.geometry()
         if not isElastic:
             self.graphicsView.setGeometry(QRect(graphicsGeometry.x(), graphicsGeometry.y(),
                                                 self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text()),
                                                 self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())))
+
+    def updateLayoutHAlignUI(self, align):
+        if align == const.ALIGN_CENTER:
+            self.layoutHAlignCenterRadio.setChecked(True)
+        elif align == const.ALIGN_LEFT:
+            self.layoutHAlignLeftRadio.setChecked(True)
+        else:
+            self.layoutHAlignRightRadio.setChecked(True)
 
     def setWorkingDirLabelText(self, dirPath):
         self.workingDirLabel.setText(self.elided(dirPath))
@@ -430,28 +442,22 @@ class Layout(object):
         item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
-    def setLayoutScalable(self, anchorX, anchorY, layoutWidth, layoutHeight):
+    def setLayoutScalable(self, layoutWidth, layoutHeight, hAlign):
         self.d[const.KEY_LAYOUT_TYPE] = const.SCALABLE_LAYOUT_TYPE
-        self.d[const.KEY_LAYOUT_ANCHOR_X] = anchorX
-        self.d[const.KEY_LAYOUT_ANCHOR_Y] = anchorY
+        self.d[const.KEY_LAYOUT_H_ALIGN] = hAlign
         self.d[const.KEY_LAYOUT_WIDTH] = layoutWidth
         self.d[const.KEY_LAYOUT_HEIGHT] = layoutHeight
 
     @saveHistory
     def setLayoutElastic(self):
         self.d[const.KEY_LAYOUT_TYPE] = const.ELASTIC_LAYOUT_TYPE
-        self.d.pop(const.KEY_LAYOUT_ANCHOR_X, None)
-        self.d.pop(const.KEY_LAYOUT_ANCHOR_Y, None)
+        self.d.pop(const.KEY_LAYOUT_H_ALIGN, None)
         self.d.pop(const.KEY_LAYOUT_WIDTH, None)
         self.d.pop(const.KEY_LAYOUT_HEIGHT, None)
 
     @saveHistory
-    def setLayoutAnchorX(self, value):
-        self.d[const.KEY_LAYOUT_ANCHOR_X] = value
-
-    @saveHistory
-    def setLayoutAnchorY(self, value):
-        self.d[const.KEY_LAYOUT_ANCHOR_Y] = value
+    def setLayoutHAlign(self, value):
+        self.d[const.KEY_LAYOUT_H_ALIGN] = value
 
     @saveHistory
     def setLayoutPath(self, layoutPath):
@@ -494,8 +500,7 @@ class Layout(object):
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.updateWindowTitle()
-        self.mainWindow.anchorXSpinBox.setValue(self.d.get(const.KEY_LAYOUT_ANCHOR_X, const.DEFAULT_ANCHOR_X))
-        self.mainWindow.anchorYSpinBox.setValue(self.d.get(const.KEY_LAYOUT_ANCHOR_Y, const.DEFAULT_ANCHOR_Y))
+        self.mainWindow.updateLayoutHAlignUI(self.d.get(const.KEY_LAYOUT_H_ALIGN, const.DEFAULT_LAYOUT_H_ALIGN))
 
     def toDict(self):
         return self.d
