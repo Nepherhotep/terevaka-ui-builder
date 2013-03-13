@@ -12,8 +12,8 @@ class LuaExporter(object):
         out = StringIO()
         out.write("return {\n")
         indent = 4
-        for key in [const.KEY_LAYOUT_TYPE, const.KEY_LAYOUT_ANCHOR_X, const.KEY_LAYOUT_ANCHOR_Y, const.KEY_LAYOUT_WIDTH,
-                    const.KEY_LAYOUT_HEIGHT]:
+        for key in [const.KEY_LAYOUT_TYPE, const.KEY_LAYOUT_WIDTH,
+                    const.KEY_LAYOUT_HEIGHT, const.KEY_LAYOUT_H_ALIGN]:
             if key in d:
                 out.write(self.formatKeyValue(key, d[key], indent))
         out.write("%s[\"props\"] = {\n" %(indent * " "))

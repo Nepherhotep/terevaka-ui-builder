@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Mar 13 13:18:26 2013
+# Created: Wed Mar 13 15:00:36 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
         self.layoutWidthSpinBox.setToolTip(_fromUtf8(""))
         self.layoutWidthSpinBox.setDecimals(2)
         self.layoutWidthSpinBox.setMaximum(99999.0)
-        self.layoutWidthSpinBox.setProperty("value", 640.0)
+        self.layoutWidthSpinBox.setProperty("value", 427.0)
         self.layoutWidthSpinBox.setObjectName(_fromUtf8("layoutWidthSpinBox"))
         self.layoutHeightLabel = QtGui.QLabel(self.properties)
         self.layoutHeightLabel.setEnabled(False)
@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         self.layoutHeightSpinBox.setGeometry(QtCore.QRect(32, 336, 111, 25))
         self.layoutHeightSpinBox.setDecimals(2)
         self.layoutHeightSpinBox.setMaximum(99999.99)
-        self.layoutHeightSpinBox.setProperty("value", 480.0)
+        self.layoutHeightSpinBox.setProperty("value", 320.0)
         self.layoutHeightSpinBox.setObjectName(_fromUtf8("layoutHeightSpinBox"))
         self.layoutWidthLabel = QtGui.QLabel(self.properties)
         self.layoutWidthLabel.setEnabled(False)
@@ -288,7 +288,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuResources.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.toolBox.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

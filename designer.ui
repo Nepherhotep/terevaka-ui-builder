@@ -47,7 +47,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="sprites">
          <property name="geometry">
@@ -203,7 +203,7 @@
            <double>99999.000000000000000</double>
           </property>
           <property name="value">
-           <double>640.000000000000000</double>
+           <double>427.000000000000000</double>
           </property>
          </widget>
          <widget class="QLabel" name="layoutHeightLabel">
@@ -363,7 +363,7 @@
            <double>99999.990000000005239</double>
           </property>
           <property name="value">
-           <double>480.000000000000000</double>
+           <double>320.000000000000000</double>
           </property>
          </widget>
          <widget class="QLabel" name="layoutWidthLabel">
