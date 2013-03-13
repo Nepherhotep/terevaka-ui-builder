@@ -124,10 +124,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def onLayoutTypeChanged(self):
         if self.elasticLayoutRadio.isChecked():
-            layoutType = const.ELASTIC_LAYOUT_TYPE
+            self.getCurrentLayout().setLayoutElastic()
         else:
-            layoutType = const.SCALABLE_LAYOUT_TYPE
-        self.getCurrentLayout().setLayoutType(layoutType)
+            anchorX = self.anchorXSpinBox.valueFromText(self.anchorXSpinBox.text())
+            anchorY = self.anchorYSpinBox.valueFromText(self.anchorYSpinBox.text())
+            layoutWidth = self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text())
+            layoutHeight = self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())
+            self.getCurrentLayout().setLayoutScalable(anchorX, anchorY, layoutWidth, layoutHeight)
         self.getCurrentLayout().updateUI()
 
     def onAnchorXChanged(self):
@@ -427,8 +430,20 @@ class Layout(object):
         item.updatePropPos(self.getMapSize(), mapPos)
 
     @saveHistory
-    def setLayoutType(self, layoutType):
-        self.d[const.KEY_LAYOUT_TYPE] = layoutType
+    def setLayoutScalable(self, anchorX, anchorY, layoutWidth, layoutHeight):
+        self.d[const.KEY_LAYOUT_TYPE] = const.SCALABLE_LAYOUT_TYPE
+        self.d[const.KEY_LAYOUT_ANCHOR_X] = anchorX
+        self.d[const.KEY_LAYOUT_ANCHOR_Y] = anchorY
+        self.d[const.KEY_LAYOUT_WIDTH] = layoutWidth
+        self.d[const.KEY_LAYOUT_HEIGHT] = layoutHeight
+
+    @saveHistory
+    def setLayoutElastic(self):
+        self.d[const.KEY_LAYOUT_TYPE] = const.ELASTIC_LAYOUT_TYPE
+        self.d.pop(const.KEY_LAYOUT_ANCHOR_X, None)
+        self.d.pop(const.KEY_LAYOUT_ANCHOR_Y, None)
+        self.d.pop(const.KEY_LAYOUT_WIDTH, None)
+        self.d.pop(const.KEY_LAYOUT_HEIGHT, None)
 
     @saveHistory
     def setLayoutAnchorX(self, value):
