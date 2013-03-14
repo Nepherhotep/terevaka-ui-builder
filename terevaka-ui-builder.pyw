@@ -36,12 +36,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.graphicsView.mainWindow = self
         self.dropPanel.mainWindow = self
-        self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
         self.connectSlots()
         self.layout = Layout(self)
 
     def showEvent(self, event):
         super(MainWindow, self).showEvent(event)
+        self.scaleGraphicsViewToContainer()
+        self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
         self.updateWindowTitle()
 
     def resizeEvent(self, evt=None):
@@ -145,6 +146,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         align = self.getLayoutHAlignFromUI()
         self.getCurrentLayout().setLayoutHAlign(align)
 
+    def scaleGraphicsViewToContainer(self):
+        g = self.graphicsViewContainer.geometry()
+        self.graphicsView.setGeometry(QRect(0, 0, g.width(), g.height()))
+
     def updateLayoutTypeUI(self, layoutType):
         isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
         self.elasticLayoutRadio.setChecked(isElastic)
@@ -155,6 +160,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.graphicsView.setGeometry(QRect(graphicsGeometry.x(), graphicsGeometry.y(),
                                                 self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text()),
                                                 self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())))
+        else:
+            self.scaleGraphicsViewToContainer()
 
     def updateLayoutHAlignUI(self, align):
         if align == const.ALIGN_CENTER:

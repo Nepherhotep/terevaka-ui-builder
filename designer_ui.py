@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Wed Mar 13 15:00:36 2013
+# Created: Thu Mar 14 13:48:59 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -141,11 +141,24 @@ class Ui_MainWindow(object):
         self.anchorXLabel_5.setObjectName(_fromUtf8("anchorXLabel_5"))
         self.toolBox.addItem(self.properties, _fromUtf8(""))
         self.horizontalLayout.addWidget(self.toolBox)
-        self.graphicsView = DesignerGraphicsView(self.centralwidget)
+        self.graphicsViewContainer = QtGui.QWidget(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.graphicsViewContainer.sizePolicy().hasHeightForWidth())
+        self.graphicsViewContainer.setSizePolicy(sizePolicy)
+        self.graphicsViewContainer.setObjectName(_fromUtf8("graphicsViewContainer"))
+        self.graphicsView = DesignerGraphicsView(self.graphicsViewContainer)
+        self.graphicsView.setGeometry(QtCore.QRect(0, 0, 640, 480))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.graphicsView.sizePolicy().hasHeightForWidth())
+        self.graphicsView.setSizePolicy(sizePolicy)
         self.graphicsView.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.graphicsView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
-        self.horizontalLayout.addWidget(self.graphicsView)
+        self.horizontalLayout.addWidget(self.graphicsViewContainer)
         self.frame = QtGui.QFrame(self.centralwidget)
         self.frame.setMinimumSize(QtCore.QSize(200, 0))
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -288,7 +301,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuResources.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.toolBox.setCurrentIndex(1)
+        self.toolBox.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
