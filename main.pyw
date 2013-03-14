@@ -300,6 +300,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def openFile(self):
         path=QFileDialog.getOpenFileName(None, "FileDialog")
         if path:
+            path = unicode(path)
+            os.chdir(os.path.dirname(path))
             with open(path) as f:
                 self.currentFilePath = path
                 self.loadFromString(f.read(), json)
@@ -330,7 +332,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.saveFileAs()
 
     def saveFileAs(self, *args, **kwargs):
-        filename=QFileDialog.getSaveFileName(None, "FileDialog")
+        filename = unicode(QFileDialog.getSaveFileName(None, "FileDialog"))
         if filename:
             self.currentFilePath = filename
             self.saveFile(*args, **kwargs)
@@ -503,7 +505,15 @@ class Layout(object):
         self.mainWindow.updateLayoutHAlignUI(self.d.get(const.KEY_LAYOUT_H_ALIGN, const.DEFAULT_LAYOUT_H_ALIGN))
 
     def toDict(self):
-        return self.d
+        exportDict = deepcopy(self.d)
+        #recalc path to relative
+        currentPath = os.path.dirname(self.mainWindow.currentFilePath)
+        if currentPath:
+            if const.KEY_WORKING_DIR in exportDict:
+                exportDict[const.KEY_WORKING_DIR] = os.path.relpath(exportDict[const.KEY_WORKING_DIR], currentPath)
+            if const.KEY_LAYOUT_PATH in exportDict:
+                exportDict[const.KEY_LAYOUT_PATH] = os.path.relpath(exportDict[const.KEY_LAYOUT_PATH], currentPath)
+        return exportDict
 
 
 class PixmapItemFactory(object):
