@@ -507,12 +507,14 @@ class Layout(object):
     def toDict(self):
         exportDict = deepcopy(self.d)
         #recalc path to relative
-        currentPath = os.path.dirname(self.mainWindow.currentFilePath)
-        if currentPath:
+        if self.mainWindow.currentFilePath:
+            currentPath = os.path.dirname(self.mainWindow.currentFilePath)
             if const.KEY_WORKING_DIR in exportDict:
-                exportDict[const.KEY_WORKING_DIR] = os.path.relpath(exportDict[const.KEY_WORKING_DIR], currentPath)
+                workingDir = unicode(exportDict[const.KEY_WORKING_DIR])
+                exportDict[const.KEY_WORKING_DIR] = os.path.relpath(workingDir, currentPath)
             if const.KEY_LAYOUT_PATH in exportDict:
-                exportDict[const.KEY_LAYOUT_PATH] = os.path.relpath(exportDict[const.KEY_LAYOUT_PATH], currentPath)
+                layoutPath = unicode(exportDict[const.KEY_LAYOUT_PATH])
+                exportDict[const.KEY_LAYOUT_PATH] = os.path.relpath(layoutPath, currentPath)
         return exportDict
 
 
