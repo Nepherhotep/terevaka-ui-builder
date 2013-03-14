@@ -297,8 +297,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.currentFileName = None
         self.clearProject()
 
-    def openFile(self):
-        path=QFileDialog.getOpenFileName(None, "FileDialog")
+    def openFile(self, path=None):
+        if not path:
+            path=QFileDialog.getOpenFileName(None, "FileDialog")
         if path:
             path = unicode(path)
             os.chdir(os.path.dirname(path))
@@ -588,6 +589,8 @@ def main():
     form = MainWindow()
     form.show()
     form.raise_()
+    if len(sys.argv) > 1:
+        form.openFile(sys.argv[1])
     app.exec_()
 
 
