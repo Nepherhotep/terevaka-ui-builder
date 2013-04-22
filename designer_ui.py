@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Mon Apr 22 21:18:31 2013
+# Created: Mon Apr 22 21:57:38 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.toolBox.setFrameShape(QtGui.QFrame.NoFrame)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.sprites = QtGui.QWidget()
-        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 420))
+        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 446))
         self.sprites.setObjectName(_fromUtf8("sprites"))
         self.spritesListWidget = QtGui.QListWidget(self.sprites)
         self.spritesListWidget.setGeometry(QtCore.QRect(10, 0, 181, 421))
@@ -255,7 +255,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuResources.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.toolBox.setCurrentIndex(1)
+        self.toolBox.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
