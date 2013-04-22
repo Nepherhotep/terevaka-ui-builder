@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pixmapItemFactories = {}
         self.selected = None
         self.grabbed = None
-        self.layoutType = const.ELASTIC_LAYOUT_TYPE
+        self.layoutType = const.SCALABLE_LAYOUT_TYPE
         self.layoutPath = None
         self.currentFilePath = None
 
@@ -69,11 +69,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spritesListWidget.itemPressed.connect(slot)
         self.actionUndo.triggered.connect(self.undo)
         self.actionRedo.triggered.connect(self.redo)
-        self.alignBottomRadio.toggled.connect(self.onAlignBottomRadioToggled)
-        self.alignLeftRadio.toggled.connect(self.onAlignLeftRadioToggled)
-        self.layoutHAlignCenterRadio.toggled.connect(self.onLayoutHAlignChanged)
-        self.layoutHAlignLeftRadio.toggled.connect(self.onLayoutHAlignChanged)
-        self.layoutHAlignRightRadio.toggled.connect(self.onLayoutHAlignChanged)
+        self.alignLeftRadio.toggled.connect(self.onHAlignRadioToggled)
+        self.alignRightRadio.toggled.connect(self.onHAlignRadioToggled)
+        self.alignCenterRadio.toggled.connect(self.onHAlignRadioToggled)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
         self.unitsXComboBox.activated.connect(self.onUnitsXComboBoxChanged)
@@ -86,14 +84,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.workingDirToolButton.clicked.connect(self.selectDir)
         self.layoutPathToolButton.clicked.connect(self.selectLayoutPath)
         self.resourceIdEdit.textEdited.connect(self.onUidChanged)
-        self.elasticLayoutRadio.toggled.connect(self.onLayoutTypeChanged)
 
     def deselect(self):
         self.selected = None
         self.posXSpinBox.setValue(0)
         self.posYSpinBox.setValue(0)
-        self.alignLeftRadio.setChecked(True)
-        self.alignBottomRadio.setChecked(True)
+        self.alignCenterRadio.setChecked(True)
         self.resourceIdEdit.setText('')
         self.resourceLabel.setText('')
 
@@ -124,52 +120,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setLayoutPathLabelText(path)
         self.getCurrentLayout().setLayoutPath(path)
 
-    def getLayoutHAlignFromUI(self):
-        if self.layoutHAlignCenterRadio.isChecked():
-            return const.ALIGN_CENTER
-        elif self.layoutHAlignLeftRadio.isChecked():
-            return const.ALIGN_LEFT
-        else:
-            return const.ALIGN_RIGHT
-
-    def onLayoutTypeChanged(self):
-        if self.elasticLayoutRadio.isChecked():
-            self.getCurrentLayout().setLayoutElastic()
-        else:
-            align = self.getLayoutHAlignFromUI()
-            layoutWidth = self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text())
-            layoutHeight = self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())
-            self.getCurrentLayout().setLayoutScalable(layoutWidth, layoutHeight, align)
-        self.getCurrentLayout().updateUI()
-
-    def onLayoutHAlignChanged(self):
-        align = self.getLayoutHAlignFromUI()
-        self.getCurrentLayout().setLayoutHAlign(align)
-
     def scaleGraphicsViewToContainer(self):
         g = self.graphicsViewContainer.geometry()
         self.graphicsView.setGeometry(QRect(0, 0, g.width(), g.height()))
 
-    def updateLayoutTypeUI(self, layoutType):
-        isElastic = layoutType == const.ELASTIC_LAYOUT_TYPE
-        self.elasticLayoutRadio.setChecked(isElastic)
-        self.scalableLayoutRadio.setChecked(not isElastic)
-        self.layoutHAlignBox.setEnabled(not isElastic)
-        graphicsGeometry = self.graphicsView.geometry()
-        if not isElastic:
-            self.graphicsView.setGeometry(QRect(graphicsGeometry.x(), graphicsGeometry.y(),
-                                                self.layoutWidthSpinBox.valueFromText(self.layoutWidthSpinBox.text()),
-                                                self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())))
-        else:
-            self.scaleGraphicsViewToContainer()
-
-    def updateLayoutHAlignUI(self, align):
-        if align == const.ALIGN_CENTER:
-            self.layoutHAlignCenterRadio.setChecked(True)
-        elif align == const.ALIGN_LEFT:
-            self.layoutHAlignLeftRadio.setChecked(True)
-        else:
-            self.layoutHAlignRightRadio.setChecked(True)
+    def updateLayoutConfUI(self):
+        self.scaleGraphicsViewToContainer()
 
     def setWorkingDirLabelText(self, dirPath):
         self.workingDirLabel.setText(self.elided(dirPath))
@@ -240,35 +196,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resourceLabel.setText(item.name)
         self.posXSpinBox.setValue(item.prop[const.KEY_X])
         self.posYSpinBox.setValue(item.prop[const.KEY_Y])
-        if item.prop[const.KEY_ALIGN_LEFT]:
+        if item.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
             self.alignLeftRadio.setChecked(True)
-        else:
+        elif item.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
             self.alignRightRadio.setChecked(True)
-        if item.prop[const.KEY_ALIGN_BOTTOM]:
-            self.alignBottomRadio.setChecked(True)
         else:
-            self.alignTopRadio.setChecked(True)
-        if item.prop[const.KEY_X_UNIT] == const.UNIT_PX:
-            self.unitsXComboBox.setCurrentIndex(const.UNIT_PX_POS)
-        else:
-            self.unitsXComboBox.setCurrentIndex(const.UNIT_PERCENT_POS)
-        if item.prop[const.KEY_Y_UNIT] == const.UNIT_PX:
-            self.unitsYComboBox.setCurrentIndex(const.UNIT_PX_POS)
-        else:
-            self.unitsYComboBox.setCurrentIndex(const.UNIT_PERCENT_POS)
+            self.alignCenterRadio.setChecked(True)
         self.resourceIdEdit.setText(item.prop.get(const.KEY_UID, ''))
-
-    @ifItemSelected
-    def onAlignBottomRadioToggled(self, selectedItem, event):
-        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropAlignBottom(selectedItem, mapPos, event)
-        self.updateInfoBar(selectedItem)
-
-    @ifItemSelected
-    def onAlignLeftRadioToggled(self, selectedItem, event):
-        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropAlignLeft(selectedItem, mapPos, event)
-        self.updateInfoBar(selectedItem)
 
     @ifItemSelected
     def onPosXSpinBoxChanged(self, selectedItem):
@@ -280,20 +214,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def onPosYSpinBoxChanged(self, selectedItem):
         y = self.posYSpinBox.valueFromText(self.posYSpinBox.text())
         self.getCurrentLayout().changePropYPos(selectedItem, y)
-        self.updateInfoBar(selectedItem)
-
-    @ifItemSelected
-    def onUnitsXComboBoxChanged(self, selectedItem, event):
-        units = unicode(self.unitsXComboBox.currentText()).lower()
-        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropXUnit(selectedItem, mapPos, units)
-        self.updateInfoBar(selectedItem)
-
-    @ifItemSelected
-    def onUnitsYComboBoxChanged(self, selectedItem, event):
-        units = unicode(self.unitsYComboBox.currentText()).lower()
-        mapPos = self.graphicsView.mapFromScene(selectedItem.pos())
-        self.getCurrentLayout().changePropYUnit(selectedItem, mapPos, units)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
@@ -432,42 +352,9 @@ class Layout(object):
         item.updateScenePos(self.mainWindow.graphicsView)
 
     @saveHistory
-    def changePropAlignLeft(self, item, mapPos, align):
-        item.prop[const.KEY_ALIGN_LEFT] = align
+    def changePropHAlign(self, item, mapPos, align):
+        item.prop[const.KEY_HORIZONTAL_ALIGN] = align
         item.updatePropPos(self.getMapSize(), mapPos)
-
-    @saveHistory
-    def changePropAlignBottom(self, item, mapPos, align):
-        item.prop[const.KEY_ALIGN_BOTTOM] = align
-        item.updatePropPos(self.getMapSize(), mapPos)
-
-    @saveHistory
-    def changePropXUnit(self, item, mapPos, unit):
-        item.prop[const.KEY_X_UNIT] = unit
-        item.updatePropPos(self.getMapSize(), mapPos)
-
-    @saveHistory
-    def changePropYUnit(self, item, mapPos, unit):
-        item.prop[const.KEY_Y_UNIT] = unit
-        item.updatePropPos(self.getMapSize(), mapPos)
-
-    @saveHistory
-    def setLayoutScalable(self, layoutWidth, layoutHeight, hAlign):
-        self.d[const.KEY_LAYOUT_TYPE] = const.SCALABLE_LAYOUT_TYPE
-        self.d[const.KEY_LAYOUT_H_ALIGN] = hAlign
-        self.d[const.KEY_LAYOUT_WIDTH] = layoutWidth
-        self.d[const.KEY_LAYOUT_HEIGHT] = layoutHeight
-
-    @saveHistory
-    def setLayoutElastic(self):
-        self.d[const.KEY_LAYOUT_TYPE] = const.ELASTIC_LAYOUT_TYPE
-        self.d.pop(const.KEY_LAYOUT_H_ALIGN, None)
-        self.d.pop(const.KEY_LAYOUT_WIDTH, None)
-        self.d.pop(const.KEY_LAYOUT_HEIGHT, None)
-
-    @saveHistory
-    def setLayoutHAlign(self, value):
-        self.d[const.KEY_LAYOUT_H_ALIGN] = value
 
     @saveHistory
     def setLayoutPath(self, layoutPath):
@@ -498,7 +385,7 @@ class Layout(object):
             print("There are no further actions")
 
     def updateUI(self):
-        self.mainWindow.updateLayoutTypeUI(self.d.get(const.KEY_LAYOUT_TYPE, const.ELASTIC_LAYOUT_TYPE))
+        self.mainWindow.updateLayoutConfUI()
         self.mainWindow.graphicsView.clear()
         for prop in self.d[const.KEY_PROPS]:
             name = prop[const.KEY_NAME]
@@ -510,7 +397,6 @@ class Layout(object):
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.updateWindowTitle()
-        self.mainWindow.updateLayoutHAlignUI(self.d.get(const.KEY_LAYOUT_H_ALIGN, const.DEFAULT_LAYOUT_H_ALIGN))
 
     def toDict(self):
         exportDict = deepcopy(self.d)
@@ -552,29 +438,28 @@ class PixmapItem(QGraphicsPixmapItem):
 
     def updateScenePos(self, graphicsView):
         mapSize = graphicsView.geometry().size()
-        if self.prop[const.KEY_X_UNIT] == const.UNIT_PX:
-            alignedX = self.prop[const.KEY_X]
-        else:
-            alignedX = self.prop[const.KEY_X]*mapSize.width()/100
-        if self.prop[const.KEY_Y_UNIT] == const.UNIT_PX:
-            alignedY = self.prop[const.KEY_Y]
-        else:
-            alignedY = self.prop[const.KEY_Y]*mapSize.height()/100
-        if self.prop[const.KEY_ALIGN_LEFT]:
+        alignedX = self.prop[const.KEY_X]
+        alignedY = self.prop[const.KEY_Y]
+        if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
             x = alignedX
-        else:
+        elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
             x = mapSize.width() - alignedX
-        if self.prop[const.KEY_ALIGN_BOTTOM]:
-            y = mapSize.height() - alignedY
         else:
-            y = alignedY
+            baseWidth = QSpinBox.valueFromText(self.mainWindow.layoutWidthSpinBox.text())
+            baseHeight = QSpinBox.valueFromText(self.mainWindow.layoutHeightSpinBox.text())
+            x = alignedX + (mapSize.width() - mapSize.height() * baseWidth / baseHeight)/2
+        y = mapSize.height() - alignedY
         self.setPos(graphicsView.mapToScene(QPoint(x, y)))
 
     def updatePropPos(self, mapSize, mapPos):
-        if self.prop[const.KEY_ALIGN_LEFT]:
+        if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
             alignedX = mapPos.x()
-        else:
+        elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
             alignedX = mapSize.width() - mapPos.x()
+        else:
+            baseWidth = QSpinBox.valueFromText(self.mainWindow.layoutWidthSpinBox.text())
+            baseHeight = QSpinBox.valueFromText(self.mainWindow.layoutHeightSpinBox.text())
+            alignedX = mapPos.x() + (mapSize.width() - mapSize.height() * baseWidth / baseHeight)/2
         if self.prop[const.KEY_ALIGN_BOTTOM]:
             alignedY = mapSize.height() - mapPos.y()
         else:
