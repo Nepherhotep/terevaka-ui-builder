@@ -56,8 +56,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def resizeEvent(self, evt=None):
         self.updateWindowTitle()
-        self.getCurrentLayout().updateUI()
         self.graphicsView.scene.setSceneRect(QRectF(self.graphicsView.geometry()))
+        self.getCurrentLayout().updateUI()
 
     def updateWindowTitle(self):
         size = self.graphicsView.geometry().size()
@@ -307,7 +307,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return QSize(width, height)
 
     def getScaleFactor(self):
-        return self.getBaseSize().width()/self.graphicsView.geometry().size().height()
+        return float(self.graphicsView.geometry().size().height())/self.getBaseSize().width()
 
 
 class Layout(object):
@@ -422,6 +422,7 @@ class Layout(object):
             itemFactory = self.mainWindow.getItemFactory(type, name)
             item = itemFactory.createGraphicsItem(prop)
             item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize())
+            item.scale(self.mainWindow.getScaleFactor(), self.mainWindow.getScaleFactor())
             self.mainWindow.graphicsView.scene.addItem(item)
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
         self.mainWindow.setLayoutPathLabelText(self.d.get(const.KEY_LAYOUT_PATH, const.PATH_NOT_SPECIFIED_TEXT))
