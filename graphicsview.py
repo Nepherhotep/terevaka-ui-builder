@@ -70,18 +70,18 @@ class DesignerGraphicsView(QGraphicsView):
         prop[const.KEY_NAME] = self.mainWindow.selectedItemFactory.name
 
         #reset controls to default
-        prop[const.KEY_ALIGN_LEFT] = True
-        prop[const.KEY_ALIGN_BOTTOM] = True
-        prop[const.KEY_X_UNIT] = const.UNIT_PX
-        prop[const.KEY_Y_UNIT] = const.UNIT_PX
+        prop[const.KEY_HORIZONTAL_ALIGN] = const.ALIGN_CENTER
 
         item = itemFactory.createGraphicsItem(prop)
         #update pos according to selected controls
-        item.updatePropPos(self.geometry(), posMap)
-        item.updateScenePos(self)
+        item.updatePropPos(self.geometry(), posMap, self.mainWindow.getBaseSize())
+        item.updateScenePos(self, self.mainWindow.getBaseSize())
         #save prop in layout
         self.mainWindow.getCurrentLayout().addProp(item)
         self.scene.addItem(item)
         self.mainWindow.onItemSelected(item)
 
-
+    def drawRect(self, rect, bgColor = QColor(222, 255, 204), fgColor = QColor(0, 0, 0)):
+        pen = QPen(fgColor)
+        brush = QBrush(bgColor)
+        self.scene.addRect(rect, pen = pen, brush = brush)
