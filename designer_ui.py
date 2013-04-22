@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Mon Apr 22 18:48:45 2013
+# Created: Mon Apr 22 21:18:31 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1106, 557)
+        MainWindow.resize(1189, 583)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         self.spritesListWidget.setObjectName(_fromUtf8("spritesListWidget"))
         self.toolBox.addItem(self.sprites, _fromUtf8(""))
         self.properties = QtGui.QWidget()
-        self.properties.setGeometry(QtCore.QRect(0, 0, 200, 420))
+        self.properties.setGeometry(QtCore.QRect(0, 0, 200, 446))
         self.properties.setObjectName(_fromUtf8("properties"))
         self.groupBox = QtGui.QGroupBox(self.properties)
         self.groupBox.setGeometry(QtCore.QRect(10, 0, 181, 51))
@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
         self.layoutWidthSpinBox.setToolTip(_fromUtf8(""))
         self.layoutWidthSpinBox.setDecimals(2)
         self.layoutWidthSpinBox.setMaximum(99999.0)
-        self.layoutWidthSpinBox.setProperty("value", 853.0)
+        self.layoutWidthSpinBox.setProperty("value", 1024.0)
         self.layoutWidthSpinBox.setObjectName(_fromUtf8("layoutWidthSpinBox"))
         self.layoutHeightLabel = QtGui.QLabel(self.properties)
         self.layoutHeightLabel.setEnabled(False)
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         self.layoutHeightSpinBox.setGeometry(QtCore.QRect(37, 158, 111, 25))
         self.layoutHeightSpinBox.setDecimals(2)
         self.layoutHeightSpinBox.setMaximum(99999.99)
-        self.layoutHeightSpinBox.setProperty("value", 640.0)
+        self.layoutHeightSpinBox.setProperty("value", 768.0)
         self.layoutHeightSpinBox.setObjectName(_fromUtf8("layoutHeightSpinBox"))
         self.layoutWidthLabel = QtGui.QLabel(self.properties)
         self.layoutWidthLabel.setEnabled(False)
@@ -208,7 +208,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setEnabled(True)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1106, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1189, 22))
         self.menubar.setNativeMenuBar(True)
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
@@ -255,7 +255,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuResources.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.toolBox.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

@@ -306,6 +306,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         height = self.layoutHeightSpinBox.valueFromText(self.layoutHeightSpinBox.text())
         return QSize(width, height)
 
+    def getScaleFactor(self):
+        return self.getBaseSize().width()/self.graphicsView.geometry().size().height()
+
 
 class Layout(object):
     HISTORY_LEN = 20

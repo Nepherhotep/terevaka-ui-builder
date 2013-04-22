@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1106</width>
-    <height>557</height>
+    <width>1189</width>
+    <height>583</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="sprites">
          <property name="geometry">
@@ -81,7 +81,7 @@
            <x>0</x>
            <y>0</y>
            <width>200</width>
-           <height>420</height>
+           <height>446</height>
           </rect>
          </property>
          <attribute name="label">
@@ -203,7 +203,7 @@
            <double>99999.000000000000000</double>
           </property>
           <property name="value">
-           <double>853.000000000000000</double>
+           <double>1024.000000000000000</double>
           </property>
          </widget>
          <widget class="QLabel" name="layoutHeightLabel">
@@ -257,7 +257,7 @@
            <double>99999.990000000005239</double>
           </property>
           <property name="value">
-           <double>640.000000000000000</double>
+           <double>768.000000000000000</double>
           </property>
          </widget>
          <widget class="QLabel" name="layoutWidthLabel">
@@ -596,7 +596,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1106</width>
+     <width>1189</width>
      <height>22</height>
     </rect>
    </property>
