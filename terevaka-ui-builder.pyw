@@ -44,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         baseSize = self.getBaseSize()
         rectWidth = float(baseSize.width())*sceneSize.height()/baseSize.height()
         offset = (sceneSize.width() - rectWidth)/2
-        rect = QRectF(offset, 0, rectWidth, sceneSize.height()-3)
+        rect = QRectF(offset, 0, rectWidth, sceneSize.height())
         self.graphicsView.drawRect(rect)
 
     def showEvent(self, event):
@@ -478,7 +478,6 @@ class PixmapItem(QGraphicsPixmapItem):
         else:
             x = propPosX + offset / 2
         y = mapSize.height() * ( 1 - float(propPosY) /baseSize.height())
-        print('y', y, mapSize.height())
         self.setPos(graphicsView.mapToScene(QPoint(x, y)))
 
     def updatePropPos(self, mapSize, mapPos, baseSize):

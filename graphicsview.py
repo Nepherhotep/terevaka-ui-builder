@@ -49,17 +49,21 @@ class DesignerGraphicsView(QGraphicsView):
         pos = self.mapToScene(mouseEvent.pos())
         items = self.scene.items(pos)
         if items:
-            self.mainWindow.onItemSelected(items[0])
-            if mouseEvent.button() == Qt.LeftButton:
-                self.mainWindow.grabbed = items[0]
-                self.startDrag(mouseEvent, self.mainWindow.grabbed)
+            if hasattr(items[0], 'name'):
+                self.mainWindow.onItemSelected(items[0])
+                if mouseEvent.button() == Qt.LeftButton:
+                    self.mainWindow.grabbed = items[0]
+                    self.startDrag(mouseEvent, self.mainWindow.grabbed)
 
     def startDrag(self, mouseEvent, item):
         mimeData = QMimeData()
         drag = QDrag(self)
         drag.setMimeData(mimeData)
-        drag.setPixmap(item.pixmap())
-        standardOffset = QPoint(item.offsetX, item.offsetY)
+        pixmap = item.pixmap()
+        scaleFactor = self.mainWindow.getScaleFactor()
+        scaledPixmap = pixmap.scaledToWidth(pixmap.width() * scaleFactor)
+        drag.setPixmap(scaledPixmap)
+        standardOffset = QPoint(item.offsetX * scaleFactor, item.offsetY * scaleFactor)
         self.grabOffset = mouseEvent.pos() - self.mapFromScene(item.pos())
         drag.setHotSpot(standardOffset + self.grabOffset)
         drag.start(Qt.MoveAction)
