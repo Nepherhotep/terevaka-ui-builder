@@ -79,8 +79,8 @@ class DesignerGraphicsView(QGraphicsView):
         item = itemFactory.createGraphicsItem(prop)
         #update pos according to selected controls
         item.scale(self.mainWindow.getScaleFactor(), self.mainWindow.getScaleFactor())
-        item.updatePropPos(self.geometry(), posMap, self.mainWindow.getBaseSize())
-        item.updateScenePos(self, self.mainWindow.getBaseSize())
+        item.updatePropPos(self.geometry(), posMap, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
+        item.updateScenePos(self, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
         #save prop in layout
         self.mainWindow.getCurrentLayout().addProp(item)
         self.scene.addItem(item)

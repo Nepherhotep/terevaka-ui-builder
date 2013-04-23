@@ -307,7 +307,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return QSize(width, height)
 
     def getScaleFactor(self):
-        return float(self.graphicsView.geometry().size().height())/self.getBaseSize().width()
+        return float(self.graphicsView.geometry().size().height())/self.getBaseSize().height()
 
 
 class Layout(object):
@@ -368,17 +368,17 @@ class Layout(object):
 
     @saveHistory
     def changePropPos(self, item, mapPos):
-        item.updatePropPos(self.getMapSize(), mapPos, self.mainWindow.getBaseSize())
+        item.updatePropPos(self.getMapSize(), mapPos, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
 
     @saveHistory
     def changePropXPos(self, item, x):
         item.prop[const.KEY_X] = x
-        item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize())
+        item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
 
     @saveHistory
     def changePropYPos(self, item, y):
         item.prop[const.KEY_Y] = y
-        item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize())
+        item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
 
     @saveHistory
     def changePropHAlign(self, item, align):
@@ -421,7 +421,7 @@ class Layout(object):
             type = prop[const.KEY_TYPE]
             itemFactory = self.mainWindow.getItemFactory(type, name)
             item = itemFactory.createGraphicsItem(prop)
-            item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize())
+            item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
             item.scale(self.mainWindow.getScaleFactor(), self.mainWindow.getScaleFactor())
             self.mainWindow.graphicsView.scene.addItem(item)
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))
@@ -466,28 +466,28 @@ class PixmapItem(QGraphicsPixmapItem):
         self.setOffset(-self.offsetX, -self.offsetY)
         self.prop = prop
 
-    def updateScenePos(self, graphicsView, baseSize):
+    def updateScenePos(self, graphicsView, baseSize, scaleFactor):
         mapSize = graphicsView.geometry().size()
         propPosX = self.prop[const.KEY_X]
         propPosY = self.prop[const.KEY_Y]
         offset = mapSize.width() - mapSize.height() * baseSize.width() / baseSize.height()
         if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
-            x = propPosX
+            x = propPosX * scaleFactor
         elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
-            x = propPosX + offset
+            x = propPosX * scaleFactor + offset
         else:
-            x = propPosX + offset / 2
+            x = propPosX * scaleFactor + offset / 2
         y = mapSize.height() * ( 1 - float(propPosY) /baseSize.height())
         self.setPos(graphicsView.mapToScene(QPoint(x, y)))
 
-    def updatePropPos(self, mapSize, mapPos, baseSize):
+    def updatePropPos(self, mapSize, mapPos, baseSize, scaleFactor):
         offset = mapSize.width() - mapSize.height() * baseSize.width() / baseSize.height()
         if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
-            alignedX = mapPos.x()
+            alignedX = mapPos.x() / scaleFactor
         elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
-            alignedX = mapPos.x() - offset
+            alignedX = mapPos.x() / scaleFactor - offset
         else:
-            alignedX = mapPos.x() - offset/2
+            alignedX = mapPos.x() / scaleFactor - offset/2
 
         alignedY =  (mapSize.height() - mapPos.y()) * float(baseSize.height())/mapSize.height()
         self.prop[const.KEY_X] = alignedX
