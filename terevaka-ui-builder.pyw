@@ -85,6 +85,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.alignCenterRadio.clicked.connect(self.onHAlignRadioClicked)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
+        self.zIndexSpinbox.editingFinished.connect(self.onZIndexChanged)
         self.actionNew.triggered.connect(self.newFile)
         self.actionSave.triggered.connect(self.saveFile)
         self.actionSave_As.triggered.connect(self.saveFileAs)
@@ -223,6 +224,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.alignRightRadio.setChecked(True)
         else:
             self.alignCenterRadio.setChecked(True)
+        self.zIndexSpinbox.setValue(item.prop.get(const.KEY_Z_INDEX, 0))
         self.resourceIdEdit.setText(item.prop.get(const.KEY_UID, ''))
 
     @ifItemSelected
@@ -235,6 +237,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def onPosYSpinBoxChanged(self, selectedItem):
         y = self.posYSpinBox.valueFromText(self.posYSpinBox.text())
         self.getCurrentLayout().changePropYPos(selectedItem, y)
+        self.updateInfoBar(selectedItem)
+
+    @ifItemSelected
+    def onZIndexChanged(self, selectedItem):
+        z = self.zIndexSpinbox.valueFromText(self.zIndexSpinbox.text())
+        self.getCurrentLayout().changePropZIndex(selectedItem, z)
         self.updateInfoBar(selectedItem)
 
     @ifItemSelected
@@ -381,6 +389,11 @@ class Layout(object):
         item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
 
     @saveHistory
+    def changePropZIndex(self, item, z):
+        item.prop[const.KEY_Z_INDEX] = z
+        item.setZValue(z)
+
+    @saveHistory
     def changePropHAlign(self, item, align):
         item.prop[const.KEY_HORIZONTAL_ALIGN] = align
 
@@ -422,6 +435,7 @@ class Layout(object):
             itemFactory = self.mainWindow.getItemFactory(type, name)
             item = itemFactory.createGraphicsItem(prop)
             item.updateScenePos(self.mainWindow.graphicsView, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
+            item.setZValue(prop.get(const.KEY_Z_INDEX, 0))
             item.scale(self.mainWindow.getScaleFactor(), self.mainWindow.getScaleFactor())
             self.mainWindow.graphicsView.scene.addItem(item)
         self.mainWindow.setWorkingDirLabelText(self.d.get(const.KEY_WORKING_DIR, const.PATH_NOT_SPECIFIED_TEXT))

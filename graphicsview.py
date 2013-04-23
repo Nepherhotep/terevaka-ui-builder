@@ -75,12 +75,14 @@ class DesignerGraphicsView(QGraphicsView):
 
         #reset controls to default
         prop[const.KEY_HORIZONTAL_ALIGN] = const.ALIGN_CENTER
+        prop[const.KEY_Z_INDEX] = 0
 
         item = itemFactory.createGraphicsItem(prop)
         #update pos according to selected controls
         item.scale(self.mainWindow.getScaleFactor(), self.mainWindow.getScaleFactor())
         item.updatePropPos(self.geometry(), posMap, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
         item.updateScenePos(self, self.mainWindow.getBaseSize(), self.mainWindow.getScaleFactor())
+        item.setZValue(prop[const.KEY_Z_INDEX])
         #save prop in layout
         self.mainWindow.getCurrentLayout().addProp(item)
         self.scene.addItem(item)

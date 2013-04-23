@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Tue Apr 23 16:32:11 2013
+# Created: Tue Apr 23 16:48:58 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -190,6 +190,7 @@ class Ui_MainWindow(object):
         self.zIndexSpinbox = QtGui.QDoubleSpinBox(self.frame_2)
         self.zIndexSpinbox.setGeometry(QtCore.QRect(70, 80, 101, 25))
         self.zIndexSpinbox.setDecimals(0)
+        self.zIndexSpinbox.setMinimum(-1000.0)
         self.zIndexSpinbox.setMaximum(100000.0)
         self.zIndexSpinbox.setObjectName(_fromUtf8("zIndexSpinbox"))
         self.label_4 = QtGui.QLabel(self.frame_2)
