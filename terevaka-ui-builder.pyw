@@ -328,6 +328,9 @@ class Layout(object):
             self.d = {}
             self.d[const.KEY_PROPS] = []
             self.d[const.KEY_LAYOUT_TYPE] = const.SCALABLE_LAYOUT_TYPE
+            baseSize = self.mainWindow.getBaseSize()
+            self.d[const.KEY_LAYOUT_WIDTH] = baseSize.width()
+            self.d[const.KEY_LAYOUT_HEIGHT] = baseSize.height()
             self.history = []
         else:
             self.d = d
@@ -485,9 +488,9 @@ class PixmapItem(QGraphicsPixmapItem):
         propPosX = self.prop[const.KEY_X]
         propPosY = self.prop[const.KEY_Y]
         offset = mapSize.width() - mapSize.height() * baseSize.width() / baseSize.height()
-        if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
+        if self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_LEFT:
             x = propPosX * scaleFactor
-        elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
+        elif self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_RIGHT:
             x = propPosX * scaleFactor + offset
         else:
             x = propPosX * scaleFactor + offset / 2
