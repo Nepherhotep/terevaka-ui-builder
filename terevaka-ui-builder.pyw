@@ -45,7 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         rectWidth = float(baseSize.width())*sceneSize.height()/baseSize.height()
         offset = (sceneSize.width() - rectWidth)/2
         rect = QRectF(offset, 0, rectWidth, sceneSize.height())
-        self.graphicsView.drawRect(rect)
+        self.graphicsView.drawRect(rect, z=-2000)
 
     def showEvent(self, event):
         super(MainWindow, self).showEvent(event)

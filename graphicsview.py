@@ -88,7 +88,8 @@ class DesignerGraphicsView(QGraphicsView):
         self.scene.addItem(item)
         self.mainWindow.onItemSelected(item)
 
-    def drawRect(self, rect, bgColor = QColor(222, 255, 204), fgColor = QColor(0, 0, 0)):
+    def drawRect(self, rect, bgColor = QColor(222, 255, 204), fgColor = QColor(0, 0, 0), z = 0):
         pen = QPen(fgColor)
         brush = QBrush(bgColor)
-        self.scene.addRect(rect, pen = pen, brush = brush)
+        rect = self.scene.addRect(rect, pen = pen, brush = brush)
+        rect.setZValue(z)
