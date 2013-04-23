@@ -485,9 +485,9 @@ class PixmapItem(QGraphicsPixmapItem):
         if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
             alignedX = mapPos.x() / scaleFactor
         elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
-            alignedX = mapPos.x() / scaleFactor - offset
+            alignedX = (mapPos.x() - offset ) / scaleFactor
         else:
-            alignedX = mapPos.x() / scaleFactor - offset/2
+            alignedX = (mapPos.x() - offset / 2) / scaleFactor
 
         alignedY =  (mapSize.height() - mapPos.y()) * float(baseSize.height())/mapSize.height()
         self.prop[const.KEY_X] = alignedX
