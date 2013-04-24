@@ -14,7 +14,7 @@ Running
 
 ```cd terevaka-ui-builder```
 
-```python main.pyw```
+```python terevaka-ui-builder.pyw```
 
 License
 -------------------
