@@ -218,9 +218,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resourceLabel.setText(item.name)
         self.posXSpinBox.setValue(item.prop[const.KEY_X])
         self.posYSpinBox.setValue(item.prop[const.KEY_Y])
-        if item.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
+        if item.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_LEFT:
             self.alignLeftRadio.setChecked(True)
-        elif item.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
+        elif item.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_RIGHT:
             self.alignRightRadio.setChecked(True)
         else:
             self.alignCenterRadio.setChecked(True)
@@ -324,16 +324,20 @@ class Layout(object):
         self.current = 0#current frame in history
         self.mainWindow = mainWindow
         self.lastPropId = 0
+        baseSize = self.mainWindow.getBaseSize()
         if d == None:
             self.d = {}
             self.d[const.KEY_PROPS] = []
             self.d[const.KEY_LAYOUT_TYPE] = const.SCALABLE_LAYOUT_TYPE
-            baseSize = self.mainWindow.getBaseSize()
             self.d[const.KEY_LAYOUT_WIDTH] = baseSize.width()
             self.d[const.KEY_LAYOUT_HEIGHT] = baseSize.height()
             self.history = []
         else:
             self.d = d
+            self.d[const.KEY_LAYOUT_TYPE] = const.SCALABLE_LAYOUT_TYPE
+            if not self.d.get(const.KEY_LAYOUT_WIDTH):
+                self.d[const.KEY_LAYOUT_WIDTH] = baseSize.width()
+                self.d[const.KEY_LAYOUT_HEIGHT] = baseSize.height()
             for prop in self.d.get(const.KEY_PROPS, []):
                 self.incPropId()
             self.history = [deepcopy(d)]
@@ -499,9 +503,9 @@ class PixmapItem(QGraphicsPixmapItem):
 
     def updatePropPos(self, mapSize, mapPos, baseSize, scaleFactor):
         offset = mapSize.width() - mapSize.height() * baseSize.width() / baseSize.height()
-        if self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_LEFT:
+        if self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_LEFT:
             alignedX = mapPos.x() / scaleFactor
-        elif self.prop[const.KEY_HORIZONTAL_ALIGN] == const.ALIGN_RIGHT:
+        elif self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_RIGHT:
             alignedX = (mapPos.x() - offset ) / scaleFactor
         else:
             alignedX = (mapPos.x() - offset / 2) / scaleFactor
