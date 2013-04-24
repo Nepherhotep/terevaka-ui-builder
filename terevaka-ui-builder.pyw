@@ -291,6 +291,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def saveFileAs(self, *args, **kwargs):
         filename = unicode(QFileDialog.getSaveFileName(None, "FileDialog"))
         if filename:
+            os.chdir(os.path.dirname(filename))
             self.currentFilePath = filename
             self.saveFile(*args, **kwargs)
 
