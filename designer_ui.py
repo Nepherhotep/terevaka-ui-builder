@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Tue Apr 23 16:48:58 2013
+# Created: Thu May 30 19:08:12 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         self.spritesListWidget.setObjectName(_fromUtf8("spritesListWidget"))
         self.toolBox.addItem(self.sprites, _fromUtf8(""))
         self.properties = QtGui.QWidget()
-        self.properties.setGeometry(QtCore.QRect(0, 0, 200, 446))
+        self.properties.setGeometry(QtCore.QRect(0, 0, 100, 30))
         self.properties.setObjectName(_fromUtf8("properties"))
         self.groupBox = QtGui.QGroupBox(self.properties)
         self.groupBox.setGeometry(QtCore.QRect(10, 0, 181, 51))
@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName(_fromUtf8("label"))
         self.frame_2 = QtGui.QFrame(self.frame)
-        self.frame_2.setGeometry(QtCore.QRect(10, 80, 181, 251))
+        self.frame_2.setGeometry(QtCore.QRect(10, 80, 181, 261))
         self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
@@ -174,7 +174,7 @@ class Ui_MainWindow(object):
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.horizontalAlignmentBox = QtGui.QGroupBox(self.frame_2)
-        self.horizontalAlignmentBox.setGeometry(QtCore.QRect(10, 120, 161, 111))
+        self.horizontalAlignmentBox.setGeometry(QtCore.QRect(10, 120, 161, 121))
         self.horizontalAlignmentBox.setObjectName(_fromUtf8("horizontalAlignmentBox"))
         self.alignLeftRadio = QtGui.QRadioButton(self.horizontalAlignmentBox)
         self.alignLeftRadio.setGeometry(QtCore.QRect(10, 30, 61, 20))
@@ -187,6 +187,9 @@ class Ui_MainWindow(object):
         self.alignCenterRadio.setGeometry(QtCore.QRect(10, 50, 102, 20))
         self.alignCenterRadio.setChecked(True)
         self.alignCenterRadio.setObjectName(_fromUtf8("alignCenterRadio"))
+        self.alignProportionalRadio = QtGui.QRadioButton(self.horizontalAlignmentBox)
+        self.alignProportionalRadio.setGeometry(QtCore.QRect(10, 90, 102, 20))
+        self.alignProportionalRadio.setObjectName(_fromUtf8("alignProportionalRadio"))
         self.zIndexSpinbox = QtGui.QDoubleSpinBox(self.frame_2)
         self.zIndexSpinbox.setGeometry(QtCore.QRect(70, 80, 101, 25))
         self.zIndexSpinbox.setDecimals(0)
@@ -204,7 +207,7 @@ class Ui_MainWindow(object):
         self.resourceLabel.setText(_fromUtf8(""))
         self.resourceLabel.setObjectName(_fromUtf8("resourceLabel"))
         self.dropPanel = DropPanel(self.frame)
-        self.dropPanel.setGeometry(QtCore.QRect(10, 340, 181, 71))
+        self.dropPanel.setGeometry(QtCore.QRect(10, 350, 181, 71))
         self.dropPanel.setFrameShape(QtGui.QFrame.StyledPanel)
         self.dropPanel.setFrameShadow(QtGui.QFrame.Raised)
         self.dropPanel.setObjectName(_fromUtf8("dropPanel"))
@@ -290,6 +293,7 @@ class Ui_MainWindow(object):
         self.alignLeftRadio.setText(_translate("MainWindow", "Left", None))
         self.alignRightRadio.setText(_translate("MainWindow", "Right", None))
         self.alignCenterRadio.setText(_translate("MainWindow", "Center", None))
+        self.alignProportionalRadio.setText(_translate("MainWindow", "Proportional", None))
         self.label_4.setText(_translate("MainWindow", "Z-index", None))
         self.label_9.setText(_translate("MainWindow", "Res.", None))
         self.label_10.setText(_translate("MainWindow", "Drag here to Drop", None))

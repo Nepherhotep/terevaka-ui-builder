@@ -22,5 +22,6 @@ SCALABLE_LAYOUT_TYPE = 'scalable'
 ALIGN_LEFT = 'left'
 ALIGN_RIGHT = 'right'
 ALIGN_CENTER = 'center'
+ALIGN_PROPORTIONAL = 'proportional'
 
 PATH_NOT_SPECIFIED_TEXT = 'Not Specified'

@@ -83,6 +83,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.alignLeftRadio.clicked.connect(self.onHAlignRadioClicked)
         self.alignRightRadio.clicked.connect(self.onHAlignRadioClicked)
         self.alignCenterRadio.clicked.connect(self.onHAlignRadioClicked)
+        self.alignProportionalRadio.clicked.connect(self.onHAlignRadioClicked)
         self.posXSpinBox.editingFinished.connect(self.onPosXSpinBoxChanged)
         self.posYSpinBox.editingFinished.connect(self.onPosYSpinBoxChanged)
         self.zIndexSpinbox.editingFinished.connect(self.onZIndexChanged)
@@ -115,6 +116,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             align = const.ALIGN_LEFT
         elif self.alignRightRadio.isChecked():
             align = const.ALIGN_RIGHT
+        elif self.alignProportionalRadio.isChecked():
+            align = const.ALIGN_PROPORTIONAL
         else:
             align = const.ALIGN_CENTER
         self.getCurrentLayout().changePropHAlign(selectedItem, align)
@@ -222,6 +225,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.alignLeftRadio.setChecked(True)
         elif item.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_RIGHT:
             self.alignRightRadio.setChecked(True)
+        elif item.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_PROPORTIONAL:
+            self.alignProportionalRadio.setChecked(True)
         else:
             self.alignCenterRadio.setChecked(True)
         self.zIndexSpinbox.setValue(item.prop.get(const.KEY_Z_INDEX, 0))
@@ -497,6 +502,8 @@ class PixmapItem(QGraphicsPixmapItem):
             x = propPosX * scaleFactor
         elif self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_RIGHT:
             x = propPosX * scaleFactor + offset
+        elif self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_PROPORTIONAL:
+            x = propPosX * float(mapSize.width()) / baseSize.width()
         else:
             x = propPosX * scaleFactor + offset / 2
         y = mapSize.height() * ( 1 - float(propPosY) /baseSize.height())
@@ -508,6 +515,8 @@ class PixmapItem(QGraphicsPixmapItem):
             alignedX = mapPos.x() / scaleFactor
         elif self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_RIGHT:
             alignedX = (mapPos.x() - offset ) / scaleFactor
+        elif self.prop.get(const.KEY_HORIZONTAL_ALIGN) == const.ALIGN_PROPORTIONAL:
+            alignedX = mapPos.x() * float(baseSize.width())/mapSize.width()
         else:
             alignedX = (mapPos.x() - offset / 2) / scaleFactor
 

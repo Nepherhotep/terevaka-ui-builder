@@ -80,8 +80,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>200</width>
-           <height>446</height>
+           <width>100</width>
+           <height>30</height>
           </rect>
          </property>
          <attribute name="label">
@@ -382,7 +382,7 @@
            <x>10</x>
            <y>80</y>
            <width>181</width>
-           <height>251</height>
+           <height>261</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -471,7 +471,7 @@
             <x>10</x>
             <y>120</y>
             <width>161</width>
-            <height>111</height>
+            <height>121</height>
            </rect>
           </property>
           <property name="title">
@@ -520,6 +520,19 @@
            </property>
            <property name="checked">
             <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="alignProportionalRadio">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>90</y>
+             <width>102</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Proportional</string>
            </property>
           </widget>
          </widget>
@@ -586,7 +599,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>340</y>
+           <y>350</y>
            <width>181</width>
            <height>71</height>
           </rect>
