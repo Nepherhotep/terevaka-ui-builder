@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'designer.ui'
 #
-# Created: Thu May 30 19:08:12 2013
+# Created: Wed Jun  5 20:04:02 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,8 +26,8 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1189, 583)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        MainWindow.resize(1442, 813)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
@@ -46,19 +46,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.toolBox = QtGui.QToolBox(self.centralwidget)
-        self.toolBox.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.toolBox.setEnabled(True)
+        self.toolBox.setMaximumSize(QtCore.QSize(160, 16777215))
         self.toolBox.setFrameShape(QtGui.QFrame.NoFrame)
         self.toolBox.setObjectName(_fromUtf8("toolBox"))
         self.sprites = QtGui.QWidget()
-        self.sprites.setGeometry(QtCore.QRect(0, 0, 200, 446))
+        self.sprites.setGeometry(QtCore.QRect(0, 0, 160, 676))
         self.sprites.setObjectName(_fromUtf8("sprites"))
         self.spritesListWidget = QtGui.QListWidget(self.sprites)
-        self.spritesListWidget.setGeometry(QtCore.QRect(10, 0, 181, 421))
+        self.spritesListWidget.setGeometry(QtCore.QRect(10, 0, 161, 681))
         self.spritesListWidget.setViewMode(QtGui.QListView.IconMode)
         self.spritesListWidget.setObjectName(_fromUtf8("spritesListWidget"))
         self.toolBox.addItem(self.sprites, _fromUtf8(""))
         self.properties = QtGui.QWidget()
-        self.properties.setGeometry(QtCore.QRect(0, 0, 100, 30))
+        self.properties.setGeometry(QtCore.QRect(0, 0, 160, 676))
         self.properties.setObjectName(_fromUtf8("properties"))
         self.groupBox = QtGui.QGroupBox(self.properties)
         self.groupBox.setGeometry(QtCore.QRect(10, 0, 181, 51))
@@ -123,7 +124,7 @@ class Ui_MainWindow(object):
         self.graphicsViewContainer.setSizePolicy(sizePolicy)
         self.graphicsViewContainer.setObjectName(_fromUtf8("graphicsViewContainer"))
         self.graphicsView = DesignerGraphicsView(self.graphicsViewContainer)
-        self.graphicsView.setGeometry(QtCore.QRect(0, 0, 641, 481))
+        self.graphicsView.setGeometry(QtCore.QRect(0, 0, 981, 641))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -220,7 +221,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setEnabled(True)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1189, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1442, 22))
         self.menubar.setNativeMenuBar(True)
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
