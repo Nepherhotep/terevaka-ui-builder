@@ -20,6 +20,14 @@ def ifItemSelected(function):
     return newFunction
 
 
+class PrettyJson:
+    def dumps(self, s):
+        return json.dumps(s, sort_keys=True, indent=4, separators=(',', ': '))
+
+    def loads(self, d):
+        return json.loads(d)
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -266,7 +274,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             os.chdir(os.path.dirname(path))
             with open(path) as f:
                 self.currentFilePath = path
-                self.loadFromString(f.read(), json)
+                self.loadFromString(f.read(), PrettyJson())
                 self.setWindowModified(False)
 
     def loadFromString(self, s, formatter):
@@ -285,7 +293,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def saveFile(self, formatter=None):
         if not formatter:
-            formatter = json
+            formatter = PrettyJson()
         if self.currentFilePath:
             with open(self.currentFilePath, 'w') as f:
                 f.write(formatter.dumps(self.getCurrentLayout().toDict()))
